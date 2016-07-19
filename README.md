@@ -1,7 +1,5 @@
 # Selenium WebDriver Handler
 
-<img src="/resources/images/selenium-logo.png" height="128" />
-
 Description
 -----------
 
