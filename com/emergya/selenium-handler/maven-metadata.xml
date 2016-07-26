@@ -3,10 +3,10 @@
   <groupId>com.emergya</groupId>
   <artifactId>selenium-handler</artifactId>
   <versioning>
-    <release>0.0.4</release>
+    <release>0.0.3</release>
     <versions>
-      <version>0.0.4</version>
+      <version>0.0.3</version>
     </versions>
-    <lastUpdated>20160726121525</lastUpdated>
+    <lastUpdated>20160726121920</lastUpdated>
   </versioning>
 </metadata>
