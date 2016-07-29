@@ -21,8 +21,8 @@ It allows your Selenium projects abstracting the WebDriver logic for ease of use
  2. Adding the following maven dependency in you ```pom.xml``` file:
 
 
-    ```xml 
-    	<dependency>
+    ```xml
+	<dependency>
 		<groupId>com.emergya</groupId>
 		<artifactId>selenium-handler</artifactId>
 		<version>0.0.3</version>
