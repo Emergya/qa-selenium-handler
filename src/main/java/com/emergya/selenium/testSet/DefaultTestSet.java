@@ -53,17 +53,17 @@ public abstract class DefaultTestSet {
 
     protected ScreenRecorder screenRecorder;
     protected String tcName = "";
-    private String failedSuitePath = "src/test/resources/suites/emergyaFailedTest.xml";
+    private String failedSuitePath = "src/main/resources/suites/emergyaFailedTest.xml";
 
     protected Logger log = Logger.getLogger(DefaultTestSet.class);
 
     @BeforeMethod
-    public void nameBefore (Method method) {
+    public void nameBefore(Method method) {
         this.tcName = method.getName();
     }
 
     @BeforeMethod
-    public void before () {
+    public void before() {
         driver = config.initialize();
 
         if (driver != null && config.isRecordVideo() == true) {
@@ -71,29 +71,36 @@ public abstract class DefaultTestSet {
             try {
                 log.info("Recording video");
 
-                GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
+                GraphicsConfiguration gc = GraphicsEnvironment
+                        .getLocalGraphicsEnvironment().getDefaultScreenDevice()
                         .getDefaultConfiguration();
 
-                this.screenRecorder = new ScreenRecorder(gc, null, new Format(MediaTypeKey, MediaType.FILE,
-                        MimeTypeKey, MIME_AVI), new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey,
-                        ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, CompressorNameKey,
-                        ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24, FrameRateKey, Rational.valueOf(15),
-                        QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60), new Format(MediaTypeKey, MediaType.VIDEO,
-                        EncodingKey, "black", FrameRateKey, Rational.valueOf(30)), null, new File(
-                        config.getVideoRecordingPath()));
+                this.screenRecorder = new ScreenRecorder(gc, null, new Format(
+                        MediaTypeKey, MediaType.FILE, MimeTypeKey, MIME_AVI),
+                        new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey,
+                                ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
+                                CompressorNameKey,
+                                ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
+                                DepthKey, 24, FrameRateKey, Rational
+                                        .valueOf(15), QualityKey, 1.0f,
+                                KeyFrameIntervalKey, 15 * 60), new Format(
+                                MediaTypeKey, MediaType.VIDEO, EncodingKey,
+                                "black", FrameRateKey, Rational.valueOf(30)),
+                        null, new File(config.getVideoRecordingPath()));
 
                 screenRecorder.start();
             } catch (Exception e) {
                 log.warn("Recorder could not be initilized. No video will be recording");
             }
-            log.info("Start recording in " + (System.currentTimeMillis() - startTime) + " ms");
+            log.info("Start recording in "
+                    + (System.currentTimeMillis() - startTime) + " ms");
         } else {
             log.info("No video recording");
         }
     }
 
     @AfterMethod
-    public void afterAllIsSaidAndDone () {
+    public void afterAllIsSaidAndDone() {
         log.info("Function afterAllIsSaidAndDone");
 
         if (driver != null) {
@@ -105,8 +112,9 @@ public abstract class DefaultTestSet {
     }
 
     @AfterMethod
-    public void recordVideo (ITestResult result) {
-        if (driver != null && (config.isRecordVideo() == true) && (screenRecorder != null)
+    public void recordVideo(ITestResult result) {
+        if (driver != null && (config.isRecordVideo() == true)
+                && (screenRecorder != null)
                 && (screenRecorder.getState().equals(State.RECORDING))) {
 
             long startTime = System.currentTimeMillis();
@@ -114,9 +122,11 @@ public abstract class DefaultTestSet {
             try {
                 screenRecorder.stop();
                 log.info("Recorder stoped");
-                File tempRecordeFile = screenRecorder.getCreatedMovieFiles().get(0);
+                File tempRecordeFile = screenRecorder.getCreatedMovieFiles()
+                        .get(0);
 
-                if ((!config.isSaveVideoForPassed()) && (result.getStatus() == 1)) {
+                if ((!config.isSaveVideoForPassed())
+                        && (result.getStatus() == 1)) {
                     log.info("Test passed. Deleting video");
 
                     if (tempRecordeFile.delete()) {
@@ -125,7 +135,8 @@ public abstract class DefaultTestSet {
                         log.warn("Video could not be deleted");
                     }
                 } else {
-                    String endPath = tempRecordeFile.getAbsolutePath().replaceAll("ScreenRecording", this.tcName);
+                    String endPath = tempRecordeFile.getAbsolutePath()
+                            .replaceAll("ScreenRecording", this.tcName);
                     if (tempRecordeFile.renameTo(new File(endPath))) {
                         log.info("File stored in " + endPath);
                     } else {
@@ -136,25 +147,33 @@ public abstract class DefaultTestSet {
                 log.warn("Recorder could not be stoped");
             }
 
-            log.info("Recording video took " + (System.currentTimeMillis() - startTime) + " ms");
+            log.info("Recording video took "
+                    + (System.currentTimeMillis() - startTime) + " ms");
         }
     }
 
     @AfterMethod
-    public void checkFailedTest (ITestResult result) {
+    public void checkFailedTest(ITestResult result) {
         if (result.getMethod().getXmlTest().getName().equals("FailedTests")) {
-            removePassedTestToXML(result.getMethod().getRealClass().getName(), result.getMethod().getMethodName());
+            removePassedTestToXML(result.getMethod().getRealClass().getName(),
+                    result.getMethod().getMethodName());
         } else {
-            log.info("checkFailedTest.........result status of test is: " + result.getStatus());
+            log.info("checkFailedTest.........result status of test is: "
+                    + result.getStatus());
 
             if (result.getStatus() == 2) {
-                log.info("name Of the xml TestSuite is " + result.getMethod().getXmlTest().getName());
+                log.info("name Of the xml TestSuite is "
+                        + result.getMethod().getXmlTest().getName());
 
-                if (!result.getMethod().getXmlTest().getName().equals("Default test")) {
-                    addFailedTestToXML(result.getMethod().getRealClass().getName(), result.getMethod().getMethodName());
+                if (!result.getMethod().getXmlTest().getName()
+                        .equals("Default test")) {
+                    addFailedTestToXML(result.getMethod().getRealClass()
+                            .getName(), result.getMethod().getMethodName());
                 }
-            } else if (!result.getMethod().getXmlTest().getName().equals("Default test")) {
-                removePassedTestToXML(result.getMethod().getRealClass().getName(), result.getMethod().getMethodName());
+            } else if (!result.getMethod().getXmlTest().getName()
+                    .equals("Default test")) {
+                removePassedTestToXML(result.getMethod().getRealClass()
+                        .getName(), result.getMethod().getMethodName());
             }
         }
     }
@@ -165,7 +184,7 @@ public abstract class DefaultTestSet {
      *
      * @return initialization instance
      */
-    public static Initialization getConfig () {
+    public static Initialization getConfig() {
         return config;
     }
 
@@ -174,8 +193,9 @@ public abstract class DefaultTestSet {
      *
      * @return string with the timestamp
      */
-    public static String getTimeStamp () {
-        String timeStamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(Calendar.getInstance().getTime());
+    public static String getTimeStamp() {
+        String timeStamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss")
+                .format(Calendar.getInstance().getTime());
         return timeStamp;
     }
 
@@ -188,17 +208,18 @@ public abstract class DefaultTestSet {
      * @param testName
      *            name of the test
      */
-    private void addFailedTestToXML (String suite, String testName) {
+    private void addFailedTestToXML(String suite, String testName) {
         try {
             SAXBuilder builder = new SAXBuilder();
             Document doc = builder.build(new FileInputStream(failedSuitePath));
 
-            Element foundElement = (Element) XPath.selectSingleNode(doc, "/suite/test/classes/class[@name='" + suite
-                    + "']/methods/include[@name='" + testName + "']");
+            Element foundElement = (Element) XPath.selectSingleNode(doc,
+                    "/suite/test/classes/class[@name='" + suite
+                            + "']/methods/include[@name='" + testName + "']");
 
             if (foundElement == null) {
-                Element foundClass = (Element) XPath.selectSingleNode(doc, "/suite/test/classes/class[@name='" + suite
-                        + "']");
+                Element foundClass = (Element) XPath.selectSingleNode(doc,
+                        "/suite/test/classes/class[@name='" + suite + "']");
 
                 if (foundClass != null) {
                     // Adding the method element
@@ -210,7 +231,8 @@ public abstract class DefaultTestSet {
                     methodsElement.addContent(includeElement);
 
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format.getPrettyFormat());
+                    xmlOutput.setFormat(org.jdom.output.Format
+                            .getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 } else {
                     Element rootElement = doc.getRootElement();
@@ -234,7 +256,8 @@ public abstract class DefaultTestSet {
                     methodsElement.addContent(includeElement);
 
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format.getPrettyFormat());
+                    xmlOutput.setFormat(org.jdom.output.Format
+                            .getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 }
             } else {
@@ -254,7 +277,7 @@ public abstract class DefaultTestSet {
      * @param testName
      *            name of the test
      */
-    private void removePassedTestToXML (String suite, String testName) {
+    private void removePassedTestToXML(String suite, String testName) {
         try {
             SAXBuilder builder = new SAXBuilder();
             Document doc = builder.build(new FileInputStream(failedSuitePath));
@@ -262,24 +285,34 @@ public abstract class DefaultTestSet {
             Element rootElement = doc.getRootElement();
             Element testElement = rootElement.getChild("test");
             Element classesElement = testElement.getChild("classes");
-            Element test = (Element) XPath.selectSingleNode(doc, "/suite/test/classes/class[@name='" + suite
-                    + "']/methods/include[@name='" + testName + "']");
+            Element test = (Element) XPath.selectSingleNode(doc,
+                    "/suite/test/classes/class[@name='" + suite
+                            + "']/methods/include[@name='" + testName + "']");
             if (test != null) {
-                if (XPath.selectNodes(doc, "/suite/test/classes/class[@name='" + suite + "']/methods/include").size() > 1) {
+                if (XPath.selectNodes(
+                        doc,
+                        "/suite/test/classes/class[@name='" + suite
+                                + "']/methods/include").size() > 1) {
 
-                    Element testToRemove = (Element) XPath.selectSingleNode(doc, "/suite/test/classes/class[@name='"
-                            + suite + "']/methods/include[@name='" + testName + "']");
-                    Element methodElement = (Element) XPath.selectSingleNode(doc, "/suite/test/classes/class[@name='"
-                            + suite + "']/methods");
+                    Element testToRemove = (Element) XPath.selectSingleNode(
+                            doc, "/suite/test/classes/class[@name='" + suite
+                                    + "']/methods/include[@name='" + testName
+                                    + "']");
+                    Element methodElement = (Element) XPath.selectSingleNode(
+                            doc, "/suite/test/classes/class[@name='" + suite
+                                    + "']/methods");
 
                     methodElement.removeContent(testToRemove);
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format.getPrettyFormat());
+                    xmlOutput.setFormat(org.jdom.output.Format
+                            .getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 } else {
-                    classesElement.removeContent(test.getParentElement().getParentElement());
+                    classesElement.removeContent(test.getParentElement()
+                            .getParentElement());
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format.getPrettyFormat());
+                    xmlOutput.setFormat(org.jdom.output.Format
+                            .getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 }
 
@@ -298,7 +331,8 @@ public abstract class DefaultTestSet {
      * @param pageObject
      *            page object to be used
      */
-    protected void isReady (BasePageObject pageObject) {
-        assertTrue("The PO " + pageObject.getClass().getName() + " is not ready", pageObject.isReady());
+    protected void isReady(BasePageObject pageObject) {
+        assertTrue("The PO " + pageObject.getClass().getName()
+                + " is not ready", pageObject.isReady());
     }
 }
