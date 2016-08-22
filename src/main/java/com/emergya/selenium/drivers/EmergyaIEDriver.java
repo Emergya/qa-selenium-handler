@@ -9,7 +9,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  * @author Alejandro Gomez <agommor@gmail.com>
  */
-public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWebDriver {
+public class EmergyaIEDriver extends InternetExplorerDriver implements
+        EmergyaWebDriver {
 
     /**
      * Constructor
@@ -27,7 +28,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @return True if the element exists in the DOM and false in the opposite
      *         case
      */
-    public boolean existsElement (By selector) {
+    public boolean existsElement(By selector) {
         return EmergyaWebDriverUtil.existsElement(this, selector);
     }
 
@@ -39,7 +40,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @return True if the element exists in the DOM and is displayed and false
      *         in the opposite case
      */
-    public boolean isElementDisplayed (By selector) {
+    public boolean isElementDisplayed(By selector) {
         return EmergyaWebDriverUtil.isElementDisplayed(this, selector);
     }
 
@@ -49,7 +50,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param selector
      *            By element
      */
-    public void clickIfExists (By selector) {
+    public void clickIfExists(By selector) {
         EmergyaWebDriverUtil.clickIfExists(this, selector);
     }
 
@@ -61,7 +62,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      *            The JavaScript to execute
      * @return Boolean, Long, String, List, WebElement Or null
      */
-    public Object executeJavaScript (String script) {
+    public Object executeJavaScript(String script) {
         return EmergyaWebDriverUtil.executeJavaScript(this, script);
     }
 
@@ -73,7 +74,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param id
      *            string with the id of an element
      */
-    public void focus (String id) {
+    public void focus(String id) {
         EmergyaWebDriverUtil.focus(this, id);
     }
 
@@ -86,7 +87,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param baseFileName
      *            file name
      */
-    public void saveScreenshotPath (String folderPath, String baseFileName) {
+    public void saveScreenshotPath(String folderPath, String baseFileName) {
         EmergyaWebDriverUtil.saveScreenshotPath(this, folderPath, baseFileName);
     }
 
@@ -96,7 +97,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param driver
      *            WebDriver element
      */
-    public void saveScreenshotDefault () {
+    public void saveScreenshotDefault() {
         EmergyaWebDriverUtil.saveScreenshotDefault(this);
     }
 
@@ -107,7 +108,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param seconds
      *            time to stop the execution
      */
-    public void sleep (int seconds) {
+    public void sleep(int seconds) {
         EmergyaWebDriverUtil.sleep(seconds);
     }
 
@@ -120,7 +121,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param sleepTime
      *            time to wait before and after to press the key
      */
-    public void pressKey (int key, int sleepTime) {
+    public void pressKey(int key, int sleepTime) {
         EmergyaWebDriverUtil.pressKey(key, sleepTime);
     }
 
@@ -132,7 +133,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param sleepTime
      *            time to wait before and after to release the key
      */
-    public void releaseKey (int key, int sleepTime) {
+    public void releaseKey(int key, int sleepTime) {
         EmergyaWebDriverUtil.releaseKey(key, sleepTime);
     }
 
@@ -142,7 +143,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param key
      *            to press and release
      */
-    public void pressReleaseKey (int key) {
+    public void pressReleaseKey(int key) {
         EmergyaWebDriverUtil.pressReleaseKey(key);
     }
 
@@ -153,7 +154,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param selector
      *            By element
      */
-    public void moveMouseOverElement (By selector) {
+    public void moveMouseOverElement(By selector) {
         EmergyaWebDriverUtil.moveMouseOverElement(this, selector);
     }
 
@@ -163,7 +164,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param selector
      *            By element
      */
-    public void moveMouseOutElement (By selector) {
+    public void moveMouseOutElement(By selector) {
         EmergyaWebDriverUtil.moveMouseOutElement(this, selector);
     }
 
@@ -173,7 +174,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param selector
      *            By element
      */
-    public void clickOnWithMouse (By selector) {
+    public void clickOnWithMouse(By selector) {
         EmergyaWebDriverUtil.clickOnWithMouse(this, selector);
     }
 
@@ -183,7 +184,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param selector
      *            By element
      */
-    public void clickOutWithMouse (By selector) {
+    public void clickOutWithMouse(By selector) {
         EmergyaWebDriverUtil.clickOutWithMouse(this, selector);
     }
 
@@ -193,7 +194,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @param selector
      *            By element
      */
-    public void doubleClickOnWithMouse (By selector) {
+    public void doubleClickOnWithMouse(By selector) {
         EmergyaWebDriverUtil.doubleClickOnWithMouse(this, selector);
 
     }
@@ -210,7 +211,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @return true if the element exist in the DOM and false in the opposite
      *         case
      */
-    public boolean wait (By selector, long seconds) {
+    public boolean wait(By selector, long seconds) {
         return EmergyaWebDriverUtil.wait(this, selector, seconds);
     }
 
@@ -225,7 +226,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @return true if the element is visible in the page and false in the
      *         opposite case
      */
-    public boolean waitUntilVisible (By selector, long seconds) {
+    public boolean waitUntilVisible(By selector, long seconds) {
         return EmergyaWebDriverUtil.waitUntilVisible(this, selector, seconds);
     }
 
@@ -240,8 +241,9 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @return true if the element is clickable in the page and false in the
      *         opposite case
      */
-    public boolean waitUntilElementClickable (By selector, long seconds) {
-        return EmergyaWebDriverUtil.waitUntilElementClickable(this, selector, seconds);
+    public boolean waitUntilElementClickable(By selector, long seconds) {
+        return EmergyaWebDriverUtil.waitUntilElementClickable(this, selector,
+                seconds);
     }
 
     /**
@@ -257,7 +259,8 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWe
      * @return true If the text is present in element, and false in the opposite
      *         case
      */
-    public boolean waitUntilTextPresent (By selector, long seconds, String text) {
-        return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector, seconds, text);
+    public boolean waitUntilTextPresent(By selector, long seconds, String text) {
+        return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector,
+                seconds, text);
     }
 }

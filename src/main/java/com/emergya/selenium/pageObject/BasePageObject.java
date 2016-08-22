@@ -42,7 +42,7 @@ public abstract class BasePageObject {
      * 
      * @return the file selectors path.
      */
-    protected String getSelectorsFilePath () {
+    protected String getSelectorsFilePath() {
         String filePath = "selectors" + File.separatorChar;
         String baseName = this.className.toLowerCase();
         filePath += baseName + ".properties";
@@ -55,7 +55,7 @@ public abstract class BasePageObject {
      * @param pageObject
      *            page object to be used
      */
-    public abstract boolean isReady ();
+    public abstract boolean isReady();
 
     // **** ID methods section ****//
     /**
@@ -66,7 +66,7 @@ public abstract class BasePageObject {
      *            should exists an entry with: key.type and key.id
      * @return the selected {@link Webelement} object
      */
-    public WebElement getElementById (String key) {
+    public WebElement getElementById(String key) {
         WebElement element = null;
         PropertiesHandler handler = PropertiesHandler.getInstance();
         handler.load(this.getSelectorsFilePath());
@@ -79,8 +79,10 @@ public abstract class BasePageObject {
             if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(id)) {
                 element = this.getElementById(type, id);
             } else {
-                log.error("Trying to retrieve from " + this.getSelectorsFilePath() + " file the item with the key "
-                        + key + " but " + key + ".type and/or " + key + ".id are missing!");
+                log.error("Trying to retrieve from "
+                        + this.getSelectorsFilePath()
+                        + " file the item with the key " + key + " but " + key
+                        + ".type and/or " + key + ".id are missing!");
             }
         }
         return element;
@@ -95,7 +97,7 @@ public abstract class BasePageObject {
      *            should exists an entry with: key.type and key.id
      * @return true if the element exists and it's visible.
      */
-    public boolean isElementVisibleById (String key) {
+    public boolean isElementVisibleById(String key) {
         boolean showed = false;
         WebElement element = this.getElementById(key);
         if (isVisible(element)) {
@@ -114,7 +116,7 @@ public abstract class BasePageObject {
      *            should exists an entry with: key.type and key.name
      * @return the selected {@link Webelement} object
      */
-    public WebElement getElementByName (String key) {
+    public WebElement getElementByName(String key) {
         WebElement element = null;
         PropertiesHandler handler = PropertiesHandler.getInstance();
         handler.load(this.getSelectorsFilePath());
@@ -127,8 +129,10 @@ public abstract class BasePageObject {
             if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(name)) {
                 element = this.getElementByName(type, name);
             } else {
-                log.error("Trying to retrieve from " + this.getSelectorsFilePath() + " file the item with the key "
-                        + key + " but " + key + ".type and/or " + key + ".name are missing!");
+                log.error("Trying to retrieve from "
+                        + this.getSelectorsFilePath()
+                        + " file the item with the key " + key + " but " + key
+                        + ".type and/or " + key + ".name are missing!");
             }
         }
         return element;
@@ -143,7 +147,7 @@ public abstract class BasePageObject {
      *            should exists an entry with: key.type and key.name
      * @return true if the element exists and it's visible.
      */
-    public boolean isElementVisibleByName (String key) {
+    public boolean isElementVisibleByName(String key) {
         boolean showed = false;
         WebElement element = this.getElementByName(key);
         if (isVisible(element)) {
@@ -162,7 +166,7 @@ public abstract class BasePageObject {
      *            should exists an entry with: key.xpath
      * @return the selected {@link WebElement} object.
      */
-    public WebElement getElementByXPath (String key) {
+    public WebElement getElementByXPath(String key) {
         WebElement element = null;
         PropertiesHandler handler = PropertiesHandler.getInstance();
         handler.load(this.getSelectorsFilePath());
@@ -171,8 +175,9 @@ public abstract class BasePageObject {
         if (StringUtils.isNotBlank(xpath)) {
             element = this.getElementByXpath(xpath);
         } else {
-            log.error("Trying to retrieve from " + this.getSelectorsFilePath() + " file the item with the key " + key
-                    + " but " + key + ".xpath is missing!");
+            log.error("Trying to retrieve from " + this.getSelectorsFilePath()
+                    + " file the item with the key " + key + " but " + key
+                    + ".xpath is missing!");
         }
         return element;
     }
@@ -186,7 +191,7 @@ public abstract class BasePageObject {
      *            should exists an entry with: key.xpath
      * @return a List of the selected {@link WebElement} object
      */
-    public List<WebElement> getElementsByXPath (String key) {
+    public List<WebElement> getElementsByXPath(String key) {
         List<WebElement> element = null;
         PropertiesHandler handler = PropertiesHandler.getInstance();
         handler.load(this.getSelectorsFilePath());
@@ -195,8 +200,9 @@ public abstract class BasePageObject {
         if (StringUtils.isNotBlank(xpath)) {
             element = this.getElementsByXpath(xpath);
         } else {
-            log.error("Trying to retrieve from " + this.getSelectorsFilePath() + " file the item(s) with the key "
-                    + key + " but " + key + ".xpath is missing!");
+            log.error("Trying to retrieve from " + this.getSelectorsFilePath()
+                    + " file the item(s) with the key " + key + " but " + key
+                    + ".xpath is missing!");
         }
         return element;
     }
@@ -210,7 +216,7 @@ public abstract class BasePageObject {
      *            should exists an entry with and key.xpath
      * @return true if the element exists and it's visible
      */
-    public boolean isElementVisibleByXPath (String key) {
+    public boolean isElementVisibleByXPath(String key) {
         boolean showed = false;
         WebElement element = this.getElementByXPath(key);
         if (element != null) {
@@ -228,7 +234,7 @@ public abstract class BasePageObject {
      *            of the element to be retrieved
      * @return the built id selector.
      */
-    private WebElement getElementByIdJustId (String id) {
+    private WebElement getElementByIdJustId(String id) {
         this.driver.wait(By.id(id), TIMEOUT);
         return this.driver.findElementById(id);
     }
@@ -242,7 +248,7 @@ public abstract class BasePageObject {
      *            of the element to be retrieved
      * @return the built id selector
      */
-    private WebElement getElementById (String type, String id) {
+    private WebElement getElementById(String type, String id) {
         this.driver.wait(By.id(this.buildIdSelector(type, id)), TIMEOUT);
         return this.driver.findElementById(this.buildIdSelector(type, id));
     }
@@ -255,7 +261,7 @@ public abstract class BasePageObject {
      *            of the element to be retrieved
      * @return the built name selector.
      */
-    private WebElement getElementByNameJustName (String name) {
+    private WebElement getElementByNameJustName(String name) {
         this.driver.wait(By.name(name), TIMEOUT);
         return this.driver.findElementByName(name);
     }
@@ -270,7 +276,7 @@ public abstract class BasePageObject {
      *            of the element to be retrieved
      * @return the built name selector
      */
-    private WebElement getElementByName (String type, String name) {
+    private WebElement getElementByName(String type, String name) {
         this.driver.wait(By.name(this.buildIdSelector(type, name)), TIMEOUT);
         return this.driver.findElementByName(this.buildIdSelector(type, name));
     }
@@ -283,7 +289,7 @@ public abstract class BasePageObject {
      *            of the element to be retrieved
      * @return the built xpath selector.
      */
-    private WebElement getElementByXpath (String xpath) {
+    private WebElement getElementByXpath(String xpath) {
         this.driver.wait(By.xpath(xpath), TIMEOUT);
         return this.driver.findElementsByXPath(xpath).get(0);
     }
@@ -296,7 +302,7 @@ public abstract class BasePageObject {
      *            of the elements to be retrieved
      * @return the built xpath list.
      */
-    private List<WebElement> getElementsByXpath (String xpath) {
+    private List<WebElement> getElementsByXpath(String xpath) {
         this.driver.wait(By.xpath(xpath), TIMEOUT);
         return this.driver.findElementsByXPath(xpath);
     }
@@ -308,7 +314,7 @@ public abstract class BasePageObject {
      *            to be checked
      * @return if is showed the element
      */
-    private boolean isVisible (WebElement element) {
+    private boolean isVisible(WebElement element) {
         boolean showed = false;
         if (element != null && element.isDisplayed()) {
             showed = true;
@@ -325,7 +331,7 @@ public abstract class BasePageObject {
      *            of the element to be retrieved
      * @return the built id selector
      */
-    private String buildIdSelector (String type, String id) {
+    private String buildIdSelector(String type, String id) {
         String buttonSelector = type + "-" + id;
         return buttonSelector;
     }
