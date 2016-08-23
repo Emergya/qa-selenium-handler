@@ -1,12 +1,9 @@
 # Selenium WebDriver Handler
 
-Description
------------
-
+##Description
 It allows your Selenium projects abstracting the WebDriver logic for ease of use. Currently supports IE, Firefox and Chrome WebDriver but is extensible to others browsers. You can find an example of use of _qa-selenium-handler_ in this project https://github.com/Emergya/qa-emergya-quickstart
 
-###Adding dependencies
---
+##Adding dependencies
  1. Add the repository:
 
    ```xml
