@@ -35,7 +35,6 @@ public class Initialization {
     private String videoRecordingPath;
     private boolean recordVideo;
     private boolean saveVideoForPassed;
-    private boolean ideEnabled;
     private String downloadPath;
     private String webdriverChrome;
     private String webdriverIE;
@@ -53,7 +52,7 @@ public class Initialization {
      * 
      * @return a single instance
      */
-    public static Initialization getInstance () {
+    public static Initialization getInstance() {
         if (instance == null) {
             instance = new Initialization();
         }
@@ -68,8 +67,9 @@ public class Initialization {
     }
 
     // **** Read properties method ****//
-    public void readProperties () {
-        log.info("[log-Properties] " + this.getClass().getName() + "- Start readProperties test");
+    public void readProperties() {
+        log.info("[log-Properties] " + this.getClass().getName()
+                + "- Start readProperties test");
 
         properties = "test.properties";
         Properties prop = new Properties();
@@ -88,15 +88,18 @@ public class Initialization {
             loginURL = environment + context;
             os = prop.getProperty("OS");
             screenshotPath = prop.getProperty("screenshotPath");
-            videoRecordingPath = prop.getProperty("videoRecordingPath", this.screenshotPath);
-            recordVideo = "true".equals(prop.getProperty("activateVideoRecording", "false"));
-            saveVideoForPassed = "true".equals(prop.getProperty("saveVideoForPassed", "false"));
-            ideEnabled = "true".equals(prop.getProperty("ideEnabled", "false"));
+            videoRecordingPath = prop.getProperty("videoRecordingPath",
+                    this.screenshotPath);
+            recordVideo = "true".equals(prop.getProperty(
+                    "activateVideoRecording", "false"));
+            saveVideoForPassed = "true".equals(prop.getProperty(
+                    "saveVideoForPassed", "false"));
 
             // Generate download path
             downloadPath = "";
 
-            String auxPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+            String auxPath = this.getClass().getProtectionDomain()
+                    .getCodeSource().getLocation().getFile();
 
             String[] arrayPath = auxPath.split("/");
 
@@ -108,16 +111,21 @@ public class Initialization {
                 downloadPath = downloadPath + arrayPath[i] + "/";
             }
 
-            downloadPath = downloadPath.replace("target/classes/", prop.getProperty("downloadPath"));
+            downloadPath = downloadPath.replace("target/classes/",
+                    prop.getProperty("downloadPath"));
 
-            downloadPath = downloadPath.replaceAll("/", Matcher.quoteReplacement(File.separator));
+            downloadPath = downloadPath.replaceAll("/",
+                    Matcher.quoteReplacement(File.separator));
 
-            if (!downloadPath.endsWith(Matcher.quoteReplacement(File.separator))) {
+            if (!downloadPath
+                    .endsWith(Matcher.quoteReplacement(File.separator))) {
                 downloadPath += Matcher.quoteReplacement(File.separator);
             }
 
-            webdriverChrome = prop.getProperty("webdriverChrome", "files/software/chromedriver");
-            webdriverIE = prop.getProperty("webdriverIE", "files/software/IEDriverServer.exe");
+            webdriverChrome = prop.getProperty("webdriverChrome",
+                    "files/software/chromedriver");
+            webdriverIE = prop.getProperty("webdriverIE",
+                    "files/software/IEDriverServer.exe");
 
             File file = new File(this.getDownloadPath());
             if (!file.exists()) {
@@ -129,12 +137,14 @@ public class Initialization {
             log.error("test.properties file is not found. If this is the first time you excuted your test you can copy the settings properties file in the test folder in svn and customized it to match your environment");
         }
 
-        log.info("[log-Properties] " + this.getClass().getName() + "- End readProperties test");
+        log.info("[log-Properties] " + this.getClass().getName()
+                + "- End readProperties test");
     }
 
     // **** Driver initialization method ****//
-    public EmergyaWebDriver initialize () {
-        log.info("[log-Properties] " + this.getClass().getName() + "- Start initialize test");
+    public EmergyaWebDriver initialize() {
+        log.info("[log-Properties] " + this.getClass().getName()
+                + "- Start initialize test");
 
         EmergyaWebDriver tmpDriver = null;
 
@@ -142,11 +152,14 @@ public class Initialization {
         if (browser.equalsIgnoreCase("Firefox")) {
             FirefoxProfile firefoxProfile = new FirefoxProfile();
 
-            firefoxProfile.setPreference("browser.download.manager.focusWhenStarting", true);
+            firefoxProfile.setPreference(
+                    "browser.download.manager.focusWhenStarting", true);
             firefoxProfile.setEnableNativeEvents(true);
             firefoxProfile.setPreference("browser.download.folderList", 2);
-            firefoxProfile.setPreference("browser.download.manager.showWhenStarting", false);
-            firefoxProfile.setPreference("browser.download.dir", this.getDownloadPath());
+            firefoxProfile.setPreference(
+                    "browser.download.manager.showWhenStarting", false);
+            firefoxProfile.setPreference("browser.download.dir",
+                    this.getDownloadPath());
 
             File dir = new File(this.getDownloadPath());
             if (dir.isDirectory()) {
@@ -177,11 +190,13 @@ public class Initialization {
             if (os.equalsIgnoreCase("windows")) {
                 System.setProperty("webdriver.chrome.driver", webdriverChrome);
             } else {
-                System.setProperty("webdriver.chrome.driver", webdriverChrome + ".exe");
+                System.setProperty("webdriver.chrome.driver", webdriverChrome
+                        + ".exe");
             }
 
             tmpDriver = new EmergyaChromeDriver(options);
-        } else if (browser.equalsIgnoreCase("IE") && os.equalsIgnoreCase("windows")) {
+        } else if (browser.equalsIgnoreCase("IE")
+                && os.equalsIgnoreCase("windows")) {
             System.setProperty("webdriver.ie.driver", webdriverIE);
             tmpDriver = new EmergyaIEDriver();
         }
@@ -189,7 +204,8 @@ public class Initialization {
         // Common functions
         driver = tmpDriver;
 
-        log.info("Browser initialized with dimensions: " + driver.manage().window().getSize().getWidth() + "px X "
+        log.info("Browser initialized with dimensions: "
+                + driver.manage().window().getSize().getWidth() + "px X "
                 + driver.manage().window().getSize().getHeight() + "px");
 
         widthBeforeMaximize = driver.manage().window().getSize().getWidth();
@@ -204,7 +220,8 @@ public class Initialization {
         widthAfterMaximize = driver.manage().window().getSize().getWidth();
         heightAfterMaximize = driver.manage().window().getSize().getHeight();
 
-        if ((widthBeforeMaximize == widthAfterMaximize) && (heightBeforeMaximize == heightAfterMaximize)) {
+        if ((widthBeforeMaximize == widthAfterMaximize)
+                && (heightBeforeMaximize == heightAfterMaximize)) {
             log.info("Not maximized first time...try again");
 
             driver.sleep(1);
@@ -216,56 +233,54 @@ public class Initialization {
 
         this.cleanDownloadDirectory();
 
-        log.info("Browser resized with dimensions: " + driver.manage().window().getSize().getWidth() + "px X "
+        log.info("Browser resized with dimensions: "
+                + driver.manage().window().getSize().getWidth() + "px X "
                 + driver.manage().window().getSize().getHeight() + "px");
 
-        log.info("[log-Properties] " + this.getClass().getName() + "- End initialize test");
+        log.info("[log-Properties] " + this.getClass().getName()
+                + "- End initialize test");
 
         return driver;
     }
 
     // **** Getters methods section ****//
-    public String getBrowser () {
+    public String getBrowser() {
         return browser;
     }
 
-    public String getContext () {
+    public String getContext() {
         return context;
     }
 
-    public String getEnvironment () {
+    public String getEnvironment() {
         return environment;
     }
 
-    public String getLoginURL () {
+    public String getLoginURL() {
         return loginURL;
     }
 
-    public String getOS () {
+    public String getOS() {
         return os;
     }
 
-    public String getScreenshotPath () {
+    public String getScreenshotPath() {
         return this.screenshotPath;
     }
 
-    public String getVideoRecordingPath () {
+    public String getVideoRecordingPath() {
         return videoRecordingPath;
     }
 
-    public boolean isRecordVideo () {
+    public boolean isRecordVideo() {
         return recordVideo;
     }
 
-    public boolean isSaveVideoForPassed () {
+    public boolean isSaveVideoForPassed() {
         return saveVideoForPassed;
     }
 
-    public boolean isIDEEnabled () {
-        return ideEnabled;
-    }
-
-    public String getDownloadPath () {
+    public String getDownloadPath() {
         return downloadPath;
     }
 
@@ -277,7 +292,7 @@ public class Initialization {
      *            the name of the file
      * @return the donwloaded filepath
      */
-    public String getDownloadedFilePath (String filename) {
+    public String getDownloadedFilePath(String filename) {
         String path = this.getDownloadPath() + filename;
         File f = new File(path);
         if (f.exists()) {
@@ -291,7 +306,7 @@ public class Initialization {
     /**
      * Cleans the download directory.
      */
-    public void cleanDownloadDirectory () {
+    public void cleanDownloadDirectory() {
         File f = new File(this.getDownloadPath());
         if (f.exists() && f.isDirectory()) {
             try {
@@ -307,7 +322,7 @@ public class Initialization {
      * 
      * @return true is it's empty
      */
-    public boolean isEmptyDownloadDirectory () {
+    public boolean isEmptyDownloadDirectory() {
         File f = new File(this.getDownloadPath());
         return f.exists() && f.isDirectory() && f.list().length == 0;
     }
