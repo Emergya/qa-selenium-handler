@@ -314,7 +314,7 @@ public abstract class BasePageObject {
      *            to be checked
      * @return if is showed the element
      */
-    private boolean isVisible(WebElement element) {
+    protected boolean isVisible(WebElement element) {
         boolean showed = false;
         if (element != null && element.isDisplayed()) {
             showed = true;
