@@ -47,33 +47,28 @@ public abstract class BasePageObject {
         String baseName = this.className.toLowerCase();
         // we have to check if the baseName is valid or not. If it's not valid, we will check in all the stack trace
         if (!exists(filePath + baseName + ".properties", key)) {
-            // then we have to check in all the stacktrace
             boolean existsKey = false;
-            boolean foundMeSelf = false; // once I found this.className in the stacktrace, we start looking to the top
-            // in order to look for the selectors in all the stack trace (inheritance)
-            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            Class<?> superClass = this.getClass().getSuperclass();
 
-            for (int index = stackTrace.length - 1; index >= 0 && !existsKey; index--) {
+            while (!existsKey && !superClass.getSimpleName().equalsIgnoreCase("basepageobject")) {
 
-                String proposedBaseName = stackTrace[index].getFileName().toLowerCase().replace(".java", "");
+                String proposedBaseName = superClass.getSimpleName().toLowerCase().replace(".java", "");
+                existsKey = exists(filePath + proposedBaseName + ".properties", key);
 
-                if (proposedBaseName.equals(baseName)) {
-                    foundMeSelf = true;
-                }
-                if (foundMeSelf) {
-                    existsKey = exists(filePath + proposedBaseName + ".properties", key);
-                    if (existsKey) {
-                        baseName = proposedBaseName;
-                    }
+                if (existsKey) {
+                    baseName = proposedBaseName;
+                } else {
+                    superClass = superClass.getSuperclass();
                 }
             }
+
         }
         filePath += baseName + ".properties";
         return filePath;
     }
 
     /**
-     * It checks if existts a key in a file.
+     * It checks if exists a key in a file.
      * @param file
      * @param key
      * @return
