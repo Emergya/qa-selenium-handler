@@ -55,7 +55,7 @@ public abstract class DefaultTestSet {
     protected String tcName = "";
     private String failedSuitePath = "src/main/resources/suites/emergyaFailedTest.xml";
 
-    protected Logger log = Logger.getLogger(DefaultTestSet.class);
+    protected static Logger log = Logger.getLogger(DefaultTestSet.class);
 
     @BeforeMethod
     public void nameBefore(Method method) {

@@ -43,7 +43,7 @@ public class Initialization {
     private int heightBeforeMaximize;
     private int heightAfterMaximize;
     private static Initialization instance = null;
-    private Logger log = Logger.getLogger(Initialization.class);
+    private static Logger log = Logger.getLogger(Initialization.class);
 
     EmergyaWebDriver driver;
 
