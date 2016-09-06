@@ -39,14 +39,51 @@ public abstract class BasePageObject {
 
     /**
      * This method builds the file selector path for each Page Object
-     * 
+     * @param key to be retrieved.
      * @return the file selectors path.
      */
-    protected String getSelectorsFilePath() {
+    protected String getSelectorsFilePath(String key) {
         String filePath = "selectors" + File.separatorChar;
         String baseName = this.className.toLowerCase();
+        // we have to check if the baseName is valid or not. If it's not valid, we will check in all the stack trace
+        if (!exists(filePath + baseName + ".properties", key)) {
+            // then we have to check in all the stacktrace
+            boolean existsKey = false;
+            boolean foundMeSelf = false; // once I found this.className in the stacktrace, we start looking to the top
+            // in order to look for the selectors in all the stack trace (inheritance)
+            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+            for (int index = stackTrace.length - 1; index >= 0 && !existsKey; index--) {
+
+                String proposedBaseName = stackTrace[index].getFileName().toLowerCase().replace(".java", "");
+
+                if (proposedBaseName.equals(baseName)) {
+                    foundMeSelf = true;
+                }
+                if (foundMeSelf) {
+                    existsKey = exists(filePath + proposedBaseName + ".properties", key);
+                    if (existsKey) {
+                        baseName = proposedBaseName;
+                    }
+                }
+            }
+        }
         filePath += baseName + ".properties";
         return filePath;
+    }
+
+    /**
+     * It checks if existts a key in a file.
+     * @param file
+     * @param key
+     * @return
+     */
+    private boolean exists(String file, String key) {
+        boolean exists = false;
+        PropertiesHandler handler = PropertiesHandler.getInstance();
+        handler.load(file);
+        exists = StringUtils.isNotBlank(handler.get(key));
+        return exists;
     }
 
     /**
@@ -69,7 +106,7 @@ public abstract class BasePageObject {
     public WebElement getElementById(String key) {
         WebElement element = null;
         PropertiesHandler handler = PropertiesHandler.getInstance();
-        handler.load(this.getSelectorsFilePath());
+        handler.load(this.getSelectorsFilePath(key + ".id"));
         String type = handler.get(key + ".type"); // Could be null
         String id = handler.get(key + ".id"); // getElementByIdJustId
 
@@ -79,10 +116,9 @@ public abstract class BasePageObject {
             if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(id)) {
                 element = this.getElementById(type, id);
             } else {
-                log.error("Trying to retrieve from "
-                        + this.getSelectorsFilePath()
-                        + " file the item with the key " + key + " but " + key
-                        + ".type and/or " + key + ".id are missing!");
+                log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".id")
+                        + " file the item with the key " + key + " but " + key + ".type and/or " + key
+                        + ".id are missing!");
             }
         }
         return element;
@@ -119,7 +155,7 @@ public abstract class BasePageObject {
     public WebElement getElementByName(String key) {
         WebElement element = null;
         PropertiesHandler handler = PropertiesHandler.getInstance();
-        handler.load(this.getSelectorsFilePath());
+        handler.load(this.getSelectorsFilePath(key + ".name"));
         String type = handler.get(key + ".type"); // Could be null
         String name = handler.get(key + ".name"); // getElementByNameJustName
 
@@ -129,10 +165,9 @@ public abstract class BasePageObject {
             if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(name)) {
                 element = this.getElementByName(type, name);
             } else {
-                log.error("Trying to retrieve from "
-                        + this.getSelectorsFilePath()
-                        + " file the item with the key " + key + " but " + key
-                        + ".type and/or " + key + ".name are missing!");
+                log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".name")
+                        + " file the item with the key " + key + " but " + key + ".type and/or " + key
+                        + ".name are missing!");
             }
         }
         return element;
@@ -169,15 +204,14 @@ public abstract class BasePageObject {
     public WebElement getElementByXPath(String key) {
         WebElement element = null;
         PropertiesHandler handler = PropertiesHandler.getInstance();
-        handler.load(this.getSelectorsFilePath());
+        handler.load(this.getSelectorsFilePath(key + ".xpath"));
         String xpath = handler.get(key + ".xpath");
 
         if (StringUtils.isNotBlank(xpath)) {
             element = this.getElementByXpath(xpath);
         } else {
-            log.error("Trying to retrieve from " + this.getSelectorsFilePath()
-                    + " file the item with the key " + key + " but " + key
-                    + ".xpath is missing!");
+            log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item with the key " + key + " but " + key + ".xpath is missing!");
         }
         return element;
     }
@@ -194,15 +228,14 @@ public abstract class BasePageObject {
     public List<WebElement> getElementsByXPath(String key) {
         List<WebElement> element = null;
         PropertiesHandler handler = PropertiesHandler.getInstance();
-        handler.load(this.getSelectorsFilePath());
+        handler.load(this.getSelectorsFilePath(key + ".xpath"));
         String xpath = handler.get(key + ".xpath");
 
         if (StringUtils.isNotBlank(xpath)) {
             element = this.getElementsByXpath(xpath);
         } else {
-            log.error("Trying to retrieve from " + this.getSelectorsFilePath()
-                    + " file the item(s) with the key " + key + " but " + key
-                    + ".xpath is missing!");
+            log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item(s) with the key " + key + " but " + key + ".xpath is missing!");
         }
         return element;
     }
