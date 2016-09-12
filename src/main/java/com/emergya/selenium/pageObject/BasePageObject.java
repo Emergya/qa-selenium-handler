@@ -1,11 +1,13 @@
 package com.emergya.selenium.pageObject;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 import com.emergya.selenium.drivers.EmergyaWebDriver;
@@ -18,6 +20,7 @@ import com.emergya.selenium.utils.PropertiesHandler;
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  * @author Alejandro Gomez <agommor@gmail.com>
  * @author Ivan Bermudez <ibermudez@emergya.com>
+ * @author Ivan Gomez <igomez@emergya.com>
  */
 public abstract class BasePageObject {
 
@@ -362,5 +365,279 @@ public abstract class BasePageObject {
     private String buildIdSelector(String type, String id) {
         String buttonSelector = type + "-" + id;
         return buttonSelector;
+    }
+
+    /**
+     * To get the Xpath of a WebElement
+     * @param key
+     * @return String xpath
+     */
+    protected String getXPath(String key) {
+        PropertiesHandler handler = PropertiesHandler.getInstance();
+        handler.load(this.getSelectorsFilePath(key + ".xpath"));
+        String xpath = handler.get(key + ".xpath");
+        return xpath;
+    }
+
+    // ---------- WAIT FOR methods
+    /**
+     * Wait for element By ID:
+     * @param key of the element to search. 
+     */
+    protected void waitForById(String key) {
+        PropertiesHandler handler = PropertiesHandler.getInstance();
+        handler.load(this.getSelectorsFilePath(key + ".id"));
+        // String type = handler.get(key + ".type"); // Could be null if the ID is not own
+        String id = handler.get(key + ".id"); // getElementByIdJustId
+
+        // If the ID is found
+        if (StringUtils.isNotBlank(id)) {
+            this.driver.wait(By.xpath("//*[@id='" + id + "']"), TIMEOUT);
+        } else { // Else, the ID is not in .properties
+            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".id") + " file the item with the key "
+                    + key + " but " + key + ".id is missing!");
+        }
+    }
+
+    /**
+     * Wait for element By ID, with time limit defined:
+     * @param key of the element to search.
+     * @param timeOut limit for searching.
+     */
+    protected void waitForById(String key, int timeOut) {
+        PropertiesHandler handler = PropertiesHandler.getInstance();
+        handler.load(this.getSelectorsFilePath(key + ".id"));
+        // String type = handler.get(key + ".type"); // Could be null if the ID is not own
+        String id = handler.get(key + ".id"); // getElementByIdJustId
+
+        // If the ID is found
+        if (StringUtils.isNotBlank(id)) {
+            this.driver.wait(By.xpath("//*[@id='" + id + "']"), timeOut);
+        } else { // Else, the ID is not in .properties
+            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".id") + " file the item with the key "
+                    + key + " but " + key + ".id is missing!");
+        }
+    }
+
+    /**
+     * Wait for element By Xpath:
+     * @param key of the element to search. 
+     */
+    protected void waitForByXPath(String key) {
+        String xpath = this.getXPath(key);
+
+        if (xpath != null && StringUtils.isNotBlank(xpath)) {
+            this.driver.wait(By.xpath(xpath), TIMEOUT);
+        } else { // Else, the ID is not in .properties
+            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item with the key " + key + " but " + key + ".xpath is missing!");
+        }
+    }
+
+    /**
+     * Wait for element By Xpath, with time limit defined:
+     * @param key of the element to search.
+     * @param timeOut limit for searching.
+     */
+    protected void waitForByXPath(String key, int timeOut) {
+        String xpath = this.getXPath(key);
+
+        if (xpath != null && StringUtils.isNotBlank(xpath)) {
+            this.driver.wait(By.xpath(xpath), timeOut);
+        } else { // Else, the ID is not in .properties
+            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item with the key " + key + " but " + key + ".xpath is missing!");
+        }
+    }
+
+    /**
+     * Wait for element By WebElement:
+     * @param element to search for.
+     */
+    protected void waitForByElement(WebElement element) {
+        long start = new Date().getTime();
+        long end = start + (TIMEOUT * 1000);
+        long now = new Date().getTime();
+
+        try {
+            while (!element.isDisplayed() && now <= end) {
+                now = new Date().getTime();
+            }
+        } catch (Exception ex) {
+            // this try-catch is needed because if the element is hidden, isDisplayed works fine but
+            // if the element is removed from the DOM, we got a Selenium Exception.
+            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
+        }
+    }
+
+    /**
+     * Wait for element By WebElement:
+     * @param element to search for.
+     * @param timeOut limit for searching.
+     */
+    protected void waitForByElement(WebElement element, int timeOut) {
+        long start = new Date().getTime();
+        long end = start + (timeOut * 1000);
+        long now = new Date().getTime();
+
+        try {
+            while (!element.isDisplayed() && now <= end) {
+                now = new Date().getTime();
+            }
+        } catch (Exception ex) {
+            // this try-catch is needed because if the element is hidden, isDisplayed works fine but
+            // if the element is removed from the DOM, we got a Selenium Exception.
+            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
+        }
+    }
+
+    // ---------- WAIT UNTIL DISAPPEAR methods
+    /**
+     * Wait until WebElement disappear:
+     * @param element to wait until disappear.
+     */
+    protected void waitUntilDisappearWebElement(WebElement element) {
+        long start = new Date().getTime();
+        long end = start + (TIMEOUT * 1000);
+        long now = new Date().getTime();
+
+        try {
+            do {
+                now = new Date().getTime();
+            } while (element.isDisplayed() && now <= end);
+        } catch (Exception ex) {
+            // this try-catch is needed because if the element is hidden, isDisplayed works fine but
+            // if the element is removed from the DOM, we got a Selenium Exception.
+            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
+        }
+    }
+
+    /**
+     * Wait until WebElement disappear:
+     * @param element to wait until disappear.
+     * @param timeOut limit for wait until disappear.
+     */
+    protected void waitUntilDisappearWebElement(WebElement element, int timeOut) {
+        long start = new Date().getTime();
+        long end = start + (timeOut * 1000);
+        long now = new Date().getTime();
+
+        try {
+            do {
+                now = new Date().getTime();
+            } while (element.isDisplayed() && now <= end);
+        } catch (Exception ex) {
+            // this try-catch is needed because if the element is hidden, isDisplayed works fine but
+            // if the element is removed from the DOM, we got a Selenium Exception.
+            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
+        }
+    }
+
+    /**
+     * Wait until element disappear By Xpath:
+     * @param key of the element to wait until disappear.
+     */
+    protected void waitUntilDisappearByXPath(String key) {
+        long start = new Date().getTime();
+        long end = start + (TIMEOUT * 1000);
+        long now = new Date().getTime();
+        List<WebElement> elements = null;
+
+        do {
+            elements = driver.findElements(By.xpath(this.getXPath(key)));
+            now = new Date().getTime();
+        } while (elements != null && !elements.isEmpty() && now <= end);
+    }
+
+    /**
+     * Wait until element disappear By Xpath:
+     * @param key of the element to wait until disappear.
+     * @param timeOut limit for wait until disappear.
+     */
+    protected void waitUntilDisappearByXPath(String key, int timeOut) {
+        long start = new Date().getTime();
+        long end = start + (timeOut * 1000);
+        long now = new Date().getTime();
+        List<WebElement> elements = null;
+
+        do {
+            elements = driver.findElements(By.xpath(this.getXPath(key)));
+            now = new Date().getTime();
+        } while (elements != null && !elements.isEmpty() && now <= end);
+    }
+
+    /**
+     * Wait until element disappear By ID:
+     * @param key of the element to wait until disappear.
+     */
+    protected void waitUntilDisappearByID(String key) {
+        PropertiesHandler handler = PropertiesHandler.getInstance();
+        handler.load(this.getSelectorsFilePath(key + ".id"));
+        String id = handler.get(key + ".id");
+
+        long start = new Date().getTime();
+        long end = start + (TIMEOUT * 1000);
+        long now = new Date().getTime();
+        List<WebElement> elements = null;
+
+        do {
+            elements = driver.findElements(By.id(id));
+            now = new Date().getTime();
+        } while (elements != null && !elements.isEmpty() && now <= end);
+    }
+
+    /**
+     * Wait until element disappear By ID:
+     * @param key of the element to wait until disappear.
+     * @param timeOut limit for wait until disappear.
+     */
+    protected void waitUntilDisappearByID(String key, int timeOut) {
+        PropertiesHandler handler = PropertiesHandler.getInstance();
+        handler.load(this.getSelectorsFilePath(key + ".id"));
+        String id = handler.get(key + ".id");
+
+        long start = new Date().getTime();
+        long end = start + (timeOut * 1000);
+        long now = new Date().getTime();
+        List<WebElement> elements = null;
+
+        do {
+            elements = driver.findElements(By.id(id));
+            now = new Date().getTime();
+        } while (elements != null && !elements.isEmpty() && now <= end);
+    }
+
+    /**
+     * This function emulates a Scroll to see an element, using JavaScript.
+     * @param element to search.
+     */
+    public void scrollTo(WebElement element) {
+        try {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        } catch (Exception e) {
+            log.error("Cannot Scroll to the element, by JavaScript: " + e.toString());
+        }
+    }
+
+    /**
+     * This function emulates a Scroll Top action, using JavaScript.
+     */
+    public void scrollTop() {
+        try {
+            driver.executeJavaScript("window.scrollTo(0, 0)");
+        } catch (Exception e) {
+            log.error("Cannot ScrollTop the page, by JavaScript: " + e.toString());
+        }
+    }
+
+    /**
+     * This function emulates a Scroll Bottom action, using JavaScript.
+     */
+    public void scrollBottom() {
+        try {
+            driver.executeJavaScript("window.scrollTo(0, document.body.scrollHeight)");
+        } catch (Exception e) {
+            log.error("Cannot ScrollBottom the page, by JavaScript: " + e.toString());
+        }
     }
 }

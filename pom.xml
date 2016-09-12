@@ -66,6 +66,10 @@
 			<name>Fran Araque</name>
 			<email>fmaraque@emergya.com</email>
 		</developer>
+		<developer>
+			<name>Ivan Gomez</name>
+			<email>igomez@emergya.com</email>
+		</developer>
 	</developers>
 
 	<repositories>
