@@ -48,15 +48,20 @@ public abstract class BasePageObject {
     protected String getSelectorsFilePath(String key) {
         String filePath = "selectors" + File.separatorChar;
         String baseName = this.className.toLowerCase();
-        // we have to check if the baseName is valid or not. If it's not valid, we will check in all the stack trace
+        // we have to check if the baseName is valid or not. If it's not valid,
+        // we will check in all the stack trace
         if (!exists(filePath + baseName + ".properties", key)) {
             boolean existsKey = false;
             Class<?> superClass = this.getClass().getSuperclass();
 
-            while (!existsKey && !superClass.getSimpleName().equalsIgnoreCase("basepageobject")) {
+            while (!existsKey
+                    && !superClass.getSimpleName().equalsIgnoreCase(
+                            "basepageobject")) {
 
-                String proposedBaseName = superClass.getSimpleName().toLowerCase().replace(".java", "");
-                existsKey = exists(filePath + proposedBaseName + ".properties", key);
+                String proposedBaseName = superClass.getSimpleName()
+                        .toLowerCase().replace(".java", "");
+                existsKey = exists(filePath + proposedBaseName + ".properties",
+                        key);
 
                 if (existsKey) {
                     baseName = proposedBaseName;
@@ -114,9 +119,10 @@ public abstract class BasePageObject {
             if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(id)) {
                 element = this.getElementById(type, id);
             } else {
-                log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".id")
-                        + " file the item with the key " + key + " but " + key + ".type and/or " + key
-                        + ".id are missing!");
+                log.error("Trying to retrieve from "
+                        + this.getSelectorsFilePath(key + ".id")
+                        + " file the item with the key " + key + " but " + key
+                        + ".type and/or " + key + ".id are missing!");
             }
         }
         return element;
@@ -163,9 +169,10 @@ public abstract class BasePageObject {
             if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(name)) {
                 element = this.getElementByName(type, name);
             } else {
-                log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".name")
-                        + " file the item with the key " + key + " but " + key + ".type and/or " + key
-                        + ".name are missing!");
+                log.error("Trying to retrieve from "
+                        + this.getSelectorsFilePath(key + ".name")
+                        + " file the item with the key " + key + " but " + key
+                        + ".type and/or " + key + ".name are missing!");
             }
         }
         return element;
@@ -208,8 +215,10 @@ public abstract class BasePageObject {
         if (StringUtils.isNotBlank(xpath)) {
             element = this.getElementByXpath(xpath);
         } else {
-            log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".xpath")
-                    + " file the item with the key " + key + " but " + key + ".xpath is missing!");
+            log.error("Trying to retrieve from "
+                    + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item with the key " + key + " but " + key
+                    + ".xpath is missing!");
         }
         return element;
     }
@@ -232,8 +241,10 @@ public abstract class BasePageObject {
         if (StringUtils.isNotBlank(xpath)) {
             element = this.getElementsByXpath(xpath);
         } else {
-            log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".xpath")
-                    + " file the item(s) with the key " + key + " but " + key + ".xpath is missing!");
+            log.error("Trying to retrieve from "
+                    + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item(s) with the key " + key + " but " + key
+                    + ".xpath is missing!");
         }
         return element;
     }
@@ -381,25 +392,6 @@ public abstract class BasePageObject {
 
     // ---------- WAIT FOR methods
     /**
-     * Wait for element By ID:
-     * @param key of the element to search. 
-     */
-    protected void waitForById(String key) {
-        PropertiesHandler handler = PropertiesHandler.getInstance();
-        handler.load(this.getSelectorsFilePath(key + ".id"));
-        // String type = handler.get(key + ".type"); // Could be null if the ID is not own
-        String id = handler.get(key + ".id"); // getElementByIdJustId
-
-        // If the ID is found
-        if (StringUtils.isNotBlank(id)) {
-            this.driver.wait(By.xpath("//*[@id='" + id + "']"), TIMEOUT);
-        } else { // Else, the ID is not in .properties
-            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".id") + " file the item with the key "
-                    + key + " but " + key + ".id is missing!");
-        }
-    }
-
-    /**
      * Wait for element By ID, with time limit defined:
      * @param key of the element to search.
      * @param timeOut limit for searching.
@@ -407,30 +399,18 @@ public abstract class BasePageObject {
     protected void waitForById(String key, int timeOut) {
         PropertiesHandler handler = PropertiesHandler.getInstance();
         handler.load(this.getSelectorsFilePath(key + ".id"));
-        // String type = handler.get(key + ".type"); // Could be null if the ID is not own
+        // String type = handler.get(key + ".type"); // Could be null if the ID
+        // is not own
         String id = handler.get(key + ".id"); // getElementByIdJustId
 
         // If the ID is found
         if (StringUtils.isNotBlank(id)) {
             this.driver.wait(By.xpath("//*[@id='" + id + "']"), timeOut);
         } else { // Else, the ID is not in .properties
-            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".id") + " file the item with the key "
-                    + key + " but " + key + ".id is missing!");
-        }
-    }
-
-    /**
-     * Wait for element By Xpath:
-     * @param key of the element to search. 
-     */
-    protected void waitForByXPath(String key) {
-        String xpath = this.getXPath(key);
-
-        if (xpath != null && StringUtils.isNotBlank(xpath)) {
-            this.driver.wait(By.xpath(xpath), TIMEOUT);
-        } else { // Else, the ID is not in .properties
-            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".xpath")
-                    + " file the item with the key " + key + " but " + key + ".xpath is missing!");
+            log.error("Trying to find from "
+                    + this.getSelectorsFilePath(key + ".id")
+                    + " file the item with the key " + key + " but " + key
+                    + ".id is missing!");
         }
     }
 
@@ -445,28 +425,10 @@ public abstract class BasePageObject {
         if (xpath != null && StringUtils.isNotBlank(xpath)) {
             this.driver.wait(By.xpath(xpath), timeOut);
         } else { // Else, the ID is not in .properties
-            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".xpath")
-                    + " file the item with the key " + key + " but " + key + ".xpath is missing!");
-        }
-    }
-
-    /**
-     * Wait for element By WebElement:
-     * @param element to search for.
-     */
-    protected void waitForByElement(WebElement element) {
-        long start = new Date().getTime();
-        long end = start + (TIMEOUT * 1000);
-        long now = new Date().getTime();
-
-        try {
-            while (!element.isDisplayed() && now <= end) {
-                now = new Date().getTime();
-            }
-        } catch (Exception ex) {
-            // this try-catch is needed because if the element is hidden, isDisplayed works fine but
-            // if the element is removed from the DOM, we got a Selenium Exception.
-            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
+            log.error("Trying to find from "
+                    + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item with the key " + key + " but " + key
+                    + ".xpath is missing!");
         }
     }
 
@@ -485,33 +447,16 @@ public abstract class BasePageObject {
                 now = new Date().getTime();
             }
         } catch (Exception ex) {
-            // this try-catch is needed because if the element is hidden, isDisplayed works fine but
-            // if the element is removed from the DOM, we got a Selenium Exception.
-            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
+            // this try-catch is needed because if the element is hidden,
+            // isDisplayed works fine but
+            // if the element is removed from the DOM, we got a Selenium
+            // Exception.
+            log.error("Trying to find the WebElement but is missing!: "
+                    + ex.toString());
         }
     }
 
     // ---------- WAIT UNTIL DISAPPEAR methods
-    /**
-     * Wait until WebElement disappear:
-     * @param element to wait until disappear.
-     */
-    protected void waitUntilDisappearWebElement(WebElement element) {
-        long start = new Date().getTime();
-        long end = start + (TIMEOUT * 1000);
-        long now = new Date().getTime();
-
-        try {
-            do {
-                now = new Date().getTime();
-            } while (element.isDisplayed() && now <= end);
-        } catch (Exception ex) {
-            // this try-catch is needed because if the element is hidden, isDisplayed works fine but
-            // if the element is removed from the DOM, we got a Selenium Exception.
-            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
-        }
-    }
-
     /**
      * Wait until WebElement disappear:
      * @param element to wait until disappear.
@@ -527,26 +472,13 @@ public abstract class BasePageObject {
                 now = new Date().getTime();
             } while (element.isDisplayed() && now <= end);
         } catch (Exception ex) {
-            // this try-catch is needed because if the element is hidden, isDisplayed works fine but
-            // if the element is removed from the DOM, we got a Selenium Exception.
-            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
+            // this try-catch is needed because if the element is hidden,
+            // isDisplayed works fine but
+            // if the element is removed from the DOM, we got a Selenium
+            // Exception.
+            log.error("Trying to find the WebElement but is missing!: "
+                    + ex.toString());
         }
-    }
-
-    /**
-     * Wait until element disappear By Xpath:
-     * @param key of the element to wait until disappear.
-     */
-    protected void waitUntilDisappearByXPath(String key) {
-        long start = new Date().getTime();
-        long end = start + (TIMEOUT * 1000);
-        long now = new Date().getTime();
-        List<WebElement> elements = null;
-
-        do {
-            elements = driver.findElements(By.xpath(this.getXPath(key)));
-            now = new Date().getTime();
-        } while (elements != null && !elements.isEmpty() && now <= end);
     }
 
     /**
@@ -562,26 +494,6 @@ public abstract class BasePageObject {
 
         do {
             elements = driver.findElements(By.xpath(this.getXPath(key)));
-            now = new Date().getTime();
-        } while (elements != null && !elements.isEmpty() && now <= end);
-    }
-
-    /**
-     * Wait until element disappear By ID:
-     * @param key of the element to wait until disappear.
-     */
-    protected void waitUntilDisappearByID(String key) {
-        PropertiesHandler handler = PropertiesHandler.getInstance();
-        handler.load(this.getSelectorsFilePath(key + ".id"));
-        String id = handler.get(key + ".id");
-
-        long start = new Date().getTime();
-        long end = start + (TIMEOUT * 1000);
-        long now = new Date().getTime();
-        List<WebElement> elements = null;
-
-        do {
-            elements = driver.findElements(By.id(id));
             now = new Date().getTime();
         } while (elements != null && !elements.isEmpty() && now <= end);
     }
@@ -613,9 +525,11 @@ public abstract class BasePageObject {
      */
     public void scrollTo(WebElement element) {
         try {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].scrollIntoView(true);", element);
         } catch (Exception e) {
-            log.error("Cannot Scroll to the element, by JavaScript: " + e.toString());
+            log.error("Cannot Scroll to the element, by JavaScript: "
+                    + e.toString());
         }
     }
 
@@ -626,7 +540,8 @@ public abstract class BasePageObject {
         try {
             driver.executeJavaScript("window.scrollTo(0, 0)");
         } catch (Exception e) {
-            log.error("Cannot ScrollTop the page, by JavaScript: " + e.toString());
+            log.error("Cannot ScrollTop the page, by JavaScript: "
+                    + e.toString());
         }
     }
 
@@ -637,7 +552,8 @@ public abstract class BasePageObject {
         try {
             driver.executeJavaScript("window.scrollTo(0, document.body.scrollHeight)");
         } catch (Exception e) {
-            log.error("Cannot ScrollBottom the page, by JavaScript: " + e.toString());
+            log.error("Cannot ScrollBottom the page, by JavaScript: "
+                    + e.toString());
         }
     }
 }
