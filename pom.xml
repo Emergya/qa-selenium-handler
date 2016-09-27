@@ -13,13 +13,6 @@
         WebDriver but is extensible to others browsers.</description>
 	<url>https://github.com/Emergya/qa-selenium-handler</url>
 
-	<repositories>
-		<repository>
-          		<id>webdricer-screenshot</id>
-          		<name>WebDriver screenshot library built by agomezmoron</name>
-          		<url>https://raw.github.com/agomezmoron/webdriver-screenshot/mvn-repo</url>
-      		</repository>
-	</repositories>
 
 	<properties>
 		<!-- Versions section -->
@@ -90,6 +83,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+                        <id>webdricer-screenshot</id>
+                        <name>WebDriver screenshot library built by agomezmoron</name>
+                        <url>https://raw.github.com/agomezmoron/webdriver-screenshot/mvn-repo</url>
+                </repository>
 	</repositories>
 
 	<dependencies>
