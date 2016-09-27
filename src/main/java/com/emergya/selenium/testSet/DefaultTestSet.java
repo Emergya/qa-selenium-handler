@@ -37,6 +37,9 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+import com.github.agomezmoron.testng.listener.SeleniumScreenshotOnFailureListener;
+import com.github.agomezmoron.testng.listener.SystemScreenshotOnFailureListener;
+
 import com.emergya.selenium.drivers.EmergyaWebDriver;
 import com.emergya.selenium.pageObject.BasePageObject;
 import com.emergya.selenium.utils.Initialization;
@@ -46,6 +49,7 @@ import com.emergya.selenium.utils.Initialization;
  *
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  */
+@Listeners({SeleniumScreenshotOnFailureListener.class, SystemScreenshotOnFailureListener.class})
 public abstract class DefaultTestSet {
 
     protected static EmergyaWebDriver driver;
