@@ -41,7 +41,7 @@ public abstract class BasePageObject {
     protected static final long TIMEOUT = 20; // Seconds
 
     /**
-     * This method builds the file selector path for each Page Object
+     * This method builds the file selector path for each Page Object:
      * @param key to be retrieved.
      * @return the file selectors path.
      */
@@ -49,14 +49,14 @@ public abstract class BasePageObject {
         String filePath = "selectors" + File.separatorChar;
         String baseName = this.className.toLowerCase();
         // we have to check if the baseName is valid or not. If it's not valid, we will check in all the stack trace
-        if (!exists(filePath + baseName + ".properties", key)) {
+        if (!existsKey(filePath + baseName + ".properties", key)) {
             boolean existsKey = false;
             Class<?> superClass = this.getClass().getSuperclass();
 
             while (!existsKey && !superClass.getSimpleName().equalsIgnoreCase("basepageobject")) {
 
                 String proposedBaseName = superClass.getSimpleName().toLowerCase().replace(".java", "");
-                existsKey = exists(filePath + proposedBaseName + ".properties", key);
+                existsKey = existsKey(filePath + proposedBaseName + ".properties", key);
 
                 if (existsKey) {
                     baseName = proposedBaseName;
@@ -71,12 +71,12 @@ public abstract class BasePageObject {
     }
 
     /**
-     * It checks if exists a key in a file.
-     * @param file
-     * @param key
-     * @return
+     * It checks if exists a key in a file:
+     * @param file.
+     * @param key.
+     * @return if exists or not.
      */
-    private boolean exists(String file, String key) {
+    private boolean existsKey(String file, String key) {
         boolean exists = false;
         PropertiesHandler handler = PropertiesHandler.getInstance();
         handler.load(file);
@@ -258,99 +258,123 @@ public abstract class BasePageObject {
 
     // **** Private methods section ****//
     /**
-     * This method interacts with selenium to retrieve the needed element by ID
-     * (just with ID)
+     * It checks if an WebElement is existing for selenium:
      * 
-     * @param id
-     *            of the element to be retrieved
-     * @return the built id selector.
+     * @param WebElement to be checked.
+     * @return if exists the WebElement.
      */
-    private WebElement getElementByIdJustId(String id) {
-        this.driver.wait(By.id(id), TIMEOUT);
-        return this.driver.findElementById(id);
-    }
-
-    /**
-     * This method interacts with selenium to retrieve the needed element by ID
-     * 
-     * @param type
-     *            of the element to be retrieved
-     * @param id
-     *            of the element to be retrieved
-     * @return the built id selector
-     */
-    private WebElement getElementById(String type, String id) {
-        this.driver.wait(By.id(this.buildIdSelector(type, id)), TIMEOUT);
-        return this.driver.findElementById(this.buildIdSelector(type, id));
-    }
-
-    /**
-     * This method interacts with selenium to retrieve the needed element by
-     * Name (just with Name)
-     * 
-     * @param id
-     *            of the element to be retrieved
-     * @return the built name selector.
-     */
-    private WebElement getElementByNameJustName(String name) {
-        this.driver.wait(By.name(name), TIMEOUT);
-        return this.driver.findElementByName(name);
-    }
-
-    /**
-     * This method interacts with selenium to retrieve the needed element by
-     * Name
-     * 
-     * @param type
-     *            of the element to be retrieved
-     * @param name
-     *            of the element to be retrieved
-     * @return the built name selector
-     */
-    private WebElement getElementByName(String type, String name) {
-        this.driver.wait(By.name(this.buildIdSelector(type, name)), TIMEOUT);
-        return this.driver.findElementByName(this.buildIdSelector(type, name));
-    }
-
-    /**
-     * This method interacts with selenium to retrieve the needed element by
-     * xpath
-     * 
-     * @param xpath
-     *            of the element to be retrieved
-     * @return the built xpath selector.
-     */
-    private WebElement getElementByXpath(String xpath) {
-        this.driver.wait(By.xpath(xpath), TIMEOUT);
-        return this.driver.findElementsByXPath(xpath).get(0);
-    }
-
-    /**
-     * This method interacts with selenium to retrieve the needed elements by
-     * xpath
-     * 
-     * @param xpath
-     *            of the elements to be retrieved
-     * @return the built xpath list.
-     */
-    private List<WebElement> getElementsByXpath(String xpath) {
-        this.driver.wait(By.xpath(xpath), TIMEOUT);
-        return this.driver.findElementsByXPath(xpath);
-    }
-
-    /**
-     * It checks if an element is visible for selenium
-     * 
-     * @param element
-     *            to be checked
-     * @return if is showed the element
-     */
-    protected boolean isVisible(WebElement element) {
+    protected boolean exists(WebElement element) {
         boolean showed = false;
-        if (element != null && element.isDisplayed()) {
+        if (element != null) {
             showed = true;
         }
         return showed;
+    }
+
+    /**
+     * It checks if an WebElement is visible for selenium:
+     * 
+     * @param WebElement to be checked.
+     * @return if is showed the WebElement.
+     */
+    protected boolean isVisible(WebElement element) {
+        boolean showed = false;
+        if (this.exists(element) && element.isDisplayed()) {
+            showed = true;
+        }
+        return showed;
+    }
+
+    /**
+     * This method interacts with selenium to retrieve the needed element by ID (just with ID):
+     * 
+     * @param id of the element to be retrieved.
+     * @return the built id selector or null if it doesn't found it.
+     */
+    private WebElement getElementByIdJustId(String id) {
+        this.driver.wait(By.id(id), TIMEOUT);
+        try {
+            return this.driver.findElementById(id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * This method interacts with selenium to retrieve the needed element by ID:
+     * 
+     * @param type of the element to be retrieved.
+     * @param id of the element to be retrieved.
+     * @return the built id selector or null if it doesn't found it.
+     */
+    private WebElement getElementById(String type, String id) {
+        this.driver.wait(By.id(this.buildIdSelector(type, id)), TIMEOUT);
+        try {
+            return this.driver.findElementById(this.buildIdSelector(type, id));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * This method interacts with selenium to retrieve the needed element by name (just with name):
+     * 
+     * @param id of the element to be retrieved.
+     * @return the built name selector or null if it doesn't found it.
+     */
+    private WebElement getElementByNameJustName(String name) {
+        this.driver.wait(By.name(name), TIMEOUT);
+        try {
+            return this.driver.findElementByName(name);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * This method interacts with selenium to retrieve the needed element by name:
+     * 
+     * @param type of the element to be retrieved.
+     * @param name of the element to be retrieved.
+     * @return the built name selector or null if it doesn't found it.
+     */
+    private WebElement getElementByName(String type, String name) {
+        this.driver.wait(By.name(this.buildIdSelector(type, name)), TIMEOUT);
+        try {
+            return this.driver.findElementByName(this.buildIdSelector(type, name));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * This method interacts with selenium to retrieve the needed element by xpath:
+     * 
+     * @param xpath of the element to be retrieved.
+     * @return the built xpath selector or null if it doesn't found it.
+     */
+    private WebElement getElementByXpath(String xpath) {
+        this.driver.wait(By.xpath(xpath), TIMEOUT);
+        try {
+            return this.driver.findElementsByXPath(xpath).get(0);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * This method interacts with selenium to retrieve the needed elements by xpath:
+     * 
+     * @param xpath of the elements to be retrieved.
+     * @return the built xpath list or null if it doesn't found it.
+     */
+    private List<WebElement> getElementsByXpath(String xpath) {
+        this.driver.wait(By.xpath(xpath), TIMEOUT);
+        try {
+            return this.driver.findElementsByXPath(xpath);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
