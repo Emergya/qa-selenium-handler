@@ -356,7 +356,12 @@ public abstract class BasePageObject {
     private WebElement getElementByXpath(String xpath) {
         this.driver.wait(By.xpath(xpath), TIMEOUT);
         try {
-            return this.driver.findElementsByXPath(xpath).get(0);
+            List<WebElement> elements = this.driver.findElementsByXPath(xpath);
+            if (elements != null && !elements.isEmpty()) {
+                return elements.get(0);
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }
