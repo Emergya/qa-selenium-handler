@@ -32,6 +32,7 @@
 		<commons.version>3.0</commons.version>
 		<log4j.version>1.2.17</log4j.version>
 		<commons-io.version>2.4</commons-io.version>
+		<webdriver.screenshot.version>1.0.3</webdriver.screenshot.version>
 	</properties>
 
 	<licenses>
@@ -82,6 +83,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+                        <id>webdricer-screenshot</id>
+                        <name>WebDriver screenshot library built by agomezmoron</name>
+                        <url>https://raw.github.com/agomezmoron/webdriver-screenshot/mvn-repo</url>
+                </repository>
 	</repositories>
 
 	<dependencies>
@@ -98,6 +104,12 @@
 			<artifactId>testng</artifactId>
 			<version>[${testng.version},)</version>
 			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+  			<groupId>com.github.agomezmoron</groupId>
+  			<artifactId>webdriver-screenshot</artifactId>
+  			<version>[${webdriver.screenshot.version},)</version>
 		</dependency>
 
 		<dependency>
