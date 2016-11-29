@@ -4,7 +4,7 @@
 
 	<groupId>com.emergya</groupId>
 	<artifactId>selenium-handler</artifactId>
-	<version>0.0.7</version>
+	<version>0.0.8</version>
 	<packaging>jar</packaging>
 
 	<name>Selenium WebDriver Handler</name>
@@ -203,7 +203,7 @@
 					</includes>
 					<repositoryName>qa-selenium-handler</repositoryName>      <!-- github repo name -->
 					<repositoryOwner>Emergya</repositoryOwner>    <!-- github username -->
-					<repositoryUser>josele88</repositoryUser>
+					<repositoryUser>fmaraque</repositoryUser>
 					<server>github</server>
 				</configuration>
 				<executions>
