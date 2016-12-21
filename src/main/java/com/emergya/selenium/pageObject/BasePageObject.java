@@ -241,7 +241,7 @@ public abstract class BasePageObject {
         String xpath = handler.get(key + ".xpath");
 
         if (StringUtils.isNotBlank(xpath)) {
-            element = this.getElementByXpath(xpath, TIMEOUT);
+            element = this.getElementByXpath(xpath, timeOut);
         } else {
             log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".xpath")
                     + " file the item with the key " + key + " but " + key + ".xpath is missing!");
