@@ -252,4 +252,9 @@ public interface EmergyaWebDriver extends WebDriver {
      * @return WebElement web element
      */
     public WebElement findElementByName (String name);
+    
+    /**
+     * Method to switch the handler to the main window. 
+     */
+    public void switchToMainwindow();
 }

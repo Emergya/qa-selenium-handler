@@ -13,10 +13,16 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements
         EmergyaWebDriver {
 
     /**
+     * Main window handler to perform windows switch later.
+     */
+    private String mainWindowHandler;
+    
+    /**
      * Constructor
      */
     public EmergyaIEDriver() {
         super();
+        mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
     // **** Basic operation methods section ****//
@@ -263,4 +269,15 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements
         return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector,
                 seconds, text);
     }
+    
+    /**
+     * @see EmergyaWebDriver#switchToMainwindow()
+     */
+    @Override
+    public void switchToMainwindow() {
+        this.sleep(1);
+        this.switchTo().window(mainWindowHandler);
+        this.sleep(1);
+    }
+    
 }

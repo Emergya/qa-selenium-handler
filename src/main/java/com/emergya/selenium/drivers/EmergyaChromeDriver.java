@@ -13,14 +13,21 @@ import org.openqa.selenium.chrome.ChromeOptions;
 public class EmergyaChromeDriver extends ChromeDriver implements EmergyaWebDriver {
 
     /**
+     * Main window handler to perform windows switch later.
+     */
+    private String mainWindowHandler;
+    
+    /**
      * Constructor
      */
     public EmergyaChromeDriver() {
         super();
+        mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
     public EmergyaChromeDriver(ChromeOptions chromeOptions) {
         super(chromeOptions);
+        mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
     // **** Basic operation methods section ****//
@@ -265,4 +272,15 @@ public class EmergyaChromeDriver extends ChromeDriver implements EmergyaWebDrive
     public boolean waitUntilTextPresent (By selector, long seconds, String text) {
         return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector, seconds, text);
     }
+    
+    /**
+     * @see EmergyaWebDriver#switchToMainwindow()
+     */
+    @Override
+    public void switchToMainwindow() {
+        this.sleep(1);
+        this.switchTo().window(mainWindowHandler);
+        this.sleep(1);
+    }
+    
 }
