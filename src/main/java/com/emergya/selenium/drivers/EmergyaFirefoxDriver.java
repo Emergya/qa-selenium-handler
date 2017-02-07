@@ -14,18 +14,26 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDriver {
 
     /**
+     * Main window handler to perform windows switch later.
+     */
+    private String mainWindowHandler;
+
+    /**
      * Constructor
      */
     public EmergyaFirefoxDriver() {
         super();
+        mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
     public EmergyaFirefoxDriver(DesiredCapabilities capabilities) {
         super(capabilities);
+        mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
     public EmergyaFirefoxDriver(FirefoxProfile profile) {
         super(profile);
+        mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
     // **** Basic operation methods section ****//
@@ -37,7 +45,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @return True if the element exists in the DOM and false in the opposite
      *         case
      */
-    public boolean existsElement (By selector) {
+    public boolean existsElement(By selector) {
         return EmergyaWebDriverUtil.existsElement(this, selector);
     }
 
@@ -49,7 +57,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @return True if the element exists in the DOM and is displayed and false
      *         in the opposite case
      */
-    public boolean isElementDisplayed (By selector) {
+    public boolean isElementDisplayed(By selector) {
         return EmergyaWebDriverUtil.isElementDisplayed(this, selector);
     }
 
@@ -59,7 +67,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param selector
      *            By element
      */
-    public void clickIfExists (By selector) {
+    public void clickIfExists(By selector) {
         EmergyaWebDriverUtil.clickIfExists(this, selector);
     }
 
@@ -71,7 +79,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      *            The JavaScript to execute
      * @return Boolean, Long, String, List, WebElement Or null
      */
-    public Object executeJavaScript (String script) {
+    public Object executeJavaScript(String script) {
         return EmergyaWebDriverUtil.executeJavaScript(this, script);
     }
 
@@ -83,7 +91,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param id
      *            string with the id of an element
      */
-    public void focus (String id) {
+    public void focus(String id) {
         EmergyaWebDriverUtil.focus(this, id);
     }
 
@@ -96,7 +104,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param baseFileName
      *            file name
      */
-    public void saveScreenshotPath (String folderPath, String baseFileName) {
+    public void saveScreenshotPath(String folderPath, String baseFileName) {
         EmergyaWebDriverUtil.saveScreenshotPath(this, folderPath, baseFileName);
     }
 
@@ -106,7 +114,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param driver
      *            WebDriver element
      */
-    public void saveScreenshotDefault () {
+    public void saveScreenshotDefault() {
         EmergyaWebDriverUtil.saveScreenshotDefault(this);
     }
 
@@ -117,7 +125,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param seconds
      *            time to stop the execution
      */
-    public void sleep (int seconds) {
+    public void sleep(int seconds) {
         EmergyaWebDriverUtil.sleep(seconds);
     }
 
@@ -130,7 +138,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param sleepTime
      *            time to wait before and after to press the key
      */
-    public void pressKey (int key, int sleepTime) {
+    public void pressKey(int key, int sleepTime) {
         EmergyaWebDriverUtil.pressKey(key, sleepTime);
     }
 
@@ -142,7 +150,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param sleepTime
      *            time to wait before and after to release the key
      */
-    public void releaseKey (int key, int sleepTime) {
+    public void releaseKey(int key, int sleepTime) {
         EmergyaWebDriverUtil.releaseKey(key, sleepTime);
     }
 
@@ -152,7 +160,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param key
      *            to press and release
      */
-    public void pressReleaseKey (int key) {
+    public void pressReleaseKey(int key) {
         EmergyaWebDriverUtil.pressReleaseKey(key);
     }
 
@@ -163,7 +171,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param selector
      *            By element
      */
-    public void moveMouseOverElement (By selector) {
+    public void moveMouseOverElement(By selector) {
         EmergyaWebDriverUtil.moveMouseOverElement(this, selector);
     }
 
@@ -173,7 +181,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param selector
      *            By element
      */
-    public void moveMouseOutElement (By selector) {
+    public void moveMouseOutElement(By selector) {
         EmergyaWebDriverUtil.moveMouseOutElement(this, selector);
     }
 
@@ -183,7 +191,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param selector
      *            By element
      */
-    public void clickOnWithMouse (By selector) {
+    public void clickOnWithMouse(By selector) {
         EmergyaWebDriverUtil.clickOnWithMouse(this, selector);
     }
 
@@ -193,7 +201,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param selector
      *            By element
      */
-    public void clickOutWithMouse (By selector) {
+    public void clickOutWithMouse(By selector) {
         EmergyaWebDriverUtil.clickOutWithMouse(this, selector);
     }
 
@@ -203,7 +211,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @param selector
      *            By element
      */
-    public void doubleClickOnWithMouse (By selector) {
+    public void doubleClickOnWithMouse(By selector) {
         EmergyaWebDriverUtil.doubleClickOnWithMouse(this, selector);
 
     }
@@ -220,7 +228,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @return true if the element exist in the DOM and false in the opposite
      *         case
      */
-    public boolean wait (By selector, long seconds) {
+    public boolean wait(By selector, long seconds) {
         return EmergyaWebDriverUtil.wait(this, selector, seconds);
     }
 
@@ -235,7 +243,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @return true if the element is visible in the page and false in the
      *         opposite case
      */
-    public boolean waitUntilVisible (By selector, long seconds) {
+    public boolean waitUntilVisible(By selector, long seconds) {
         return EmergyaWebDriverUtil.waitUntilVisible(this, selector, seconds);
     }
 
@@ -250,7 +258,7 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @return true if the element is clickable in the page and false in the
      *         opposite case
      */
-    public boolean waitUntilElementClickable (By selector, long seconds) {
+    public boolean waitUntilElementClickable(By selector, long seconds) {
         return EmergyaWebDriverUtil.waitUntilElementClickable(this, selector, seconds);
     }
 
@@ -267,7 +275,18 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @return true If the text is present in element, and false in the opposite
      *         case
      */
-    public boolean waitUntilTextPresent (By selector, long seconds, String text) {
+    public boolean waitUntilTextPresent(By selector, long seconds, String text) {
         return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector, seconds, text);
     }
+
+    /**
+     * @see EmergyaWebDriver#switchToMainwindow()
+     */
+    @Override
+    public void switchToMainwindow() {
+        this.sleep(1);
+        this.switchTo().window(mainWindowHandler);
+        this.sleep(1);
+    }
+    
 }

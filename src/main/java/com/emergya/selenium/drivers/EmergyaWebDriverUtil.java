@@ -578,6 +578,15 @@ public class EmergyaWebDriverUtil {
 
         return retVal;
     }
+    
+    /**
+     * Method to obtain the current window handler.
+     * @param @see EmergyaWebDriver
+     * @return the current window handler.
+     */
+    public static String getCurrentWindowHandler(EmergyaWebDriver driver) {
+        return driver.getWindowHandle();
+    }
 
     // **** Private methods section ****//
     /**
