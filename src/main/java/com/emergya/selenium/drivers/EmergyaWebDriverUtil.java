@@ -44,7 +44,7 @@ public class EmergyaWebDriverUtil {
      * @return True if the element exists in the DOM and false in the opposite
      *         case
      */
-    public static boolean existsElement (EmergyaWebDriver driver, By selector) {
+    public static boolean existsElement(EmergyaWebDriver driver, By selector) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start existsElement method");
 
         boolean exists = false;
@@ -70,7 +70,7 @@ public class EmergyaWebDriverUtil {
      * @return True if the element exists in the DOM and is displayed and false
      *         in the opposite case
      */
-    public static boolean isElementDisplayed (EmergyaWebDriver driver, By selector) {
+    public static boolean isElementDisplayed(EmergyaWebDriver driver, By selector) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start isElementDisplayed method");
 
         boolean isDisplayed = false;
@@ -95,7 +95,7 @@ public class EmergyaWebDriverUtil {
      * @param selector
      *            By element
      */
-    public static void clickIfExists (EmergyaWebDriver driver, By selector) {
+    public static void clickIfExists(EmergyaWebDriver driver, By selector) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start clickIfExists method");
 
         wait(driver, selector, 20);
@@ -119,7 +119,7 @@ public class EmergyaWebDriverUtil {
      *            The JavaScript to execute
      * @return Boolean, Long, String, List, WebElement Or null
      */
-    public static Object executeJavaScript (EmergyaWebDriver driver, String script) {
+    public static Object executeJavaScript(EmergyaWebDriver driver, String script) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start executeJavaScript method");
         log.info("[log-Utils] EmergyaWebDriverUtil - End executeJavaScript method");
 
@@ -134,7 +134,7 @@ public class EmergyaWebDriverUtil {
      * @param id
      *            string with the id of an element
      */
-    public static void focus (EmergyaWebDriver driver, String id) {
+    public static void focus(EmergyaWebDriver driver, String id) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start focus method");
 
         driver.executeJavaScript("document.getElementById('" + id + "').focus();");
@@ -153,7 +153,7 @@ public class EmergyaWebDriverUtil {
      * @param baseFileName
      *            file name
      */
-    public static void saveScreenshotPath (EmergyaWebDriver driver, String folderPath, String baseFileName) {
+    public static void saveScreenshotPath(EmergyaWebDriver driver, String folderPath, String baseFileName) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start saveScreenshotPath method");
 
         String timeStamp = getTimeStamp();
@@ -175,7 +175,7 @@ public class EmergyaWebDriverUtil {
      * @param driver
      *            WebDriver element
      */
-    public static void saveScreenshotDefault (EmergyaWebDriver driver) {
+    public static void saveScreenshotDefault(EmergyaWebDriver driver) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start saveScreenshotDefault method");
 
         String folderPath = Initialization.getInstance().getScreenshotPath();
@@ -192,7 +192,7 @@ public class EmergyaWebDriverUtil {
      * @param seconds
      *            time to stop the execution
      */
-    public static void sleep (int seconds) {
+    public static void sleep(int seconds) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start sleep method");
 
         try {
@@ -213,7 +213,7 @@ public class EmergyaWebDriverUtil {
      * @param sleepTime
      *            time to wait before and after to press the key
      */
-    public static void pressKey (int key, int sleepTime) {
+    public static void pressKey(int key, int sleepTime) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start pressKey method");
 
         Robot r;
@@ -241,7 +241,7 @@ public class EmergyaWebDriverUtil {
      * @param sleepTime
      *            time to wait before and after to release the key
      */
-    public static void releaseKey (int key, int sleepTime) {
+    public static void releaseKey(int key, int sleepTime) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start releaseKey method");
 
         Robot r;
@@ -267,7 +267,7 @@ public class EmergyaWebDriverUtil {
      * @param key
      *            to press and to release
      */
-    public static void pressReleaseKey (int key) {
+    public static void pressReleaseKey(int key) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start pressReleaseKey method");
 
         Robot r;
@@ -297,7 +297,7 @@ public class EmergyaWebDriverUtil {
      * @param selector
      *            By element
      */
-    public static void moveMouseOverElement (EmergyaWebDriver driver, By selector) {
+    public static void moveMouseOverElement(EmergyaWebDriver driver, By selector) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start moveMouseOverElement method");
 
         Robot r;
@@ -326,7 +326,7 @@ public class EmergyaWebDriverUtil {
      * @param selector
      *            By element
      */
-    public static void moveMouseOutElement (EmergyaWebDriver driver, By selector) {
+    public static void moveMouseOutElement(EmergyaWebDriver driver, By selector) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start moveMouseOutElement method");
 
         Robot r;
@@ -365,7 +365,7 @@ public class EmergyaWebDriverUtil {
      * @param selector
      *            By element
      */
-    public static void clickOnWithMouse (EmergyaWebDriver driver, By selector) {
+    public static void clickOnWithMouse(EmergyaWebDriver driver, By selector) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start clickOnWithMouse method");
 
         Robot r;
@@ -394,7 +394,7 @@ public class EmergyaWebDriverUtil {
      * @param selector
      *            By element
      */
-    public static void clickOutWithMouse (EmergyaWebDriver driver, By selector) {
+    public static void clickOutWithMouse(EmergyaWebDriver driver, By selector) {
         EmergyaWebDriverUtil.moveMouseOutElement(driver, selector);
         log.info("[log-Utils] EmergyaWebDriverUtil - Start clickOutWithMouse method");
 
@@ -422,7 +422,7 @@ public class EmergyaWebDriverUtil {
      * @param selector
      *            By element
      */
-    public static void doubleClickOnWithMouse (EmergyaWebDriver driver, By selector) {
+    public static void doubleClickOnWithMouse(EmergyaWebDriver driver, By selector) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start doubleClickOnWithMouse method");
 
         Robot r;
@@ -458,7 +458,7 @@ public class EmergyaWebDriverUtil {
      * @return true if the element exist in the DOM and false in the opposite
      *         case
      */
-    public static boolean wait (EmergyaWebDriver driver, By selector, long seconds) {
+    public static boolean wait(EmergyaWebDriver driver, By selector, long seconds) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start wait method");
 
         WebDriverWait w = new WebDriverWait(driver, seconds);
@@ -491,7 +491,7 @@ public class EmergyaWebDriverUtil {
      * @return true if the element is visible in the page and false in the
      *         opposite case
      */
-    public static boolean waitUntilVisible (EmergyaWebDriver driver, By selector, long seconds) {
+    public static boolean waitUntilVisible(EmergyaWebDriver driver, By selector, long seconds) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start waitUntilVisible method");
 
         WebDriverWait w = new WebDriverWait(driver, seconds);
@@ -524,7 +524,7 @@ public class EmergyaWebDriverUtil {
      * @return true if the element is clickable in the page and false in the
      *         opposite case
      */
-    public static boolean waitUntilElementClickable (EmergyaWebDriver driver, By selector, long seconds) {
+    public static boolean waitUntilElementClickable(EmergyaWebDriver driver, By selector, long seconds) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start waitUntilElementClickable method");
 
         WebDriverWait w = new WebDriverWait(driver, seconds);
@@ -559,7 +559,7 @@ public class EmergyaWebDriverUtil {
      * @return true If the text is present in element, and false in the opposite
      *         case
      */
-    public static boolean waitUntilTextPresent (EmergyaWebDriver driver, By selector, long seconds, String text) {
+    public static boolean waitUntilTextPresent(EmergyaWebDriver driver, By selector, long seconds, String text) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start waitUntilTextPresent method");
 
         WebDriverWait w = new WebDriverWait(driver, seconds);
@@ -578,7 +578,7 @@ public class EmergyaWebDriverUtil {
 
         return retVal;
     }
-    
+
     /**
      * Method to obtain the current window handler.
      * @param @see EmergyaWebDriver
@@ -588,13 +588,28 @@ public class EmergyaWebDriverUtil {
         return driver.getWindowHandle();
     }
 
+    /**
+     * Method to check if the current windows is open or closed.
+     * @param @see EmergyaWebDriver
+     * @return true if the current windows is open, false if it is closed.
+     */
+    public static Boolean isCurrentWindowOpen(EmergyaWebDriver driver) {
+        Boolean isOpen = false;
+        try {
+            isOpen = driver.getWindowHandles().contains(driver.getWindowHandle());
+        } catch (Exception e) {
+            isOpen = false;
+        }
+        return isOpen;
+    }
+
     // **** Private methods section ****//
     /**
      * Generates a timestamp
      * 
      * @return string with a timestamp
      */
-    private static String getTimeStamp () {
+    private static String getTimeStamp() {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start getTimeStamp method");
 
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(Calendar.getInstance().getTime());
@@ -614,7 +629,7 @@ public class EmergyaWebDriverUtil {
      *            By element
      * @return Point the position of the center of the element
      */
-    private static Point getPositionToClick (EmergyaWebDriver driver, By selector) {
+    private static Point getPositionToClick(EmergyaWebDriver driver, By selector) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start getPositionToClick method");
 
         Point toReturn = null;

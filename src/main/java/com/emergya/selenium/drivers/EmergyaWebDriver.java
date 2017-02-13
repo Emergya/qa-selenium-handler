@@ -23,7 +23,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @return True if the element exists in the DOM and false in the opposite
      *         case
      */
-    public boolean existsElement (By selector);
+    public boolean existsElement(By selector);
 
     /**
      * Checks if an element exists in the DOM and is displayed
@@ -33,7 +33,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @return True if the element exists in the DOM and is displayed and false
      *         in the opposite case
      */
-    public boolean isElementDisplayed (By selector);
+    public boolean isElementDisplayed(By selector);
 
     /**
      * Clicks on an element after wait and if it is displayed
@@ -41,7 +41,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param selector
      *            By element
      */
-    public void clickIfExists (By selector);
+    public void clickIfExists(By selector);
 
     // **** Javascript methods section ****//
     /**
@@ -51,7 +51,7 @@ public interface EmergyaWebDriver extends WebDriver {
      *            The JavaScript to execute
      * @return Boolean, Long, String, List, WebElement Or null
      */
-    public Object executeJavaScript (String script);
+    public Object executeJavaScript(String script);
 
     /**
      * Puts the focus on an element through its id
@@ -61,7 +61,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param id
      *            string with the id of an element
      */
-    public void focus (String id);
+    public void focus(String id);
 
     // **** Screenshot methods section ****//
     /**
@@ -72,7 +72,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param baseFileName
      *            file name
      */
-    public void saveScreenshotPath (String folderPath, String baseFileName);
+    public void saveScreenshotPath(String folderPath, String baseFileName);
 
     /**
      * Saves a screenshot in the default path
@@ -80,7 +80,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param driver
      *            WebDriver element
      */
-    public void saveScreenshotDefault ();
+    public void saveScreenshotDefault();
 
     // **** Sleep method ****//
     /**
@@ -89,7 +89,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param seconds
      *            time to stop the execution
      */
-    public void sleep (int seconds);
+    public void sleep(int seconds);
 
     // **** Keyboard events methods section ****//
     /**
@@ -100,7 +100,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param sleepTime
      *            time to wait before and after to press the key
      */
-    public void pressKey (int key, int sleepTime);
+    public void pressKey(int key, int sleepTime);
 
     /**
      * Releases a keyboard key
@@ -110,7 +110,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param sleepTime
      *            time to wait before and after to release the key
      */
-    public void releaseKey (int key, int sleepTime);
+    public void releaseKey(int key, int sleepTime);
 
     /**
      * Presses and releases a keyboard key
@@ -118,7 +118,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param key
      *            to press and release
      */
-    public void pressReleaseKey (int key);
+    public void pressReleaseKey(int key);
 
     // **** Mouse events methods section ****//
     /**
@@ -127,7 +127,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param selector
      *            By element
      */
-    public void moveMouseOverElement (By selector);
+    public void moveMouseOverElement(By selector);
 
     /**
      * Moves the mouse out of an element
@@ -135,7 +135,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param selector
      *            By element
      */
-    public void moveMouseOutElement (By selector);
+    public void moveMouseOutElement(By selector);
 
     /**
      * Clicks with the mouse on an element
@@ -143,7 +143,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param selector
      *            By element
      * */
-    public void clickOnWithMouse (By selector);
+    public void clickOnWithMouse(By selector);
 
     /**
      * Clicks with the mouse out of an element
@@ -151,7 +151,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param selector
      *            By element
      */
-    public void clickOutWithMouse (By selector);
+    public void clickOutWithMouse(By selector);
 
     /**
      * Double clicks with the mouse on an element
@@ -159,7 +159,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @param selector
      *            By element
      */
-    public void doubleClickOnWithMouse (By selector);
+    public void doubleClickOnWithMouse(By selector);
 
     // **** Wait methods section ****//
     /**
@@ -173,7 +173,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @return true if the element exist in the DOM and false in the opposite
      *         case
      */
-    public boolean wait (By selector, long seconds);
+    public boolean wait(By selector, long seconds);
 
     /**
      * It sleeps the driver for X seconds. If the element is visible in the
@@ -186,7 +186,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @return true if the element is visible in the page and false in the
      *         opposite case
      */
-    public boolean waitUntilVisible (By selector, long seconds);
+    public boolean waitUntilVisible(By selector, long seconds);
 
     /**
      * It sleeps the driver for X seconds. If the element is clickable in the
@@ -199,7 +199,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @return true if the element is clickable in the page and false in the
      *         opposite case
      */
-    public boolean waitUntilElementClickable (By selector, long seconds);
+    public boolean waitUntilElementClickable(By selector, long seconds);
 
     /**
      * It sleeps the driver for X seconds. If the text is present in element,
@@ -214,7 +214,7 @@ public interface EmergyaWebDriver extends WebDriver {
      * @return true If the text is present in element, and false in the opposite
      *         case
      */
-    public boolean waitUntilTextPresent (By selector, long seconds, String text);
+    public boolean waitUntilTextPresent(By selector, long seconds, String text);
 
     // **** BasePageObject needed methods section ****//
     /**
@@ -224,7 +224,7 @@ public interface EmergyaWebDriver extends WebDriver {
      *            expression
      * @return List of web elements
      */
-    public List<WebElement> findElementsByXPath (String xpath);
+    public List<WebElement> findElementsByXPath(String xpath);
 
     /**
      * Finds element by xpath
@@ -233,7 +233,7 @@ public interface EmergyaWebDriver extends WebDriver {
      *            expression
      * @return WebElement web element
      */
-    public WebElement findElementByXPath (String xpath);
+    public WebElement findElementByXPath(String xpath);
 
     /**
      * Find an element by id
@@ -242,7 +242,7 @@ public interface EmergyaWebDriver extends WebDriver {
      *            expression
      * @return WebElement web element
      */
-    public WebElement findElementById (String id);
+    public WebElement findElementById(String id);
 
     /**
      * Find an element by name
@@ -251,10 +251,18 @@ public interface EmergyaWebDriver extends WebDriver {
      *            expression
      * @return WebElement web element
      */
-    public WebElement findElementByName (String name);
-    
+    public WebElement findElementByName(String name);
+
     /**
      * Method to switch the handler to the main window. 
      */
     public void switchToMainwindow();
+
+    /**
+     * Method to check if the current windows is open or closed.
+     * @param @see EmergyaWebDriver
+     * @return true if the current windows is open, false if it is closed.
+     */
+    public Boolean isCurrentWindowOpen();
+
 }

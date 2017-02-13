@@ -288,5 +288,13 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
         this.switchTo().window(mainWindowHandler);
         this.sleep(1);
     }
-    
+
+    /**
+     * @see EmergyaWebDriver#isCurrentWindowOpen()
+     */
+    @Override
+    public Boolean isCurrentWindowOpen() {
+        return EmergyaWebDriverUtil.isCurrentWindowOpen(this);
+    }
+
 }
