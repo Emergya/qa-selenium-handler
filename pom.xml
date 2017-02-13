@@ -203,7 +203,7 @@
 					</includes>
 					<repositoryName>qa-selenium-handler</repositoryName>      <!-- github repo name -->
 					<repositoryOwner>Emergya</repositoryOwner>    <!-- github username -->
-					<repositoryUser>fmaraque</repositoryUser>
+					<repositoryUser>agomezmoron</repositoryUser>
 					<server>github</server>
 				</configuration>
 				<executions>
