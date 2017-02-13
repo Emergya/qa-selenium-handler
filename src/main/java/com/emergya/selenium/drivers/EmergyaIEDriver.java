@@ -9,14 +9,13 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  * @author Alejandro Gomez <agommor@gmail.com>
  */
-public class EmergyaIEDriver extends InternetExplorerDriver implements
-        EmergyaWebDriver {
+public class EmergyaIEDriver extends InternetExplorerDriver implements EmergyaWebDriver {
 
     /**
      * Main window handler to perform windows switch later.
      */
     private String mainWindowHandler;
-    
+
     /**
      * Constructor
      */
@@ -248,8 +247,7 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements
      *         opposite case
      */
     public boolean waitUntilElementClickable(By selector, long seconds) {
-        return EmergyaWebDriverUtil.waitUntilElementClickable(this, selector,
-                seconds);
+        return EmergyaWebDriverUtil.waitUntilElementClickable(this, selector, seconds);
     }
 
     /**
@@ -266,10 +264,9 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements
      *         case
      */
     public boolean waitUntilTextPresent(By selector, long seconds, String text) {
-        return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector,
-                seconds, text);
+        return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector, seconds, text);
     }
-    
+
     /**
      * @see EmergyaWebDriver#switchToMainwindow()
      */
@@ -279,5 +276,13 @@ public class EmergyaIEDriver extends InternetExplorerDriver implements
         this.switchTo().window(mainWindowHandler);
         this.sleep(1);
     }
-    
+
+    /**
+     * @see EmergyaWebDriver#isCurrentWindowOpen()
+     */
+    @Override
+    public Boolean isCurrentWindowOpen() {
+        return EmergyaWebDriverUtil.isCurrentWindowOpen(this);
+    }
+
 }
