@@ -4,7 +4,7 @@
 
 	<groupId>com.emergya</groupId>
 	<artifactId>selenium-handler</artifactId>
-	<version>0.1.6</version>
+	<version>0.1.7</version>
 	<packaging>jar</packaging>
 
 	<name>Selenium WebDriver Handler</name>
@@ -19,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<selenium.version>2.53.0</selenium.version>
+		<selenium.version>2.53.1</selenium.version>
 		<java.version>1.8</java.version>
 		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
 		<testng.version>6.9.10</testng.version>
@@ -203,7 +203,7 @@
 					</includes>
 					<repositoryName>qa-selenium-handler</repositoryName>      <!-- github repo name -->
 					<repositoryOwner>Emergya</repositoryOwner>    <!-- github username -->
-					<repositoryUser>agomezmoron</repositoryUser>
+					<repositoryUser>josele88</repositoryUser>
 					<server>github</server>
 				</configuration>
 				<executions>
