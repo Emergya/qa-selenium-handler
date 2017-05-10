@@ -4,7 +4,7 @@
 
 	<groupId>com.emergya</groupId>
 	<artifactId>selenium-handler</artifactId>
-	<version>0.0.7</version>
+	<version>0.1.8</version>
 	<packaging>jar</packaging>
 
 	<name>Selenium WebDriver Handler</name>
@@ -19,10 +19,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<selenium.version>2.53.0</selenium.version>
-		<java.version>1.7</java.version>
-		<maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
-		<testng.version>6.8.8</testng.version>
+		<selenium.version>2.53.1</selenium.version>
+		<java.version>1.8</java.version>
+		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+		<testng.version>6.9.10</testng.version>
 
 		<monte.repack.version>1.0.1</monte.repack.version>
 		<jdom.version>1.1</jdom.version>
@@ -32,6 +32,7 @@
 		<commons.version>3.0</commons.version>
 		<log4j.version>1.2.17</log4j.version>
 		<commons-io.version>2.4</commons-io.version>
+		<webdriver.screenshot.version>1.0.3</webdriver.screenshot.version>
 	</properties>
 
 	<licenses>
@@ -82,6 +83,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+                        <id>webdricer-screenshot</id>
+                        <name>WebDriver screenshot library built by agomezmoron</name>
+                        <url>https://raw.github.com/agomezmoron/webdriver-screenshot/mvn-repo</url>
+                </repository>
 	</repositories>
 
 	<dependencies>
@@ -89,7 +95,7 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>[${selenium.version},)</version>
+			<version>[${selenium.version},3.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -98,6 +104,12 @@
 			<artifactId>testng</artifactId>
 			<version>[${testng.version},)</version>
 			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+  			<groupId>com.github.agomezmoron</groupId>
+  			<artifactId>webdriver-screenshot</artifactId>
+  			<version>[${webdriver.screenshot.version},)</version>
 		</dependency>
 
 		<dependency>
@@ -191,7 +203,6 @@
 					</includes>
 					<repositoryName>qa-selenium-handler</repositoryName>      <!-- github repo name -->
 					<repositoryOwner>Emergya</repositoryOwner>    <!-- github username -->
-					<repositoryUser>josele88</repositoryUser>
 					<server>github</server>
 				</configuration>
 				<executions>
