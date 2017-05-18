@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.emergya</groupId>
-	<artifactId>selenium-handler</artifactId>
-	<version>0.1.9</version>
+	<artifactId>selenium3-handler</artifactId>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
-	<name>Selenium WebDriver Handler</name>
+	<name>Selenium 3 WebDriver Handler</name>
 	<description>It allows your Selenium projects abstracting the WebDriver 
         logic for ease of use. Currently supports IE, Firefox and Chrome 
         WebDriver but is extensible to others browsers.</description>
@@ -19,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<selenium.version>2.53.1</selenium.version>
+		<selenium.version>3.4.0</selenium.version>
 		<java.version>1.8</java.version>
 		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
 		<testng.version>6.9.10</testng.version>
@@ -55,18 +55,22 @@
 			<name>Oscar C. Calle</name>
 			<email>ocascal@gmail.com</email>
 		</developer>
+		
 		<developer>
 			<name>Jose A. Sanchez</name>
 			<email>jasanchez@emergya.com</email>
 		</developer>
+		
 		<developer>
 			<name>Alejandro Gomez</name>
 			<email>agommor@gmail.com</email>
 		</developer>
+		
 		<developer>
 			<name>Fran Araque</name>
 			<email>fmaraque@emergya.com</email>
 		</developer>
+		
 		<developer>
 			<name>Ivan Gomez</name>
 			<email>igomez@emergya.com</email>
@@ -83,19 +87,19 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		
 		<repository>
-                        <id>webdricer-screenshot</id>
-                        <name>WebDriver screenshot library built by agomezmoron</name>
-                        <url>https://raw.github.com/agomezmoron/webdriver-screenshot/mvn-repo</url>
-                </repository>
+        	<id>webdricer-screenshot</id>
+            <name>WebDriver screenshot library built by agomezmoron</name>
+            <url>https://raw.github.com/agomezmoron/webdriver-screenshot/mvn-repo</url>
+    	</repository>
 	</repositories>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>[${selenium.version},3.0.0)</version>
+			<version>${selenium.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -173,7 +177,6 @@
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io.version}</version>
 		</dependency>
-
 	</dependencies>
 
 	<!-- Build phase -->

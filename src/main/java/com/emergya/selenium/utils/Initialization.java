@@ -36,6 +36,7 @@ public class Initialization {
     private boolean recordVideo;
     private boolean saveVideoForPassed;
     private String downloadPath;
+    private String webdriverFirefox;
     private String webdriverChrome;
     private String webdriverIE;
     private int widthBeforeMaximize;
@@ -68,7 +69,8 @@ public class Initialization {
 
     // **** Read properties method ****//
     public void readProperties() {
-        log.info("[log-Properties] " + this.getClass().getName() + "- Start readProperties test");
+        log.info("[log-Properties] " + this.getClass().getSimpleName()
+                + "- Start readProperties test");
 
         properties = "test.properties";
         Properties prop = new Properties();
@@ -87,14 +89,18 @@ public class Initialization {
             loginURL = environment + context;
             os = prop.getProperty("OS");
             screenshotPath = prop.getProperty("screenshotPath");
-            videoRecordingPath = prop.getProperty("videoRecordingPath", this.screenshotPath);
-            recordVideo = "true".equals(prop.getProperty("activateVideoRecording", "false"));
-            saveVideoForPassed = "true".equals(prop.getProperty("saveVideoForPassed", "false"));
+            videoRecordingPath = prop.getProperty("videoRecordingPath",
+                    this.screenshotPath);
+            recordVideo = "true".equals(
+                    prop.getProperty("activateVideoRecording", "false"));
+            saveVideoForPassed = "true"
+                    .equals(prop.getProperty("saveVideoForPassed", "false"));
 
             // Generate download path
             downloadPath = "";
 
-            String auxPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+            String auxPath = this.getClass().getProtectionDomain()
+                    .getCodeSource().getLocation().getFile();
 
             String[] arrayPath = auxPath.split("/");
 
@@ -106,16 +112,23 @@ public class Initialization {
                 downloadPath = downloadPath + arrayPath[i] + "/";
             }
 
-            downloadPath = downloadPath.replace("target/classes/", prop.getProperty("downloadPath"));
+            downloadPath = downloadPath.replace("target/classes/",
+                    prop.getProperty("downloadPath"));
 
-            downloadPath = downloadPath.replaceAll("/", Matcher.quoteReplacement(File.separator));
+            downloadPath = downloadPath.replaceAll("/",
+                    Matcher.quoteReplacement(File.separator));
 
-            if (!downloadPath.endsWith(Matcher.quoteReplacement(File.separator))) {
+            if (!downloadPath
+                    .endsWith(Matcher.quoteReplacement(File.separator))) {
                 downloadPath += Matcher.quoteReplacement(File.separator);
             }
 
-            webdriverChrome = prop.getProperty("webdriverChrome", "files/software/chromedriver");
-            webdriverIE = prop.getProperty("webdriverIE", "files/software/IEDriverServer.exe");
+            webdriverFirefox = prop.getProperty("webdriverFirefox",
+                    "files/software/geckodriver");
+            webdriverChrome = prop.getProperty("webdriverChrome",
+                    "files/software/chromedriver");
+            webdriverIE = prop.getProperty("webdriverIE",
+                    "files/software/IEDriverServer.exe");
 
             File file = new File(this.getDownloadPath());
             if (!file.exists()) {
@@ -124,15 +137,18 @@ public class Initialization {
 
             log.info("Auto detected operative System = " + os);
         } catch (IOException ex) {
-            log.error("test.properties file is not found. If this is the first time you excuted your test you can copy the settings properties file in the test folder in svn and customized it to match your environment");
+            log.error(
+                    "test.properties file is not found. If this is the first time you excuted your test you can copy the settings properties file in the test folder in svn and customized it to match your environment");
         }
 
-        log.info("[log-Properties] " + this.getClass().getName() + "- End readProperties test");
+        log.info("[log-Properties] " + this.getClass().getSimpleName()
+                + "- End readProperties test");
     }
 
     // **** Driver initialization method ****//
     public EmergyaWebDriver initialize() {
-        log.info("[log-Properties] " + this.getClass().getName() + "- Start initialize test");
+        log.info("[log-Properties] " + this.getClass().getSimpleName()
+                + "- Start initialize test");
 
         EmergyaWebDriver tmpDriver = null;
 
@@ -140,11 +156,15 @@ public class Initialization {
         if (browser.equalsIgnoreCase("Firefox")) {
             FirefoxProfile firefoxProfile = new FirefoxProfile();
 
-            firefoxProfile.setPreference("browser.download.manager.focusWhenStarting", true);
-            firefoxProfile.setEnableNativeEvents(true);
+            System.setProperty("webdriver.gecko.driver", webdriverFirefox);
+
+            firefoxProfile.setPreference(
+                    "browser.download.manager.focusWhenStarting", true);
             firefoxProfile.setPreference("browser.download.folderList", 2);
-            firefoxProfile.setPreference("browser.download.manager.showWhenStarting", false);
-            firefoxProfile.setPreference("browser.download.dir", this.getDownloadPath());
+            firefoxProfile.setPreference(
+                    "browser.download.manager.showWhenStarting", false);
+            firefoxProfile.setPreference("browser.download.dir",
+                    this.getDownloadPath());
 
             File dir = new File(this.getDownloadPath());
             if (dir.isDirectory()) {
@@ -160,10 +180,13 @@ public class Initialization {
             String mimeTypes = getMimeTypes();
 
             // adding mimetypes
-            firefoxProfile.setPreference("browser.helperApps.neverAsk.saveToDisk", mimeTypes);
+            firefoxProfile.setPreference(
+                    "browser.helperApps.neverAsk.saveToDisk", mimeTypes);
             // forcing the downloads
-            firefoxProfile.setPreference("browser.helperApps.neverAsk.openFile", mimeTypes);
-            firefoxProfile.setPreference("browser.helperApps.alwaysAsk.force", false);
+            firefoxProfile.setPreference("browser.helperApps.neverAsk.openFile",
+                    mimeTypes);
+            firefoxProfile.setPreference("browser.helperApps.alwaysAsk.force",
+                    false);
 
             firefoxProfile.setPreference("pdfjs.disabled", true);
 
@@ -173,14 +196,16 @@ public class Initialization {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--start-maximized");
 
-            if (os.equalsIgnoreCase("windows")) {
+            if (os.equalsIgnoreCase("ubuntu")) {
                 System.setProperty("webdriver.chrome.driver", webdriverChrome);
             } else {
-                System.setProperty("webdriver.chrome.driver", webdriverChrome + ".exe");
+                System.setProperty("webdriver.chrome.driver",
+                        webdriverChrome + ".exe");
             }
 
             tmpDriver = new EmergyaChromeDriver(options);
-        } else if (browser.equalsIgnoreCase("IE") && os.equalsIgnoreCase("windows")) {
+        } else if (browser.equalsIgnoreCase("IE")
+                && os.equalsIgnoreCase("windows")) {
             System.setProperty("webdriver.ie.driver", webdriverIE);
             tmpDriver = new EmergyaIEDriver();
         }
@@ -188,7 +213,8 @@ public class Initialization {
         // Common functions
         driver = tmpDriver;
 
-        log.info("Browser initialized with dimensions: " + driver.manage().window().getSize().getWidth() + "px X "
+        log.info("Browser initialized with dimensions: "
+                + driver.manage().window().getSize().getWidth() + "px - "
                 + driver.manage().window().getSize().getHeight() + "px");
 
         widthBeforeMaximize = driver.manage().window().getSize().getWidth();
@@ -203,7 +229,8 @@ public class Initialization {
         widthAfterMaximize = driver.manage().window().getSize().getWidth();
         heightAfterMaximize = driver.manage().window().getSize().getHeight();
 
-        if ((widthBeforeMaximize == widthAfterMaximize) && (heightBeforeMaximize == heightAfterMaximize)) {
+        if ((widthBeforeMaximize == widthAfterMaximize)
+                && (heightBeforeMaximize == heightAfterMaximize)) {
             log.info("Not maximized first time...try again");
 
             driver.sleep(1);
@@ -215,10 +242,12 @@ public class Initialization {
 
         this.cleanDownloadDirectory();
 
-        log.info("Browser resized with dimensions: " + driver.manage().window().getSize().getWidth() + "px X "
+        log.info("Browser resized with dimensions: "
+                + driver.manage().window().getSize().getWidth() + "px - "
                 + driver.manage().window().getSize().getHeight() + "px");
 
-        log.info("[log-Properties] " + this.getClass().getName() + "- End initialize test");
+        log.info("[log-Properties] " + this.getClass().getSimpleName()
+                + "- End initialize test");
 
         return driver;
     }

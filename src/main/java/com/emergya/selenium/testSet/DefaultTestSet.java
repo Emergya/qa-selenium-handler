@@ -35,22 +35,23 @@ import org.monte.screenrecorder.ScreenRecorder;
 import org.monte.screenrecorder.ScreenRecorder.State;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
-
-import com.github.agomezmoron.testng.listener.SeleniumScreenshotOnFailureListener;
-import com.github.agomezmoron.testng.listener.SystemScreenshotOnFailureListener;
 
 import com.emergya.selenium.drivers.EmergyaWebDriver;
 import com.emergya.selenium.pageObject.BasePageObject;
 import com.emergya.selenium.utils.Initialization;
+import com.github.agomezmoron.testng.listener.SeleniumScreenshotOnFailureListener;
+import com.github.agomezmoron.testng.listener.SystemScreenshotOnFailureListener;
 
 /**
  * TestNG after and before methods
  *
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  */
-@Listeners({SeleniumScreenshotOnFailureListener.class, SystemScreenshotOnFailureListener.class})
+@Listeners({ SeleniumScreenshotOnFailureListener.class,
+        SystemScreenshotOnFailureListener.class })
 public abstract class DefaultTestSet {
 
     protected static EmergyaWebDriver driver;
@@ -58,17 +59,29 @@ public abstract class DefaultTestSet {
 
     protected ScreenRecorder screenRecorder;
     protected String tcName = "";
+    protected String tcClass = "";
     private String failedSuitePath = "src/main/resources/suites/emergyaFailedTest.xml";
 
     protected static Logger log = Logger.getLogger(DefaultTestSet.class);
 
-    @BeforeMethod
-    public void nameBefore(Method method) {
-        this.tcName = method.getName();
+    @BeforeClass(description = "beforeClassMethod")
+    public void beforeClass() {
+        this.tcClass = this.getClass().getSimpleName();
+        log.info("*************** " + tcClass + " - Start ***************");
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
+    public void nameBefore(Method method) {
+        this.tcName = method.getName();
+        log.info("--------------- Class: " + tcClass + " Method: " + tcName
+                + " - Start ---------------");
+    }
+
+    @BeforeMethod(alwaysRun = true)
     public void before() {
+        log.info(
+                "CLASS: DefaultTestSet - TESTNG: @BeforeMethod - METHOD: before() ---- Start");
+
         driver = config.initialize();
 
         if (driver != null && config.isRecordVideo() == true) {
@@ -80,44 +93,47 @@ public abstract class DefaultTestSet {
                         .getLocalGraphicsEnvironment().getDefaultScreenDevice()
                         .getDefaultConfiguration();
 
-                this.screenRecorder = new ScreenRecorder(gc, null, new Format(
-                        MediaTypeKey, MediaType.FILE, MimeTypeKey, MIME_AVI),
+                this.screenRecorder = new ScreenRecorder(gc, null,
+                        new Format(MediaTypeKey, MediaType.FILE, MimeTypeKey,
+                                MIME_AVI),
                         new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey,
                                 ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
                                 CompressorNameKey,
-                                ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-                                DepthKey, 24, FrameRateKey, Rational
-                                        .valueOf(15), QualityKey, 1.0f,
-                                KeyFrameIntervalKey, 15 * 60), new Format(
-                                MediaTypeKey, MediaType.VIDEO, EncodingKey,
+                                ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey,
+                                24, FrameRateKey, Rational.valueOf(15),
+                                QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60),
+                        new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey,
                                 "black", FrameRateKey, Rational.valueOf(30)),
                         null, new File(config.getVideoRecordingPath()));
 
                 screenRecorder.start();
             } catch (Exception e) {
-                log.warn("Recorder could not be initilized. No video will be recording");
+                log.warn(
+                        "Recorder could not be initilized. No video will be recording");
             }
             log.info("Start recording in "
                     + (System.currentTimeMillis() - startTime) + " ms");
         } else {
             log.info("No video recording");
         }
+
+        log.info(
+                "CLASS: DefaultTestSet - TESTNG: @BeforeMethod - METHOD: before() ---- End");
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void afterAllIsSaidAndDone() {
-        log.info("Function afterAllIsSaidAndDone");
-
+        log.info("--------------- Class: " + tcClass + " Method: " + tcName
+                + " - End ---------------");
         if (driver != null) {
-            if (driver != null) {
-                driver.manage().deleteAllCookies();
-                driver.quit();
-            }
+            driver.manage().deleteAllCookies();
+            driver.quit();
         }
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void recordVideo(ITestResult result) {
+        log.info("----- recordVideo - Start -----");
         if (driver != null && (config.isRecordVideo() == true)
                 && (screenRecorder != null)
                 && (screenRecorder.getState().equals(State.RECORDING))) {
@@ -155,32 +171,34 @@ public abstract class DefaultTestSet {
             log.info("Recording video took "
                     + (System.currentTimeMillis() - startTime) + " ms");
         }
+        log.info("----- recordVideo - End -----");
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void checkFailedTest(ITestResult result) {
-        if (result.getMethod().getXmlTest().getName().equals("FailedTests")) {
-            removePassedTestToXML(result.getMethod().getRealClass().getName(),
-                    result.getMethod().getMethodName());
-        } else {
-            log.info("checkFailedTest.........result status of test is: "
-                    + result.getStatus());
+        log.info("----- checkFailedTest - Start -----");
+        log.info(
+                "TestSuite Name: " + result.getMethod().getXmlTest().getName());
+        log.info("Test Result Status: " + result.getStatus());
 
-            if (result.getStatus() == 2) {
-                log.info("name Of the xml TestSuite is "
-                        + result.getMethod().getXmlTest().getName());
-
-                if (!result.getMethod().getXmlTest().getName()
-                        .equals("Default test")) {
-                    addFailedTestToXML(result.getMethod().getRealClass()
-                            .getName(), result.getMethod().getMethodName());
-                }
-            } else if (!result.getMethod().getXmlTest().getName()
+        if (result.getStatus() == 2) {
+            log.info("XML TestSuite name: "
+                    + result.getMethod().getXmlTest().getName());
+            if (!result.getMethod().getXmlTest().getName()
                     .equals("Default test")) {
-                removePassedTestToXML(result.getMethod().getRealClass()
-                        .getName(), result.getMethod().getMethodName());
+                addFailedTestToXML(result.getMethod().getRealClass().getName(),
+                        result.getMethod().getMethodName());
+            }
+        } else {
+            if (!result.getMethod().getXmlTest().getName()
+                    .equals("Default test")) {
+                removePassedTestToXML(
+                        result.getMethod().getRealClass().getName(),
+                        result.getMethod().getMethodName());
             }
         }
+
+        log.info("----- checkFailedTest - End -----");
     }
 
     // *** Public methods ***//
@@ -236,8 +254,8 @@ public abstract class DefaultTestSet {
                     methodsElement.addContent(includeElement);
 
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format
-                            .getPrettyFormat());
+                    xmlOutput.setFormat(
+                            org.jdom.output.Format.getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 } else {
                     Element rootElement = doc.getRootElement();
@@ -261,12 +279,13 @@ public abstract class DefaultTestSet {
                     methodsElement.addContent(includeElement);
 
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format
-                            .getPrettyFormat());
+                    xmlOutput.setFormat(
+                            org.jdom.output.Format.getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 }
             } else {
-                log.info("The test is already added in the xml of failed tests");
+                log.info(
+                        "The test is already added in the xml of failed tests");
             }
 
         } catch (Exception e) {
@@ -294,13 +313,11 @@ public abstract class DefaultTestSet {
                     "/suite/test/classes/class[@name='" + suite
                             + "']/methods/include[@name='" + testName + "']");
             if (test != null) {
-                if (XPath.selectNodes(
-                        doc,
-                        "/suite/test/classes/class[@name='" + suite
-                                + "']/methods/include").size() > 1) {
+                if (XPath.selectNodes(doc, "/suite/test/classes/class[@name='"
+                        + suite + "']/methods/include").size() > 1) {
 
-                    Element testToRemove = (Element) XPath.selectSingleNode(
-                            doc, "/suite/test/classes/class[@name='" + suite
+                    Element testToRemove = (Element) XPath.selectSingleNode(doc,
+                            "/suite/test/classes/class[@name='" + suite
                                     + "']/methods/include[@name='" + testName
                                     + "']");
                     Element methodElement = (Element) XPath.selectSingleNode(
@@ -309,15 +326,15 @@ public abstract class DefaultTestSet {
 
                     methodElement.removeContent(testToRemove);
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format
-                            .getPrettyFormat());
+                    xmlOutput.setFormat(
+                            org.jdom.output.Format.getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 } else {
-                    classesElement.removeContent(test.getParentElement()
-                            .getParentElement());
+                    classesElement.removeContent(
+                            test.getParentElement().getParentElement());
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format
-                            .getPrettyFormat());
+                    xmlOutput.setFormat(
+                            org.jdom.output.Format.getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 }
 
@@ -337,7 +354,8 @@ public abstract class DefaultTestSet {
      *            page object to be used
      */
     protected void isReady(BasePageObject pageObject) {
-        assertTrue("The PO " + pageObject.getClass().getName()
-                + " is not ready", pageObject.isReady());
+        assertTrue(
+                "The PO " + pageObject.getClass().getName() + " is not ready",
+                pageObject.isReady());
     }
 }
