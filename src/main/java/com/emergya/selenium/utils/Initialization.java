@@ -222,8 +222,7 @@ public class Initialization {
 
         driver.get(loginURL);
 
-        tmpDriver.findElement(By.tagName("body")).sendKeys(Keys.F11);
-
+        driver.manage().window().maximize();
         driver.sleep(1);
 
         widthAfterMaximize = driver.manage().window().getSize().getWidth();
