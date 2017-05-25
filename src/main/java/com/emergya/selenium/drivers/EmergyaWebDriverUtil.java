@@ -45,7 +45,8 @@ public class EmergyaWebDriverUtil {
      *         case
      */
     public static boolean existsElement(EmergyaWebDriver driver, By selector) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start existsElement method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start existsElement method");
 
         boolean exists = false;
 
@@ -70,8 +71,10 @@ public class EmergyaWebDriverUtil {
      * @return True if the element exists in the DOM and is displayed and false
      *         in the opposite case
      */
-    public static boolean isElementDisplayed(EmergyaWebDriver driver, By selector) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start isElementDisplayed method");
+    public static boolean isElementDisplayed(EmergyaWebDriver driver,
+            By selector) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start isElementDisplayed method");
 
         boolean isDisplayed = false;
 
@@ -82,7 +85,8 @@ public class EmergyaWebDriverUtil {
             isDisplayed = false;
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End isElementDisplayed method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End isElementDisplayed method");
 
         return isDisplayed;
     }
@@ -96,14 +100,16 @@ public class EmergyaWebDriverUtil {
      *            By element
      */
     public static void clickIfExists(EmergyaWebDriver driver, By selector) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start clickIfExists method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start clickIfExists method");
 
         wait(driver, selector, 20);
 
         if (isElementDisplayed(driver, selector)) {
             driver.findElement(selector).click();
         } else {
-            log.error("The element " + selector.toString() + " is not displayed.");
+            log.error("The element " + selector.toString()
+                    + " is not displayed.");
         }
 
         log.info("[log-Utils] EmergyaWebDriverUtil - End clickIfExists method");
@@ -119,9 +125,12 @@ public class EmergyaWebDriverUtil {
      *            The JavaScript to execute
      * @return Boolean, Long, String, List, WebElement Or null
      */
-    public static Object executeJavaScript(EmergyaWebDriver driver, String script) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start executeJavaScript method");
-        log.info("[log-Utils] EmergyaWebDriverUtil - End executeJavaScript method");
+    public static Object executeJavaScript(EmergyaWebDriver driver,
+            String script) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start executeJavaScript method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End executeJavaScript method");
 
         return ((JavascriptExecutor) driver).executeScript(script);
     }
@@ -137,7 +146,8 @@ public class EmergyaWebDriverUtil {
     public static void focus(EmergyaWebDriver driver, String id) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start focus method");
 
-        driver.executeJavaScript("document.getElementById('" + id + "').focus();");
+        driver.executeJavaScript(
+                "document.getElementById('" + id + "').focus();");
 
         log.info("[log-Utils] EmergyaWebDriverUtil - End focus method");
     }
@@ -153,20 +163,24 @@ public class EmergyaWebDriverUtil {
      * @param baseFileName
      *            file name
      */
-    public static void saveScreenshotPath(EmergyaWebDriver driver, String folderPath, String baseFileName) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start saveScreenshotPath method");
+    public static void saveScreenshotPath(EmergyaWebDriver driver,
+            String folderPath, String baseFileName) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start saveScreenshotPath method");
 
         String timeStamp = getTimeStamp();
-        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        File scrFile = ((TakesScreenshot) driver)
+                .getScreenshotAs(OutputType.FILE);
 
         try {
-            FileUtils
-                    .copyFile(scrFile, new File(folderPath + File.separator + baseFileName + "_" + timeStamp + ".png"));
+            FileUtils.copyFile(scrFile, new File(folderPath + File.separator
+                    + baseFileName + "_" + timeStamp + ".png"));
         } catch (IOException e) {
             log.error("Error creating screenshot", e);
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End saveScreenshotPath method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End saveScreenshotPath method");
     }
 
     /**
@@ -176,13 +190,15 @@ public class EmergyaWebDriverUtil {
      *            WebDriver element
      */
     public static void saveScreenshotDefault(EmergyaWebDriver driver) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start saveScreenshotDefault method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start saveScreenshotDefault method");
 
         String folderPath = Initialization.getInstance().getScreenshotPath();
 
         saveScreenshotPath(driver, folderPath, "");
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End saveScreenshotDefault method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End saveScreenshotDefault method");
     }
 
     // **** Sleep method ****//
@@ -225,7 +241,9 @@ public class EmergyaWebDriverUtil {
             r.keyPress(key);
             Thread.sleep(sleepTime * 1000);
         } catch (AWTException e) {
-            log.error("The platform configuration does not allow low-level input control", e);
+            log.error(
+                    "The platform configuration does not allow low-level input control",
+                    e);
         } catch (InterruptedException e) {
             log.error("A thread has interrupted the current thread", e);
         }
@@ -253,7 +271,9 @@ public class EmergyaWebDriverUtil {
             r.keyRelease(key);
             Thread.sleep(sleepTime * 1000);
         } catch (AWTException e) {
-            log.error("The platform configuration does not allow low-level input control", e);
+            log.error(
+                    "The platform configuration does not allow low-level input control",
+                    e);
         } catch (InterruptedException e) {
             log.error("A thread has interrupted the current thread", e);
         }
@@ -268,7 +288,8 @@ public class EmergyaWebDriverUtil {
      *            to press and to release
      */
     public static void pressReleaseKey(int key) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start pressReleaseKey method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start pressReleaseKey method");
 
         Robot r;
 
@@ -276,16 +297,19 @@ public class EmergyaWebDriverUtil {
             r = new Robot();
 
             r.keyPress(key);
-            Thread.sleep(500);
+            Thread.sleep(100);
             r.keyRelease(key);
-            Thread.sleep(500);
+            Thread.sleep(100);
         } catch (AWTException e) {
-            log.error("The platform configuration does not allow low-level input control", e);
+            log.error(
+                    "The platform configuration does not allow low-level input control",
+                    e);
         } catch (InterruptedException e) {
             log.error("A thread has interrupted the current thread", e);
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End pressReleaseKey method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End pressReleaseKey method");
     }
 
     // **** Mouse events methods section ****//
@@ -297,8 +321,10 @@ public class EmergyaWebDriverUtil {
      * @param selector
      *            By element
      */
-    public static void moveMouseOverElement(EmergyaWebDriver driver, By selector) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start moveMouseOverElement method");
+    public static void moveMouseOverElement(EmergyaWebDriver driver,
+            By selector) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start moveMouseOverElement method");
 
         Robot r;
 
@@ -307,15 +333,19 @@ public class EmergyaWebDriverUtil {
             Point point = getPositionToClick(driver, selector);
             java.awt.Point location = MouseInfo.getPointerInfo().getLocation();
 
-            if (((int) location.getX()) != point.getX() || ((int) location.getY()) != point.getY()) {
+            if (((int) location.getX()) != point.getX()
+                    || ((int) location.getY()) != point.getY()) {
                 r.mouseMove(point.getX(), point.getY());
                 driver.sleep(2);
             }
         } catch (AWTException e) {
-            log.error("The platform configuration does not allow low-level input control", e);
+            log.error(
+                    "The platform configuration does not allow low-level input control",
+                    e);
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End moveMouseOverElement method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End moveMouseOverElement method");
     }
 
     /**
@@ -326,8 +356,10 @@ public class EmergyaWebDriverUtil {
      * @param selector
      *            By element
      */
-    public static void moveMouseOutElement(EmergyaWebDriver driver, By selector) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start moveMouseOutElement method");
+    public static void moveMouseOutElement(EmergyaWebDriver driver,
+            By selector) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start moveMouseOutElement method");
 
         Robot r;
         int x = 0, y = 0;
@@ -346,15 +378,19 @@ public class EmergyaWebDriverUtil {
             Point toMove = new Point(x, y);
             java.awt.Point location = MouseInfo.getPointerInfo().getLocation();
 
-            if (((int) location.getX()) != toMove.getX() && ((int) location.getY()) != toMove.getY()) {
+            if (((int) location.getX()) != toMove.getX()
+                    && ((int) location.getY()) != toMove.getY()) {
                 r.mouseMove(toMove.getX(), toMove.getY());
                 driver.sleep(2);
             }
         } catch (AWTException e) {
-            log.error("The platform configuration does not allow low-level input control", e);
+            log.error(
+                    "The platform configuration does not allow low-level input control",
+                    e);
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End moveMouseOutElement method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End moveMouseOutElement method");
     }
 
     /**
@@ -366,7 +402,8 @@ public class EmergyaWebDriverUtil {
      *            By element
      */
     public static void clickOnWithMouse(EmergyaWebDriver driver, By selector) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start clickOnWithMouse method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start clickOnWithMouse method");
 
         Robot r;
 
@@ -380,10 +417,13 @@ public class EmergyaWebDriverUtil {
             r.mouseRelease(InputEvent.BUTTON1_MASK);
             driver.sleep(2);
         } catch (AWTException e) {
-            log.error("The platform configuration does not allow low-level input control", e);
+            log.error(
+                    "The platform configuration does not allow low-level input control",
+                    e);
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End clickOnWithMouse method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End clickOnWithMouse method");
     }
 
     /**
@@ -396,7 +436,8 @@ public class EmergyaWebDriverUtil {
      */
     public static void clickOutWithMouse(EmergyaWebDriver driver, By selector) {
         EmergyaWebDriverUtil.moveMouseOutElement(driver, selector);
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start clickOutWithMouse method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start clickOutWithMouse method");
 
         try {
             Robot r = new Robot();
@@ -408,10 +449,13 @@ public class EmergyaWebDriverUtil {
             r.mouseRelease(InputEvent.BUTTON1_MASK);
             driver.sleep(2);
         } catch (AWTException e) {
-            log.error("The platform configuration does not allow low-level input control", e);
+            log.error(
+                    "The platform configuration does not allow low-level input control",
+                    e);
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End clickOutWithMouse method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End clickOutWithMouse method");
     }
 
     /**
@@ -422,8 +466,10 @@ public class EmergyaWebDriverUtil {
      * @param selector
      *            By element
      */
-    public static void doubleClickOnWithMouse(EmergyaWebDriver driver, By selector) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start doubleClickOnWithMouse method");
+    public static void doubleClickOnWithMouse(EmergyaWebDriver driver,
+            By selector) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start doubleClickOnWithMouse method");
 
         Robot r;
 
@@ -438,10 +484,13 @@ public class EmergyaWebDriverUtil {
             r.mouseRelease(InputEvent.BUTTON1_MASK);
             driver.sleep(2);
         } catch (AWTException e) {
-            log.error("The platform configuration does not allow low-level input control", e);
+            log.error(
+                    "The platform configuration does not allow low-level input control",
+                    e);
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End doubleClickOnWithMouse method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End doubleClickOnWithMouse method");
     }
 
     // **** Wait methods section ****//
@@ -458,7 +507,8 @@ public class EmergyaWebDriverUtil {
      * @return true if the element exist in the DOM and false in the opposite
      *         case
      */
-    public static boolean wait(EmergyaWebDriver driver, By selector, long seconds) {
+    public static boolean wait(EmergyaWebDriver driver, By selector,
+            long seconds) {
         log.info("[log-Utils] EmergyaWebDriverUtil - Start wait method");
 
         WebDriverWait w = new WebDriverWait(driver, seconds);
@@ -469,7 +519,8 @@ public class EmergyaWebDriverUtil {
         } catch (TimeoutException e) {
             retVal = false;
 
-            log.error("The element: " + selector.toString() + " is missing in the DOM. Waiting time: " + seconds
+            log.error("The element: " + selector.toString()
+                    + " is missing in the DOM. Waiting time: " + seconds
                     + " seconds");
         }
 
@@ -491,8 +542,10 @@ public class EmergyaWebDriverUtil {
      * @return true if the element is visible in the page and false in the
      *         opposite case
      */
-    public static boolean waitUntilVisible(EmergyaWebDriver driver, By selector, long seconds) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start waitUntilVisible method");
+    public static boolean waitUntilVisible(EmergyaWebDriver driver, By selector,
+            long seconds) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start waitUntilVisible method");
 
         WebDriverWait w = new WebDriverWait(driver, seconds);
         boolean retVal = true;
@@ -502,11 +555,13 @@ public class EmergyaWebDriverUtil {
         } catch (TimeoutException e) {
             retVal = false;
 
-            log.error("The element: " + selector.toString() + " is not visible in the page. Waiting time: " + seconds
+            log.error("The element: " + selector.toString()
+                    + " is not visible in the page. Waiting time: " + seconds
                     + " seconds");
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End waitUntilVisible method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End waitUntilVisible method");
 
         return retVal;
     }
@@ -524,8 +579,10 @@ public class EmergyaWebDriverUtil {
      * @return true if the element is clickable in the page and false in the
      *         opposite case
      */
-    public static boolean waitUntilElementClickable(EmergyaWebDriver driver, By selector, long seconds) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start waitUntilElementClickable method");
+    public static boolean waitUntilElementClickable(EmergyaWebDriver driver,
+            By selector, long seconds) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start waitUntilElementClickable method");
 
         WebDriverWait w = new WebDriverWait(driver, seconds);
         boolean retVal = true;
@@ -535,11 +592,13 @@ public class EmergyaWebDriverUtil {
         } catch (TimeoutException e) {
             retVal = false;
 
-            log.error("The element: " + selector.toString() + " is not clickable. Waiting time: " + seconds
+            log.error("The element: " + selector.toString()
+                    + " is not clickable. Waiting time: " + seconds
                     + " seconds");
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End waitUntilElementClickable method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End waitUntilElementClickable method");
 
         return retVal;
     }
@@ -559,22 +618,28 @@ public class EmergyaWebDriverUtil {
      * @return true If the text is present in element, and false in the opposite
      *         case
      */
-    public static boolean waitUntilTextPresent(EmergyaWebDriver driver, By selector, long seconds, String text) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start waitUntilTextPresent method");
+    public static boolean waitUntilTextPresent(EmergyaWebDriver driver,
+            By selector, long seconds, String text) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start waitUntilTextPresent method");
 
         WebDriverWait w = new WebDriverWait(driver, seconds);
         boolean retVal = true;
 
         try {
-            w.until(ExpectedConditions.textToBePresentInElementLocated(selector, text));
+            w.until(ExpectedConditions.textToBePresentInElementLocated(selector,
+                    text));
         } catch (TimeoutException e) {
             retVal = false;
 
-            log.error("The text: " + text + " in the element: " + selector.toString()
-                    + " is missing in the DOM. Waiting time: " + seconds + " seconds");
+            log.error("The text: " + text + " in the element: "
+                    + selector.toString()
+                    + " is missing in the DOM. Waiting time: " + seconds
+                    + " seconds");
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End waitUntilTextPresent method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End waitUntilTextPresent method");
 
         return retVal;
     }
@@ -596,7 +661,8 @@ public class EmergyaWebDriverUtil {
     public static Boolean isCurrentWindowOpen(EmergyaWebDriver driver) {
         Boolean isOpen = false;
         try {
-            isOpen = driver.getWindowHandles().contains(driver.getWindowHandle());
+            isOpen = driver.getWindowHandles()
+                    .contains(driver.getWindowHandle());
         } catch (Exception e) {
             isOpen = false;
         }
@@ -610,9 +676,11 @@ public class EmergyaWebDriverUtil {
      * @return string with a timestamp
      */
     private static String getTimeStamp() {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start getTimeStamp method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start getTimeStamp method");
 
-        String timeStamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(Calendar.getInstance().getTime());
+        String timeStamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss")
+                .format(Calendar.getInstance().getTime());
 
         log.info("[log-Utils] EmergyaWebDriverUtil - End getTimeStamp method");
 
@@ -629,8 +697,10 @@ public class EmergyaWebDriverUtil {
      *            By element
      * @return Point the position of the center of the element
      */
-    private static Point getPositionToClick(EmergyaWebDriver driver, By selector) {
-        log.info("[log-Utils] EmergyaWebDriverUtil - Start getPositionToClick method");
+    private static Point getPositionToClick(EmergyaWebDriver driver,
+            By selector) {
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - Start getPositionToClick method");
 
         Point toReturn = null;
         int x = 0, y = 0;
@@ -645,7 +715,8 @@ public class EmergyaWebDriverUtil {
             toReturn = new Point(x, y);
         }
 
-        log.info("[log-Utils] EmergyaWebDriverUtil - End getPositionToClick method");
+        log.info(
+                "[log-Utils] EmergyaWebDriverUtil - End getPositionToClick method");
 
         return toReturn;
     }

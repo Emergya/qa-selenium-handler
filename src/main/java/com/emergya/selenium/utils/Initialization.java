@@ -1,5 +1,6 @@
 package com.emergya.selenium.utils;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
@@ -222,7 +223,7 @@ public class Initialization {
 
         driver.get(loginURL);
 
-        driver.manage().window().maximize();
+        driver.pressReleaseKey(KeyEvent.VK_F11);
         driver.sleep(1);
 
         widthAfterMaximize = driver.manage().window().getSize().getWidth();
