@@ -254,6 +254,15 @@ public interface EmergyaWebDriver extends WebDriver {
     public WebElement findElementByName(String name);
 
     /**
+     * Find an element by css
+     * 
+     * @param css
+     *            expression
+     * @return WebElement web element
+     */
+    public WebElement findElementByCssSelector(String css);
+
+    /**
      * Method to switch the handler to the main window. 
      */
     public void switchToMainwindow();

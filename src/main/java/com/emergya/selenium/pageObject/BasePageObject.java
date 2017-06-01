@@ -48,15 +48,19 @@ public abstract class BasePageObject {
     protected String getSelectorsFilePath(String key) {
         String filePath = "selectors" + File.separatorChar;
         String baseName = this.className.toLowerCase();
-        // we have to check if the baseName is valid or not. If it's not valid, we will check in all the stack trace
+        // we have to check if the baseName is valid or not. If it's not valid,
+        // we will check in all the stack trace
         if (!existsKey(filePath + baseName + ".properties", key)) {
             boolean existsKey = false;
             Class<?> superClass = this.getClass().getSuperclass();
 
-            while (!existsKey && !superClass.getSimpleName().equalsIgnoreCase("basepageobject")) {
+            while (!existsKey && !superClass.getSimpleName()
+                    .equalsIgnoreCase("basepageobject")) {
 
-                String proposedBaseName = superClass.getSimpleName().toLowerCase().replace(".java", "");
-                existsKey = existsKey(filePath + proposedBaseName + ".properties", key);
+                String proposedBaseName = superClass.getSimpleName()
+                        .toLowerCase().replace(".java", "");
+                existsKey = existsKey(
+                        filePath + proposedBaseName + ".properties", key);
 
                 if (existsKey) {
                     baseName = proposedBaseName;
@@ -113,9 +117,10 @@ public abstract class BasePageObject {
             if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(id)) {
                 element = this.getElementById(type, id, timeOut);
             } else {
-                log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".id")
-                        + " file the item with the key " + key + " but " + key + ".type and/or " + key
-                        + ".id are missing!");
+                log.error("Trying to retrieve from "
+                        + this.getSelectorsFilePath(key + ".id")
+                        + " file the item with the key " + key + " but " + key
+                        + ".type and/or " + key + ".id are missing!");
             }
         }
         return element;
@@ -180,9 +185,10 @@ public abstract class BasePageObject {
             if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(name)) {
                 element = this.getElementByName(type, name, timeOut);
             } else {
-                log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".name")
-                        + " file the item with the key " + key + " but " + key + ".type and/or " + key
-                        + ".name are missing!");
+                log.error("Trying to retrieve from "
+                        + this.getSelectorsFilePath(key + ".name")
+                        + " file the item with the key " + key + " but " + key
+                        + ".type and/or " + key + ".name are missing!");
             }
         }
         return element;
@@ -226,6 +232,74 @@ public abstract class BasePageObject {
         return this.isElementVisibleByName(key, TIMEOUT);
     }
 
+    // **** CSS methods section ****//
+    /**
+     * This method interacts with Selenium to retrieve the needed element. By CSS
+     * 
+     * @param key of the item to be selected. In the related selector file should exists an entry with: key.type and key.css
+     * @param timeOut limit for wait until appear.
+     * @return the selected {@link Webelement} object
+     */
+    public WebElement getElementByCSS(String key, long timeOut) {
+        WebElement element = null;
+        PropertiesHandler handler = PropertiesHandler.getInstance();
+        handler.load(this.getSelectorsFilePath(key + ".css"));
+        String type = handler.get(key + ".type"); // Could be null
+        String css = handler.get(key + ".css"); // getElementByNameJustCss
+
+        if (type == null && StringUtils.isNotBlank(css)) {
+            element = this.getElementByNameJustCss(css, timeOut);
+        } else {
+            if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(css)) {
+                element = this.getElementByCss(type, css, timeOut);
+            } else {
+                log.error("Trying to retrieve from "
+                        + this.getSelectorsFilePath(key + ".css")
+                        + " file the item with the key " + key + " but " + key
+                        + ".type and/or " + key + ".name are missing!");
+            }
+        }
+        return element;
+    }
+
+    /**
+     * This method interacts with Selenium to retrieve the needed element. By CSS
+     * This method uses the TIMEOUT constant.
+     * 
+     * @param key of the item to be selected. In the related selector file should exists an entry with: key.type and key.css
+     * @return the selected {@link Webelement} object
+     */
+    public WebElement getElementByCss(String key) {
+        return this.getElementByCSS(key, TIMEOUT);
+    }
+
+    /**
+     * This method checks if a {@link WebElement} is displayed and visible for selenium. By CSS
+     * 
+     * @param key of the item to be selected. In the related selector file should exists an entry with: key.type and key.css
+     * @param timeOut limit for wait until appear.
+     * @return true if the element exists and it's visible.
+     */
+    public boolean isElementVisibleByCSS(String key, long timeOut) {
+        boolean showed = false;
+        WebElement element = this.getElementByCSS(key, timeOut);
+        if (isVisible(element)) {
+            showed = true;
+        }
+        return showed;
+    }
+
+    /**
+     * This method checks if a {@link WebElement} is displayed and visible for selenium. By CSS
+     * This method uses the TIMEOUT constant.
+     * 
+     * @param key of the item to be selected. In the related selector file should exists an entry with: key.type and key.css
+     * @return true if the element exists and it's visible.
+     */
+    public boolean isElementVisibleByCSS(String key) {
+        return this.isElementVisibleByCSS(key, TIMEOUT);
+    }
+
     // **** XPath methods section ****//
     /**
      * This method interacts with selenium to retrieve the needed element. By XPath
@@ -243,8 +317,10 @@ public abstract class BasePageObject {
         if (StringUtils.isNotBlank(xpath)) {
             element = this.getElementByXpath(xpath, timeOut);
         } else {
-            log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".xpath")
-                    + " file the item with the key " + key + " but " + key + ".xpath is missing!");
+            log.error("Trying to retrieve from "
+                    + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item with the key " + key + " but " + key
+                    + ".xpath is missing!");
         }
         return element;
     }
@@ -276,8 +352,10 @@ public abstract class BasePageObject {
         if (StringUtils.isNotBlank(xpath)) {
             element = this.getElementsByXpath(xpath, timeOut);
         } else {
-            log.error("Trying to retrieve from " + this.getSelectorsFilePath(key + ".xpath")
-                    + " file the item(s) with the key " + key + " but " + key + ".xpath is missing!");
+            log.error("Trying to retrieve from "
+                    + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item(s) with the key " + key + " but " + key
+                    + ".xpath is missing!");
         }
         return element;
     }
@@ -406,10 +484,47 @@ public abstract class BasePageObject {
      * @param timeOut limit for wait until appear.
      * @return the built name selector or null if it doesn't found it.
      */
-    private WebElement getElementByName(String type, String name, long timeOut) {
+    private WebElement getElementByName(String type, String name,
+            long timeOut) {
         this.driver.wait(By.name(this.buildIdSelector(type, name)), timeOut);
         try {
-            return this.driver.findElementByName(this.buildIdSelector(type, name));
+            return this.driver
+                    .findElementByName(this.buildIdSelector(type, name));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * This method interacts with selenium to retrieve the needed element by CSS (just with CSS):
+     * 
+     * @param id of the element to be retrieved.
+     * @param timeOut limit for wait until appear.
+     * @return the built CSS selector or null if it doesn't found it.
+     */
+    private WebElement getElementByNameJustCss(String css, long timeOut) {
+        this.driver.wait(By.cssSelector(css), timeOut);
+        try {
+            return this.driver.findElementByCssSelector(css);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * This method interacts with selenium to retrieve the needed element by CSS:
+     * 
+     * @param type of the element to be retrieved.
+     * @param css of the element to be retrieved.
+     * @param timeOut limit for wait until appear.
+     * @return the built CSS selector or null if it doesn't found it.
+     */
+    private WebElement getElementByCss(String type, String css, long timeOut) {
+        this.driver.wait(By.cssSelector(this.buildIdSelector(type, css)),
+                timeOut);
+        try {
+            return this.driver
+                    .findElementByCssSelector(this.buildIdSelector(type, css));
         } catch (Exception e) {
             return null;
         }
@@ -495,8 +610,10 @@ public abstract class BasePageObject {
         if (StringUtils.isNotBlank(id)) {
             this.driver.wait(By.xpath("//*[@id='" + id + "']"), timeOut);
         } else { // Else, the ID is not in .properties
-            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".id") + " file the item with the key "
-                    + key + " but " + key + ".id is missing!");
+            log.error("Trying to find from "
+                    + this.getSelectorsFilePath(key + ".id")
+                    + " file the item with the key " + key + " but " + key
+                    + ".id is missing!");
         }
     }
 
@@ -520,8 +637,10 @@ public abstract class BasePageObject {
         if (xpath != null && StringUtils.isNotBlank(xpath)) {
             this.driver.wait(By.xpath(xpath), timeOut);
         } else { // Else, the ID is not in .properties
-            log.error("Trying to find from " + this.getSelectorsFilePath(key + ".xpath")
-                    + " file the item with the key " + key + " but " + key + ".xpath is missing!");
+            log.error("Trying to find from "
+                    + this.getSelectorsFilePath(key + ".xpath")
+                    + " file the item with the key " + key + " but " + key
+                    + ".xpath is missing!");
         }
     }
 
@@ -553,7 +672,8 @@ public abstract class BasePageObject {
             // isDisplayed works fine but
             // if the element is removed from the DOM, we got a Selenium
             // Exception.
-            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
+            log.error("Trying to find the WebElement but is missing!: "
+                    + ex.toString());
         }
     }
 
@@ -572,7 +692,8 @@ public abstract class BasePageObject {
      * @param element to wait until disappear.
      * @param timeOut limit for wait until disappear.
      */
-    protected void waitUntilDisappearWebElement(WebElement element, long timeOut) {
+    protected void waitUntilDisappearWebElement(WebElement element,
+            long timeOut) {
         long start = new Date().getTime();
         long end = start + (timeOut * 1000);
         long now = new Date().getTime();
@@ -586,7 +707,8 @@ public abstract class BasePageObject {
             // isDisplayed works fine but
             // if the element is removed from the DOM, we got a Selenium
             // Exception.
-            log.error("Trying to find the WebElement but is missing!: " + ex.toString());
+            log.error("Trying to find the WebElement but is missing!: "
+                    + ex.toString());
         }
     }
 
@@ -661,9 +783,11 @@ public abstract class BasePageObject {
      */
     public void scrollTo(WebElement element) {
         try {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].scrollIntoView(true);", element);
         } catch (Exception e) {
-            log.error("Cannot Scroll to the element, by JavaScript: " + e.toString());
+            log.error("Cannot Scroll to the element, by JavaScript: "
+                    + e.toString());
         }
     }
 
@@ -674,7 +798,8 @@ public abstract class BasePageObject {
         try {
             driver.executeJavaScript("window.scrollTo(0, 0)");
         } catch (Exception e) {
-            log.error("Cannot ScrollTop the page, by JavaScript: " + e.toString());
+            log.error("Cannot ScrollTop the page, by JavaScript: "
+                    + e.toString());
         }
     }
 
@@ -683,9 +808,11 @@ public abstract class BasePageObject {
      */
     public void scrollBottom() {
         try {
-            driver.executeJavaScript("window.scrollTo(0, document.body.scrollHeight)");
+            driver.executeJavaScript(
+                    "window.scrollTo(0, document.body.scrollHeight)");
         } catch (Exception e) {
-            log.error("Cannot ScrollBottom the page, by JavaScript: " + e.toString());
+            log.error("Cannot ScrollBottom the page, by JavaScript: "
+                    + e.toString());
         }
     }
 }
