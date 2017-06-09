@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.regex.Matcher;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -98,31 +97,7 @@ public class Initialization {
                     .equals(prop.getProperty("saveVideoForPassed", "false"));
 
             // Generate download path
-            downloadPath = "";
-
-            String auxPath = this.getClass().getProtectionDomain()
-                    .getCodeSource().getLocation().getFile();
-
-            String[] arrayPath = auxPath.split("/");
-
-            if (auxPath.startsWith(File.separator)) {
-                downloadPath = File.separator;
-            }
-
-            for (int i = 1; i < arrayPath.length; i++) {
-                downloadPath = downloadPath + arrayPath[i] + "/";
-            }
-
-            downloadPath = downloadPath.replace("target/classes/",
-                    prop.getProperty("downloadPath"));
-
-            downloadPath = downloadPath.replaceAll("/",
-                    Matcher.quoteReplacement(File.separator));
-
-            if (!downloadPath
-                    .endsWith(Matcher.quoteReplacement(File.separator))) {
-                downloadPath += Matcher.quoteReplacement(File.separator);
-            }
+            downloadPath = prop.getProperty("downloadPath");
 
             webdriverFirefox = prop.getProperty("webdriverFirefox",
                     "files/software/geckodriver");
