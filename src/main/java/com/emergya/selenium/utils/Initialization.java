@@ -104,7 +104,9 @@ public class Initialization {
                     "files/software/IEDriverServer.exe");
 
             // Create download path
+            log.info("Download path: " + getDownloadPath());
             File file = new File(this.getDownloadPath());
+            log.info("Exist download path?: " + file.exists());
             if (!file.exists()) {
                 file.mkdir();
             }
