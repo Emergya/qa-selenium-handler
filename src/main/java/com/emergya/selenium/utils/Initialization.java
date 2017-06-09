@@ -95,10 +95,7 @@ public class Initialization {
                     prop.getProperty("activateVideoRecording", "false"));
             saveVideoForPassed = "true"
                     .equals(prop.getProperty("saveVideoForPassed", "false"));
-
-            // Generate download path
             downloadPath = prop.getProperty("downloadPath");
-
             webdriverFirefox = prop.getProperty("webdriverFirefox",
                     "files/software/geckodriver");
             webdriverChrome = prop.getProperty("webdriverChrome",
@@ -106,11 +103,9 @@ public class Initialization {
             webdriverIE = prop.getProperty("webdriverIE",
                     "files/software/IEDriverServer.exe");
 
+            // Create download path
             File file = new File(this.getDownloadPath());
-            log.info("DownloadPath = " + getDownloadPath());
-            log.info("DownloadPath Exist? = " + file.exists());
             if (!file.exists()) {
-                log.info("DownloadPath2 = " + getDownloadPath());
                 file.mkdir();
             }
 
