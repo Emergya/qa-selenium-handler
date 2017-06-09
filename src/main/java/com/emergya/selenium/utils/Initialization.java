@@ -133,6 +133,7 @@ public class Initialization {
 
             File file = new File(this.getDownloadPath());
             if (!file.exists()) {
+                log.info("DownloadPath = " + getDownloadPath());
                 file.mkdir();
             }
 
