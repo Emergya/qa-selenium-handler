@@ -108,6 +108,9 @@ public class Initialization {
             File file = new File(this.getDownloadPath());
             log.info("Exist download path? " + file.exists());
             if (!file.exists()) {
+                log.info("file.canWrite(): " + file.canWrite());
+                log.info("file.getAbsolutePath(): " + file.getAbsolutePath());
+                log.info("file.getPath(): " + file.getPath());
                 log.info("Was the folder created? " + file.mkdir());
             }
 
