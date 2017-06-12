@@ -125,6 +125,9 @@ public abstract class DefaultTestSet {
     public void afterAllIsSaidAndDone() {
         log.info("--------------- Class: " + tcClass + " Method: " + tcName
                 + " - End ---------------");
+
+        deleteDownloadFolder();
+
         if (driver != null) {
             driver.manage().deleteAllCookies();
             driver.quit();
@@ -344,6 +347,24 @@ public abstract class DefaultTestSet {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Delete download folder
+     */
+    private void deleteDownloadFolder() {
+        File dir = new File(Initialization.getInstance().getDownloadPath());
+
+        if (dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            for (File file : files) {
+                if (file.isFile()) {
+                    file.delete();
+                }
+            }
+
+            dir.delete();
         }
     }
 
