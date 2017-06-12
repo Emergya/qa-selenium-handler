@@ -106,9 +106,9 @@ public class Initialization {
             // Create download path
             log.info("Download path: " + getDownloadPath());
             File file = new File(this.getDownloadPath());
-            log.info("Exist download path?: " + file.exists());
+            log.info("Exist download path? " + file.exists());
             if (!file.exists()) {
-                file.mkdir();
+                log.info("Was the folder created? " + file.mkdir());
             }
 
             log.info("Auto detected operative System = " + os);
