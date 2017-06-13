@@ -139,7 +139,9 @@ public class Initialization {
             firefoxProfile.setPreference(
                     "browser.download.manager.showWhenStarting", false);
             firefoxProfile.setPreference("browser.download.dir",
-                    this.getDownloadPath());
+                    System.getProperty("user.dir")
+                            + System.getProperty("file.separator")
+                            + this.getDownloadPath());
 
             File dir = new File(this.getDownloadPath());
             if (dir.isDirectory()) {
