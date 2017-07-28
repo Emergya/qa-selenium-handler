@@ -130,7 +130,7 @@ public abstract class DefaultTestSet {
 
         if (driver != null) {
             driver.manage().deleteAllCookies();
-            driver.quit();
+            driver.close();
         }
     }
 

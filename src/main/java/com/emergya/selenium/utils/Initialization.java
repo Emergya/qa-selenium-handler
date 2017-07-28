@@ -10,7 +10,9 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.emergya.selenium.drivers.EmergyaChromeDriver;
 import com.emergya.selenium.drivers.EmergyaFirefoxDriver;
@@ -167,7 +169,12 @@ public class Initialization {
 
             firefoxProfile.setPreference("pdfjs.disabled", true);
 
-            tmpDriver = new EmergyaFirefoxDriver(firefoxProfile);
+            // Accept insecure certs
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setAcceptInsecureCerts(true);
+            capabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
+
+            tmpDriver = new EmergyaFirefoxDriver(capabilities);
 
         } else if (browser.equalsIgnoreCase("Chrome")) {
             ChromeOptions options = new ChromeOptions();
