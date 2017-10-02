@@ -38,19 +38,19 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
-import com.github.agomezmoron.testng.listener.SeleniumScreenshotOnFailureListener;
-import com.github.agomezmoron.testng.listener.SystemScreenshotOnFailureListener;
-
 import com.emergya.selenium.drivers.EmergyaWebDriver;
 import com.emergya.selenium.pageObject.BasePageObject;
 import com.emergya.selenium.utils.Initialization;
+import com.github.agomezmoron.testng.listener.SeleniumScreenshotOnFailureListener;
+import com.github.agomezmoron.testng.listener.SystemScreenshotOnFailureListener;
 
 /**
  * TestNG after and before methods
  *
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  */
-@Listeners({SeleniumScreenshotOnFailureListener.class, SystemScreenshotOnFailureListener.class})
+@Listeners({ SeleniumScreenshotOnFailureListener.class,
+        SystemScreenshotOnFailureListener.class })
 public abstract class DefaultTestSet {
 
     protected static EmergyaWebDriver driver;
@@ -80,22 +80,23 @@ public abstract class DefaultTestSet {
                         .getLocalGraphicsEnvironment().getDefaultScreenDevice()
                         .getDefaultConfiguration();
 
-                this.screenRecorder = new ScreenRecorder(gc, null, new Format(
-                        MediaTypeKey, MediaType.FILE, MimeTypeKey, MIME_AVI),
+                this.screenRecorder = new ScreenRecorder(gc, null,
+                        new Format(MediaTypeKey, MediaType.FILE, MimeTypeKey,
+                                MIME_AVI),
                         new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey,
                                 ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
                                 CompressorNameKey,
-                                ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-                                DepthKey, 24, FrameRateKey, Rational
-                                        .valueOf(15), QualityKey, 1.0f,
-                                KeyFrameIntervalKey, 15 * 60), new Format(
-                                MediaTypeKey, MediaType.VIDEO, EncodingKey,
+                                ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey,
+                                24, FrameRateKey, Rational.valueOf(15),
+                                QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60),
+                        new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey,
                                 "black", FrameRateKey, Rational.valueOf(30)),
                         null, new File(config.getVideoRecordingPath()));
 
                 screenRecorder.start();
             } catch (Exception e) {
-                log.warn("Recorder could not be initilized. No video will be recording");
+                log.warn(
+                        "Recorder could not be initilized. No video will be recording");
             }
             log.info("Start recording in "
                     + (System.currentTimeMillis() - startTime) + " ms");
@@ -107,6 +108,8 @@ public abstract class DefaultTestSet {
     @AfterMethod
     public void afterAllIsSaidAndDone() {
         log.info("Function afterAllIsSaidAndDone");
+
+        deleteDownloadFolder();
 
         if (driver != null) {
             if (driver != null) {
@@ -172,13 +175,15 @@ public abstract class DefaultTestSet {
 
                 if (!result.getMethod().getXmlTest().getName()
                         .equals("Default test")) {
-                    addFailedTestToXML(result.getMethod().getRealClass()
-                            .getName(), result.getMethod().getMethodName());
+                    addFailedTestToXML(
+                            result.getMethod().getRealClass().getName(),
+                            result.getMethod().getMethodName());
                 }
             } else if (!result.getMethod().getXmlTest().getName()
                     .equals("Default test")) {
-                removePassedTestToXML(result.getMethod().getRealClass()
-                        .getName(), result.getMethod().getMethodName());
+                removePassedTestToXML(
+                        result.getMethod().getRealClass().getName(),
+                        result.getMethod().getMethodName());
             }
         }
     }
@@ -236,8 +241,8 @@ public abstract class DefaultTestSet {
                     methodsElement.addContent(includeElement);
 
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format
-                            .getPrettyFormat());
+                    xmlOutput.setFormat(
+                            org.jdom.output.Format.getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 } else {
                     Element rootElement = doc.getRootElement();
@@ -261,12 +266,13 @@ public abstract class DefaultTestSet {
                     methodsElement.addContent(includeElement);
 
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format
-                            .getPrettyFormat());
+                    xmlOutput.setFormat(
+                            org.jdom.output.Format.getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 }
             } else {
-                log.info("The test is already added in the xml of failed tests");
+                log.info(
+                        "The test is already added in the xml of failed tests");
             }
 
         } catch (Exception e) {
@@ -294,13 +300,11 @@ public abstract class DefaultTestSet {
                     "/suite/test/classes/class[@name='" + suite
                             + "']/methods/include[@name='" + testName + "']");
             if (test != null) {
-                if (XPath.selectNodes(
-                        doc,
-                        "/suite/test/classes/class[@name='" + suite
-                                + "']/methods/include").size() > 1) {
+                if (XPath.selectNodes(doc, "/suite/test/classes/class[@name='"
+                        + suite + "']/methods/include").size() > 1) {
 
-                    Element testToRemove = (Element) XPath.selectSingleNode(
-                            doc, "/suite/test/classes/class[@name='" + suite
+                    Element testToRemove = (Element) XPath.selectSingleNode(doc,
+                            "/suite/test/classes/class[@name='" + suite
                                     + "']/methods/include[@name='" + testName
                                     + "']");
                     Element methodElement = (Element) XPath.selectSingleNode(
@@ -309,15 +313,15 @@ public abstract class DefaultTestSet {
 
                     methodElement.removeContent(testToRemove);
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format
-                            .getPrettyFormat());
+                    xmlOutput.setFormat(
+                            org.jdom.output.Format.getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 } else {
-                    classesElement.removeContent(test.getParentElement()
-                            .getParentElement());
+                    classesElement.removeContent(
+                            test.getParentElement().getParentElement());
                     XMLOutputter xmlOutput = new XMLOutputter();
-                    xmlOutput.setFormat(org.jdom.output.Format
-                            .getPrettyFormat());
+                    xmlOutput.setFormat(
+                            org.jdom.output.Format.getPrettyFormat());
                     xmlOutput.output(doc, new FileWriter(failedSuitePath));
                 }
 
@@ -331,13 +335,32 @@ public abstract class DefaultTestSet {
     }
 
     /**
+     * Delete download folder
+     */
+    private void deleteDownloadFolder() {
+        File dir = new File(Initialization.getInstance().getDownloadPath());
+
+        if (dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            for (File file : files) {
+                if (file.isFile()) {
+                    file.delete();
+                }
+            }
+
+            dir.delete();
+        }
+    }
+
+    /**
      * Checks that the PO is ready
      *
      * @param pageObject
      *            page object to be used
      */
     protected void isReady(BasePageObject pageObject) {
-        assertTrue("The PO " + pageObject.getClass().getName()
-                + " is not ready", pageObject.isReady());
+        assertTrue(
+                "The PO " + pageObject.getClass().getName() + " is not ready",
+                pageObject.isReady());
     }
 }
