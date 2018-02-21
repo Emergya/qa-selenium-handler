@@ -2,7 +2,7 @@ package com.emergya.selenium.drivers;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
@@ -31,8 +31,8 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
         mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
-    public EmergyaFirefoxDriver(FirefoxProfile profile) {
-        super(profile);
+    public EmergyaFirefoxDriver(FirefoxOptions options) {
+        super(options);
         mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
