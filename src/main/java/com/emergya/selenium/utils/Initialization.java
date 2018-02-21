@@ -11,8 +11,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.emergya.selenium.drivers.EmergyaChromeDriver;
 import com.emergya.selenium.drivers.EmergyaFirefoxDriver;
@@ -170,15 +170,15 @@ public class Initialization {
             firefoxProfile.setPreference("pdfjs.disabled", true);
 
             // Accept insecure certs
-            DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setAcceptInsecureCerts(true);
-            capabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
+            FirefoxOptions options = new FirefoxOptions();
+            options.setAcceptInsecureCerts(true);
+            options.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
 
-            tmpDriver = new EmergyaFirefoxDriver(capabilities);
+            tmpDriver = new EmergyaFirefoxDriver(options);
 
         } else if (browser.equalsIgnoreCase("Chrome")) {
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--start-maximized");
+            // options.addArguments("--start-maximized");
 
             if (os.equalsIgnoreCase("ubuntu")) {
                 System.setProperty("webdriver.chrome.driver", webdriverChrome);
@@ -188,6 +188,7 @@ public class Initialization {
             }
 
             tmpDriver = new EmergyaChromeDriver(options);
+
         } else if (browser.equalsIgnoreCase("IE")
                 && os.equalsIgnoreCase("windows")) {
             System.setProperty("webdriver.ie.driver", webdriverIE);
