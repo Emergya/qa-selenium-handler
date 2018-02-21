@@ -11,7 +11,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  * @author Alejandro Gomez <agommor@gmail.com>
  */
-public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDriver {
+public class EmergyaFirefoxDriver extends FirefoxDriver
+        implements EmergyaWebDriver {
 
     /**
      * Main window handler to perform windows switch later.
@@ -259,7 +260,8 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      *         opposite case
      */
     public boolean waitUntilElementClickable(By selector, long seconds) {
-        return EmergyaWebDriverUtil.waitUntilElementClickable(this, selector, seconds);
+        return EmergyaWebDriverUtil.waitUntilElementClickable(this, selector,
+                seconds);
     }
 
     /**
@@ -275,8 +277,10 @@ public class EmergyaFirefoxDriver extends FirefoxDriver implements EmergyaWebDri
      * @return true If the text is present in element, and false in the opposite
      *         case
      */
-    public boolean waitUntilTextPresent(By selector, long seconds, String text) {
-        return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector, seconds, text);
+    public boolean waitUntilTextPresent(By selector, long seconds,
+            String text) {
+        return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector,
+                seconds, text);
     }
 
     /**

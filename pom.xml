@@ -4,7 +4,7 @@
 
 	<groupId>com.emergya</groupId>
 	<artifactId>selenium3-handler</artifactId>
-	<version>0.0.6</version>
+	<version>0.0.5</version>
 	<packaging>jar</packaging>
 
 	<name>Selenium 3 WebDriver Handler</name>
@@ -222,4 +222,5 @@
 
 		</plugins>
 	</build>
+
 </project>
