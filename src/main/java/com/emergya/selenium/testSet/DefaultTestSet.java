@@ -37,6 +37,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 
 import com.emergya.selenium.drivers.EmergyaWebDriver;
@@ -64,6 +65,17 @@ public abstract class DefaultTestSet {
 
     protected static Logger log = Logger.getLogger(DefaultTestSet.class);
 
+    /** Data Provider for the Remote Browser **/
+    @DataProvider(parallel = false)
+    public static Object[][] hardCodedBrowsers() {
+        if (config.getBrowser().equalsIgnoreCase("Remote")) {
+            return config.getRemoteConfiguration();
+        } else {
+            return new Object[][] { { config.getOS(), config.getBrowser(),
+                    config.getVersion() } };
+        }
+    }
+
     @BeforeClass(description = "beforeClassMethod")
     public void beforeClass() {
         this.tcClass = this.getClass().getSimpleName();
@@ -71,18 +83,19 @@ public abstract class DefaultTestSet {
     }
 
     @BeforeMethod(alwaysRun = true)
-    public void nameBefore(Method method) {
+    public void before(Method method, Object[][] data) {
         this.tcName = method.getName();
         log.info("--------------- Class: " + tcClass + " Method: " + tcName
                 + " - Start ---------------");
-    }
 
-    @BeforeMethod(alwaysRun = true)
-    public void before() {
-        log.info(
-                "CLASS: DefaultTestSet - TESTNG: @BeforeMethod - METHOD: before() ---- Start");
-
-        driver = config.initialize();
+        if (data[0].length == 3) {
+            driver = config.initialize(tcName, data[0].toString().trim(),
+                    data[1].toString().trim(), data[2].toString().trim());
+        } else {
+            driver = config.initialize(tcName, data[0].toString().trim(),
+                    data[1].toString().trim(), data[2].toString().trim(),
+                    data[3].toString().trim(), data[4].toString().trim());
+        }
 
         if (driver != null && config.isRecordVideo() == true) {
             long startTime = System.currentTimeMillis();
@@ -130,7 +143,11 @@ public abstract class DefaultTestSet {
 
         if (driver != null) {
             driver.manage().deleteAllCookies();
-            driver.close();
+            driver.quit();
+
+            if ("Remote".equalsIgnoreCase(config.getBrowser())) {
+                driver.sleep(4);
+            }
         }
     }
 

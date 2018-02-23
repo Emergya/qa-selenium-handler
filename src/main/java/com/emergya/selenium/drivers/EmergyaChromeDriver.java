@@ -10,7 +10,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  * @author Alejandro Gomez <agommor@gmail.com>
  */
-public class EmergyaChromeDriver extends ChromeDriver implements EmergyaWebDriver {
+public class EmergyaChromeDriver extends ChromeDriver
+        implements EmergyaWebDriver {
 
     /**
      * Main window handler to perform windows switch later.
@@ -253,7 +254,8 @@ public class EmergyaChromeDriver extends ChromeDriver implements EmergyaWebDrive
      *         opposite case
      */
     public boolean waitUntilElementClickable(By selector, long seconds) {
-        return EmergyaWebDriverUtil.waitUntilElementClickable(this, selector, seconds);
+        return EmergyaWebDriverUtil.waitUntilElementClickable(this, selector,
+                seconds);
     }
 
     /**
@@ -269,8 +271,10 @@ public class EmergyaChromeDriver extends ChromeDriver implements EmergyaWebDrive
      * @return true If the text is present in element, and false in the opposite
      *         case
      */
-    public boolean waitUntilTextPresent(By selector, long seconds, String text) {
-        return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector, seconds, text);
+    public boolean waitUntilTextPresent(By selector, long seconds,
+            String text) {
+        return EmergyaWebDriverUtil.waitUntilTextPresent(this, selector,
+                seconds, text);
     }
 
     /**

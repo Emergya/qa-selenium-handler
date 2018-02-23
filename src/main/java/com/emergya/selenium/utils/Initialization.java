@@ -3,6 +3,8 @@ package com.emergya.selenium.utils;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -13,10 +15,12 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.emergya.selenium.drivers.EmergyaChromeDriver;
 import com.emergya.selenium.drivers.EmergyaFirefoxDriver;
 import com.emergya.selenium.drivers.EmergyaIEDriver;
+import com.emergya.selenium.drivers.EmergyaRemoteDriver;
 import com.emergya.selenium.drivers.EmergyaWebDriver;
 
 /**
@@ -45,8 +49,14 @@ public class Initialization {
     private int widthAfterMaximize;
     private int heightBeforeMaximize;
     private int heightAfterMaximize;
+    private String finalRemoteURL;
+    private String remoteBuild;
+    private String remoteRecordVideo;
+    private String remoteRecordNetwork;
+    private String version;
     private static Initialization instance = null;
     private static Logger log = Logger.getLogger(Initialization.class);
+    private Object[][] remoteConfiguration;
 
     EmergyaWebDriver driver;
 
@@ -104,6 +114,13 @@ public class Initialization {
                     "files/software/chromedriver");
             webdriverIE = prop.getProperty("webdriverIE",
                     "files/software/IEDriverServer.exe");
+            finalRemoteURL = prop.getProperty("finalRemoteURL");
+            remoteBuild = prop.getProperty("remoteBuild");
+            version = prop.getProperty("version");
+            remoteRecordVideo = prop.getProperty("remoteRecordVideo");
+            remoteRecordNetwork = prop.getProperty("remoteRecordNetwork");
+            remoteConfiguration = fetchArrayFromPropFile("remoteConfiguration",
+                    prop);
 
             // Create download path
             log.info("Download path: " + getDownloadPath());
@@ -123,7 +140,7 @@ public class Initialization {
     }
 
     // **** Driver initialization method ****//
-    public EmergyaWebDriver initialize() {
+    public EmergyaWebDriver initialize(String tcName, String... remoteData) {
         log.info("[log-Properties] " + this.getClass().getSimpleName()
                 + "- Start initialize test");
 
@@ -175,7 +192,6 @@ public class Initialization {
             options.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
 
             tmpDriver = new EmergyaFirefoxDriver(options);
-
         } else if (browser.equalsIgnoreCase("Chrome")) {
             ChromeOptions options = new ChromeOptions();
             // options.addArguments("--start-maximized");
@@ -188,49 +204,93 @@ public class Initialization {
             }
 
             tmpDriver = new EmergyaChromeDriver(options);
-
         } else if (browser.equalsIgnoreCase("IE")
                 && os.equalsIgnoreCase("windows")) {
             System.setProperty("webdriver.ie.driver", webdriverIE);
+
             tmpDriver = new EmergyaIEDriver();
+        } else if (browser.equalsIgnoreCase("Remote")) {
+            log.info("[log-Properties] " + this.getClass().getSimpleName()
+                    + "- Start initialize - after Remote");
+
+            String platform = remoteData[0];
+            String browserName = remoteData[1];
+            String version = remoteData[2];
+
+            DesiredCapabilities caps = new DesiredCapabilities();
+
+            // Commons capabilities
+            caps.setCapability("name", tcName);
+            caps.setCapability("build", remoteBuild);
+            caps.setCapability("browserName", browserName);
+            caps.setCapability("record_video", remoteRecordNetwork);
+            caps.setCapability("record_network", remoteRecordNetwork);
+
+            if (platform.contains("Windows") || platform.contains("Mac")
+                    || platform.contains("Linux")) {
+                // Desktop capabilities
+                caps.setCapability("platform", platform);
+                caps.setCapability("version", version);
+            } else {
+                String deviceName = remoteData[3];
+                String deviceOrientation = remoteData[4];
+
+                // Mobile capabilities
+                caps.setCapability("platformName", platform);
+                caps.setCapability("platformVersion", version);
+
+                caps.setCapability("deviceName", deviceName);
+                caps.setCapability("deviceOrientation", deviceOrientation);
+            }
+
+            try {
+                URL url = new URL(finalRemoteURL);
+
+                tmpDriver = new EmergyaRemoteDriver(url, caps);
+                tmpDriver.manage().window().maximize();
+            } catch (MalformedURLException e) {
+                log.info("URL creation error: " + e.getMessage());
+            }
         }
 
         // Common functions
         driver = tmpDriver;
 
-        log.info("Browser initialized with dimensions: "
-                + driver.manage().window().getSize().getWidth() + "px - "
-                + driver.manage().window().getSize().getHeight() + "px");
-
         widthBeforeMaximize = driver.manage().window().getSize().getWidth();
         heightBeforeMaximize = driver.manage().window().getSize().getHeight();
 
+        log.info("Browser initialized with dimensions: " + widthBeforeMaximize
+                + "px X " + heightBeforeMaximize + "px");
+
         driver.get(loginURL);
 
-        driver.pressReleaseKey(KeyEvent.VK_F11);
-        driver.sleep(1);
-
-        widthAfterMaximize = driver.manage().window().getSize().getWidth();
-        heightAfterMaximize = driver.manage().window().getSize().getHeight();
-
-        if ((widthBeforeMaximize == widthAfterMaximize)
-                && (heightBeforeMaximize == heightAfterMaximize)) {
-            log.info("Not maximized first time...try again");
+        if (!browser.equalsIgnoreCase("Remote")) {
+            driver.pressReleaseKey(KeyEvent.VK_F11);
 
             driver.sleep(1);
 
-            tmpDriver.findElement(By.tagName("body")).sendKeys(Keys.F11);
+            widthAfterMaximize = driver.manage().window().getSize().getWidth();
+            heightAfterMaximize = driver.manage().window().getSize()
+                    .getHeight();
 
-            driver.sleep(2);
+            if ((widthBeforeMaximize == widthAfterMaximize)
+                    && (heightBeforeMaximize == heightAfterMaximize)) {
+                log.info("Not maximized first time... try again");
+
+                driver.sleep(1);
+
+                tmpDriver.findElement(By.tagName("body")).sendKeys(Keys.F11);
+
+                driver.sleep(2);
+            }
+
+            log.info("Browser resized with dimensions: " + widthAfterMaximize
+                    + "px X " + heightAfterMaximize + "px");
         }
 
         this.cleanDownloadDirectory();
 
-        log.info("Browser resized with dimensions: "
-                + driver.manage().window().getSize().getWidth() + "px - "
-                + driver.manage().window().getSize().getHeight() + "px");
-
-        log.info("[log-Properties] " + this.getClass().getSimpleName()
+        log.info("[log-Properties] " + this.getClass().getName()
                 + "- End initialize test");
 
         return driver;
@@ -404,6 +464,18 @@ public class Initialization {
         return downloadPath;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
+    public String getRemoteRecordVideo() {
+        return remoteRecordVideo;
+    }
+
+    public String getRemoteRecordNetwork() {
+        return remoteRecordNetwork;
+    }
+
     // **** Download methods section ****//
     /**
      * Returns the donwloaded filepath
@@ -445,5 +517,36 @@ public class Initialization {
     public boolean isEmptyDownloadDirectory() {
         File f = new File(this.getDownloadPath());
         return f.exists() && f.isDirectory() && f.list().length == 0;
+    }
+
+    // ****
+    /**
+     * Creates two dimensional array from delineated string in properties file
+     * @param propertyName name of the property as in the file
+     * @param propFile the instance of the Properties file that has the property
+     * @return two dimensional array
+     */
+    private static String[][] fetchArrayFromPropFile(String propertyName,
+            Properties propFile) {
+        // Get the Array Split up by the semicolon (;)
+        String[] a = propFile.getProperty(propertyName).split(";");
+
+        // Create the two dimensional array with the correct size
+        String[][] array = new String[a.length][];
+
+        // Combine the arrays split by semicolon and comma
+        for (int i = 0; i < a.length; i++) {
+            array[i] = a[i].split(",");
+        }
+
+        return array;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Object[][] getRemoteConfiguration() {
+        return remoteConfiguration;
     }
 }

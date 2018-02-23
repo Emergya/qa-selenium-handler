@@ -1,33 +1,26 @@
 package com.emergya.selenium.drivers;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import java.net.URL;
 
-/**
- * Custom driver for firefox
- * 
- * @author Jose Antonio Sanchez <jasanchez@emergya.com>
- * @author Alejandro Gomez <agommor@gmail.com>
- */
-public class EmergyaFirefoxDriver extends FirefoxDriver
+import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+public class EmergyaRemoteDriver extends RemoteWebDriver
         implements EmergyaWebDriver {
 
-    /**
-     * Main window handler to perform windows switch later.
-     */
     private String mainWindowHandler;
 
     /**
      * Constructor
      */
-    public EmergyaFirefoxDriver() {
+    public EmergyaRemoteDriver() {
         super();
         mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
-    public EmergyaFirefoxDriver(FirefoxOptions options) {
-        super(options);
+    public EmergyaRemoteDriver(URL url, Capabilities caps) {
+        super(url, caps);
         mainWindowHandler = EmergyaWebDriverUtil.getCurrentWindowHandler(this);
     }
 
