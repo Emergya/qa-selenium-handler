@@ -21,3 +21,6 @@ It allows your Selenium projects abstracting the WebDriver logic for ease of use
 		<version>0.1.10</version>
 	</dependency>
 ```
+## Selenium 3 support
+
+The handler also supports Selenium 3 - it has a custom branch to work with it.
