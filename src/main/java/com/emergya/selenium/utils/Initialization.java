@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -54,9 +57,13 @@ public class Initialization {
     private String remoteRecordVideo;
     private String remoteRecordNetwork;
     private String version;
+    String platform = "";
+    String browserName;
+    String deviceName;
+    String deviceOrientation;
     private static Initialization instance = null;
     private static Logger log = Logger.getLogger(Initialization.class);
-    private Object[][] remoteConfiguration;
+    private Iterator<Object[]> remoteConfiguration;
 
     EmergyaWebDriver driver;
 
@@ -140,7 +147,8 @@ public class Initialization {
     }
 
     // **** Driver initialization method ****//
-    public EmergyaWebDriver initialize(String tcName, String... remoteData) {
+    public EmergyaWebDriver initialize(String tcName, /**Object[] remoteData*/
+    String remoteData) {
         log.info("[log-Properties] " + this.getClass().getSimpleName()
                 + "- Start initialize test");
 
@@ -213,9 +221,9 @@ public class Initialization {
             log.info("[log-Properties] " + this.getClass().getSimpleName()
                     + "- Start initialize - after Remote");
 
-            String platform = remoteData[0];
-            String browserName = remoteData[1];
-            String version = remoteData[2];
+            platform = remoteData.split(",")[0].trim();
+            browserName = remoteData.split(",")[1].trim();
+            version = remoteData.split(",")[2].trim();
 
             DesiredCapabilities caps = new DesiredCapabilities();
 
@@ -232,8 +240,8 @@ public class Initialization {
                 caps.setCapability("platform", platform);
                 caps.setCapability("version", version);
             } else {
-                String deviceName = remoteData[3];
-                String deviceOrientation = remoteData[4];
+                deviceName = remoteData.split(",")[3].trim();
+                deviceOrientation = remoteData.split(",")[4].trim();
 
                 // Mobile capabilities
                 caps.setCapability("platformName", platform);
@@ -256,11 +264,18 @@ public class Initialization {
         // Common functions
         driver = tmpDriver;
 
-        widthBeforeMaximize = driver.manage().window().getSize().getWidth();
-        heightBeforeMaximize = driver.manage().window().getSize().getHeight();
+        if (!platform.equalsIgnoreCase("Android")) {
+            if (!platform.equalsIgnoreCase("iOS")) {
+                widthBeforeMaximize = driver.manage().window().getSize()
+                        .getWidth();
+                heightBeforeMaximize = driver.manage().window().getSize()
+                        .getHeight();
 
-        log.info("Browser initialized with dimensions: " + widthBeforeMaximize
-                + "px X " + heightBeforeMaximize + "px");
+                log.info("Browser initialized with dimensions: "
+                        + widthBeforeMaximize + "px X " + heightBeforeMaximize
+                        + "px");
+            }
+        }
 
         driver.get(loginURL);
 
@@ -526,27 +541,27 @@ public class Initialization {
      * @param propFile the instance of the Properties file that has the property
      * @return two dimensional array
      */
-    private static String[][] fetchArrayFromPropFile(String propertyName,
-            Properties propFile) {
+    private static Iterator<Object[]> fetchArrayFromPropFile(
+            String propertyName, Properties propFile) {
+
+        List<Object[]> typesToBeReturned = new ArrayList<Object[]>();
+
         // Get the Array Split up by the semicolon (;)
-        String[] a = propFile.getProperty(propertyName).split(";");
+        String[] arrayRemoteParams = propFile.getProperty(propertyName)
+                .split(";");
 
-        // Create the two dimensional array with the correct size
-        String[][] array = new String[a.length][];
-
-        // Combine the arrays split by semicolon and comma
-        for (int i = 0; i < a.length; i++) {
-            array[i] = a[i].split(",");
+        for (String remoteParams : arrayRemoteParams) {
+            typesToBeReturned.add(new Object[] { remoteParams });
         }
 
-        return array;
+        return typesToBeReturned.iterator();
     }
 
     /**
      * 
      * @return
      */
-    public Object[][] getRemoteConfiguration() {
+    public Iterator<Object[]> getRemoteConfiguration() {
         return remoteConfiguration;
     }
 }

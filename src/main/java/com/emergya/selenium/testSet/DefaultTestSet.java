@@ -20,7 +20,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -66,13 +69,15 @@ public abstract class DefaultTestSet {
     protected static Logger log = Logger.getLogger(DefaultTestSet.class);
 
     /** Data Provider for the Remote Browser **/
-    @DataProvider(parallel = false)
-    public static Object[][] hardCodedBrowsers() {
-        if (config.getBrowser().equalsIgnoreCase("Remote")) {
+    @DataProvider(name = "remoteParams", parallel = false)
+    public Iterator<Object[]> remoteParams() {
+        List<Object[]> typesToBeReturned = new ArrayList<Object[]>();
+
+        if ("Remote".equalsIgnoreCase(config.getBrowser())) {
             return config.getRemoteConfiguration();
         } else {
-            return new Object[][] { { config.getOS(), config.getBrowser(),
-                    config.getVersion() } };
+            typesToBeReturned.add(new Object[] { config.getBrowser() });
+            return typesToBeReturned.iterator();
         }
     }
 
@@ -83,19 +88,12 @@ public abstract class DefaultTestSet {
     }
 
     @BeforeMethod(alwaysRun = true)
-    public void before(Method method, Object[][] data) {
+    public void before(Method method, Object[] data) {
         this.tcName = method.getName();
         log.info("--------------- Class: " + tcClass + " Method: " + tcName
                 + " - Start ---------------");
 
-        if (data[0].length == 3) {
-            driver = config.initialize(tcName, data[0].toString().trim(),
-                    data[1].toString().trim(), data[2].toString().trim());
-        } else {
-            driver = config.initialize(tcName, data[0].toString().trim(),
-                    data[1].toString().trim(), data[2].toString().trim(),
-                    data[3].toString().trim(), data[4].toString().trim());
-        }
+        driver = config.initialize(tcName, data[0].toString());
 
         if (driver != null && config.isRecordVideo() == true) {
             long startTime = System.currentTimeMillis();
@@ -141,13 +139,12 @@ public abstract class DefaultTestSet {
 
         deleteDownloadFolder();
 
-        if (driver != null) {
+        if (driver != null && !"Remote".equalsIgnoreCase(config.getBrowser())) {
             driver.manage().deleteAllCookies();
             driver.quit();
-
-            if ("Remote".equalsIgnoreCase(config.getBrowser())) {
-                driver.sleep(4);
-            }
+        } else {
+            driver.quit();
+            driver.sleep(5);
         }
     }
 
