@@ -60,7 +60,7 @@ public class Initialization {
     String platform = "";
     String browserName;
     String deviceName;
-    String deviceOrientation;
+    String screenResolutionOrientation;
     private static Initialization instance = null;
     private static Logger log = Logger.getLogger(Initialization.class);
     private Iterator<Object[]> remoteConfiguration;
@@ -224,6 +224,7 @@ public class Initialization {
             platform = remoteData.split(",")[0].trim();
             browserName = remoteData.split(",")[1].trim();
             version = remoteData.split(",")[2].trim();
+            screenResolutionOrientation = remoteData.split(",")[3].trim();
 
             DesiredCapabilities caps = new DesiredCapabilities();
 
@@ -236,19 +237,21 @@ public class Initialization {
 
             if (platform.contains("Windows") || platform.contains("Mac")
                     || platform.contains("Linux")) {
+
                 // Desktop capabilities
                 caps.setCapability("platform", platform);
                 caps.setCapability("version", version);
+                caps.setCapability("screenResolution",
+                        screenResolutionOrientation);
             } else {
-                deviceName = remoteData.split(",")[3].trim();
-                deviceOrientation = remoteData.split(",")[4].trim();
+                deviceName = remoteData.split(",")[4].trim();
 
                 // Mobile capabilities
                 caps.setCapability("platformName", platform);
                 caps.setCapability("platformVersion", version);
-
                 caps.setCapability("deviceName", deviceName);
-                caps.setCapability("deviceOrientation", deviceOrientation);
+                caps.setCapability("deviceOrientation",
+                        screenResolutionOrientation);
             }
 
             try {
