@@ -20,10 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -69,15 +66,12 @@ public abstract class DefaultTestSet {
     protected static Logger log = Logger.getLogger(DefaultTestSet.class);
 
     /** Data Provider for the Remote Browser **/
-    @DataProvider(name = "remoteParams", parallel = false)
-    public Iterator<Object[]> remoteParams() {
-        List<Object[]> typesToBeReturned = new ArrayList<Object[]>();
-
+    @DataProvider(name = "remoteParams")
+    public Object[] remoteParams() {
         if ("Remote".equalsIgnoreCase(config.getBrowser())) {
             return config.getRemoteConfiguration();
         } else {
-            typesToBeReturned.add(new Object[] { config.getBrowser() });
-            return typesToBeReturned.iterator();
+            return new Object[] { config.getBrowser() };
         }
     }
 

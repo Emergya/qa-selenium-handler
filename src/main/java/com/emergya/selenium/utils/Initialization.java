@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -63,7 +62,7 @@ public class Initialization {
     String screenResolutionOrientation;
     private static Initialization instance = null;
     private static Logger log = Logger.getLogger(Initialization.class);
-    private Iterator<Object[]> remoteConfiguration;
+    private Object[] remoteConfiguration;
 
     EmergyaWebDriver driver;
 
@@ -544,8 +543,8 @@ public class Initialization {
      * @param propFile the instance of the Properties file that has the property
      * @return two dimensional array
      */
-    private static Iterator<Object[]> fetchArrayFromPropFile(
-            String propertyName, Properties propFile) {
+    private static Object[] fetchArrayFromPropFile(String propertyName,
+            Properties propFile) {
 
         List<Object[]> typesToBeReturned = new ArrayList<Object[]>();
 
@@ -553,18 +552,14 @@ public class Initialization {
         String[] arrayRemoteParams = propFile.getProperty(propertyName)
                 .split(";");
 
-        for (String remoteParams : arrayRemoteParams) {
-            typesToBeReturned.add(new Object[] { remoteParams });
-        }
-
-        return typesToBeReturned.iterator();
+        return arrayRemoteParams;
     }
 
     /**
      * 
      * @return
      */
-    public Iterator<Object[]> getRemoteConfiguration() {
+    public Object[] getRemoteConfiguration() {
         return remoteConfiguration;
     }
 }
