@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.emergya</groupId>
-	<artifactId>selenium3-handler</artifactId>
-	<version>0.0.6</version>
+	<artifactId>selenium3Remote</artifactId>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
-	<name>Selenium 3 WebDriver Handler</name>
+	<name>Selenium 3 WebDriver Handler Remote</name>
 	<description>It allows your Selenium projects abstracting the WebDriver 
         logic for ease of use. Currently supports IE, Firefox and Chrome 
         WebDriver but is extensible to others browsers.</description>
