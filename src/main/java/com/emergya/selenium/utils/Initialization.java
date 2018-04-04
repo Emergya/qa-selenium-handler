@@ -146,8 +146,7 @@ public class Initialization {
     }
 
     // **** Driver initialization method ****//
-    public EmergyaWebDriver initialize(String tcName, /**Object[] remoteData*/
-    String remoteData) {
+    public EmergyaWebDriver initialize(String tcName, String remoteData) {
         log.info("[log-Properties] " + this.getClass().getSimpleName()
                 + "- Start initialize test");
 

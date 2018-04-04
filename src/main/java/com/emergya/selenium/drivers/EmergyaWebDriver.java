@@ -5,6 +5,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.SessionId;
 
 /**
  * Emergya custom interface that extends WebDriver
@@ -274,4 +275,9 @@ public interface EmergyaWebDriver extends WebDriver {
      */
     public Boolean isCurrentWindowOpen();
 
+    /**
+     * Method to obtain selenium session Id
+     * @return SessionId
+     */
+    public SessionId getSessionId();
 }
