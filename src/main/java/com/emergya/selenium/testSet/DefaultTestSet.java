@@ -38,21 +38,16 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Listeners;
 
 import com.emergya.selenium.drivers.EmergyaWebDriver;
 import com.emergya.selenium.pageObject.BasePageObject;
 import com.emergya.selenium.utils.Initialization;
-import com.github.agomezmoron.testng.listener.SeleniumScreenshotOnFailureListener;
-import com.github.agomezmoron.testng.listener.SystemScreenshotOnFailureListener;
 
 /**
  * TestNG after and before methods
  *
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  */
-@Listeners({ SeleniumScreenshotOnFailureListener.class,
-        SystemScreenshotOnFailureListener.class })
 public abstract class DefaultTestSet {
 
     protected static EmergyaWebDriver driver;

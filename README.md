@@ -17,7 +17,7 @@ It allows your Selenium projects abstracting the WebDriver logic for ease of use
 ```
 	<dependency>
 		<groupId>com.emergya</groupId>
-		<artifactId>selenium3-handler</artifactId>
-		<version>0.0.6</version>
+		<artifactId>selenium3Remote</artifactId>
+		<version>0.0.2</version>
 	</dependency>
 ```
