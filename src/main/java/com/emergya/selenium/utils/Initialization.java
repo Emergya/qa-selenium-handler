@@ -135,6 +135,7 @@ public class Initialization {
                     "browser.download.manager.showWhenStarting", false);
             firefoxProfile.setPreference("browser.download.dir",
                     this.getDownloadPath());
+            firefoxProfile.setPreference("layout.css.grid.enabled", true);
 
             File dir = new File(this.getDownloadPath());
             if (dir.isDirectory()) {
