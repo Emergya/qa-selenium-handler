@@ -62,12 +62,12 @@ public abstract class DefaultTestSet {
 
     protected static Logger log = Logger.getLogger(DefaultTestSet.class);
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void nameBefore(Method method) {
         this.tcName = method.getName();
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void before() {
         driver = config.initialize();
 
@@ -105,7 +105,7 @@ public abstract class DefaultTestSet {
         }
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void afterAllIsSaidAndDone() {
         log.info("Function afterAllIsSaidAndDone");
 
@@ -119,7 +119,7 @@ public abstract class DefaultTestSet {
         }
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void recordVideo(ITestResult result) {
         if (driver != null && (config.isRecordVideo() == true)
                 && (screenRecorder != null)
@@ -160,7 +160,7 @@ public abstract class DefaultTestSet {
         }
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void checkFailedTest(ITestResult result) {
         if (result.getMethod().getXmlTest().getName().equals("FailedTests")) {
             removePassedTestToXML(result.getMethod().getRealClass().getName(),
