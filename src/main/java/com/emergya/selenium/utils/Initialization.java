@@ -346,7 +346,7 @@ public class Initialization {
                 + "application/x-xfig, application/xhtml+xml, application/xml, application/xcap-diff+xml, application/xenc+xml, application/patch-ops-error+xml, application/resource-lists+xml,"
                 + " application/rls-services+xml, aplication/resource-lists-diff+xml, application/xslt+xml, application/xop+xml, application/x-xpinstall, application/xspf+xml, "
                 + "application/vnd.mozilla.xul+xml, chemical/x-xyz, text/yaml, application/yang, application/yin+xml, application/vnd.ul, application/zip, "
-                + "application/vnd.handheld-entertainment+xml, application/vnd.zzazz.deck+xml";
+                + "application/vnd.handheld-entertainment+xml, application/vnd.zzazz.deck+xml, binary/octet-stream";
         return mimetypes.replaceAll(" ", "");
     }
 
