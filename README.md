@@ -18,6 +18,6 @@ It allows your Selenium projects abstracting the WebDriver logic for ease of use
 	<dependency>
 		<groupId>com.emergya</groupId>
 		<artifactId>selenium3Remote</artifactId>
-		<version>0.0.3</version>
+		<version>0.0.4</version>
 	</dependency>
 ```
