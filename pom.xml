@@ -4,7 +4,7 @@
 
 	<groupId>com.emergya</groupId>
 	<artifactId>selenium3-handler</artifactId>
-	<version>0.0.6</version>
+	<version>0.0.7</version>
 	<packaging>jar</packaging>
 
 	<name>Selenium 3 WebDriver Handler</name>
@@ -19,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<selenium.version>3.9.1</selenium.version>
+		<selenium.version>3.13.0</selenium.version>
 		<java.version>1.8</java.version>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
 		<testng.version>6.14.2</testng.version>
