@@ -168,10 +168,10 @@ public class Initialization {
             options.addArguments("--start-maximized");
 
             if (os.equalsIgnoreCase("windows")) {
-                System.setProperty("webdriver.chrome.driver", webdriverChrome);
-            } else {
                 System.setProperty("webdriver.chrome.driver",
                         webdriverChrome + ".exe");
+            } else {
+                System.setProperty("webdriver.chrome.driver", webdriverChrome);
             }
 
             tmpDriver = new EmergyaChromeDriver(options);
