@@ -2,6 +2,7 @@ package com.emergya.selenium.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -167,7 +168,7 @@ public class Initialization {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--start-maximized");
 
-	    HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
+            HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
             chromePrefs.put("profile.default_content_settings.popups", 0);
             chromePrefs.put("download.default_directory",
                     this.getDownloadPath());
