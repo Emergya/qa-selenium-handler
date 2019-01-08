@@ -167,6 +167,12 @@ public class Initialization {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--start-maximized");
 
+	    HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
+            chromePrefs.put("profile.default_content_settings.popups", 0);
+            chromePrefs.put("download.default_directory",
+                    this.getDownloadPath());
+            options.setExperimentalOption("prefs", chromePrefs);
+
             if (os.equalsIgnoreCase("windows")) {
                 System.setProperty("webdriver.chrome.driver",
                         webdriverChrome + ".exe");

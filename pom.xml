@@ -4,7 +4,7 @@
 
 	<groupId>com.emergya</groupId>
 	<artifactId>selenium-handler</artifactId>
-	<version>0.1.14</version>
+	<version>0.1.15</version>
 	<packaging>jar</packaging>
 
 	<name>Selenium WebDriver Handler</name>
