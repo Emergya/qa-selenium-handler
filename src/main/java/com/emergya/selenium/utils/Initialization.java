@@ -232,6 +232,7 @@ public class Initialization {
             caps.setCapability("browserName", browserName);
             caps.setCapability("record_video", remoteRecordNetwork);
             caps.setCapability("record_network", remoteRecordNetwork);
+            caps.setAcceptInsecureCerts(true);
 
             if (platform.contains("Windows") || platform.contains("Mac")
                     || platform.contains("Linux")) {
