@@ -6,6 +6,7 @@
 	<artifactId>selenium-handler</artifactId>
 	<version>0.1.16</version>
 	<packaging>jar</packaging>
+	
 
 	<name>Selenium WebDriver Handler</name>
 	<description>It allows your Selenium projects abstracting the WebDriver 
