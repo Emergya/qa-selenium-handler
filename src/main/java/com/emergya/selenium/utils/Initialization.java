@@ -11,6 +11,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.emergya.selenium.drivers.EmergyaChromeDriver;
 import com.emergya.selenium.drivers.EmergyaFirefoxDriver;
@@ -165,19 +167,19 @@ public class Initialization {
             tmpDriver = new EmergyaFirefoxDriver(firefoxProfile);
 
         } else if (browser.equalsIgnoreCase("Chrome")) {
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--start-maximized");
-            options.addArguments("--disable-print-preview");
-
             HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
             chromePrefs.put("profile.default_content_settings.popups", 0);
             chromePrefs.put("download.default_directory",
                     this.getDownloadPath());
-            chromePrefs.put("download.prompt_for_download", false);
-            chromePrefs.put("download.directory_upgrade", true);
-            chromePrefs.put("plugins.always_open_pdf_externally", true);
 
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--start-maximized");
+            options.addArguments("disable-infobars");
+            DesiredCapabilities cap = DesiredCapabilities.chrome();
+            cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+            cap.setCapability(ChromeOptions.CAPABILITY, options);
             options.setExperimentalOption("prefs", chromePrefs);
+            tmpDriver = new EmergyaChromeDriver(options);
 
             if (os.equalsIgnoreCase("windows")) {
                 System.setProperty("webdriver.chrome.driver",
