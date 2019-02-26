@@ -30,6 +30,7 @@ import com.emergya.selenium.drivers.EmergyaWebDriver;
  * 
  * @author Jose Antonio Sanchez <jasanchez@emergya.com>
  * @contributor Oscar C. Calle <ocascal@gmail.com>
+ * @contributor Alejandro Lao Amores <alejandro.lao.amores@gmail.com>
  */
 public class Initialization {
 
@@ -109,10 +110,10 @@ public class Initialization {
             screenshotPath = prop.getProperty("screenshotPath");
             videoRecordingPath = prop.getProperty("videoRecordingPath",
                     this.screenshotPath);
-            recordVideo = "true".equals(
-                    prop.getProperty("activateVideoRecording", "false"));
-            saveVideoForPassed = "true"
-                    .equals(prop.getProperty("saveVideoForPassed", "false"));
+            recordVideo = "true".equals(prop.getProperty(
+                    "activateVideoRecording", "false"));
+            saveVideoForPassed = "true".equals(prop.getProperty(
+                    "saveVideoForPassed", "false"));
             downloadPath = prop.getProperty("downloadPath");
             webdriverFirefox = prop.getProperty("webdriverFirefox",
                     "files/software/geckodriver");
@@ -137,8 +138,7 @@ public class Initialization {
 
             log.info("Auto detected operative System = " + os);
         } catch (IOException ex) {
-            log.error(
-                    "test.properties file is not found. If this is the first time you excuted your test you can copy the settings properties file in the test folder in svn and customized it to match your environment");
+            log.error("test.properties file is not found. If this is the first time you excuted your test you can copy the settings properties file in the test folder in svn and customized it to match your environment");
         }
 
         log.info("[log-Properties] " + this.getClass().getSimpleName()
@@ -156,14 +156,20 @@ public class Initialization {
         if (browser.equalsIgnoreCase("Firefox")) {
             FirefoxProfile firefoxProfile = new FirefoxProfile();
 
-            System.setProperty("webdriver.gecko.driver", webdriverFirefox);
+            if (os.equalsIgnoreCase("ubuntu")) {
+                System.setProperty("webdriver.gecko.driver", webdriverFirefox);
+            } else {
+                System.setProperty("webdriver.gecko.driver", webdriverFirefox
+                        + ".exe");
+            }
 
             firefoxProfile.setPreference(
                     "browser.download.manager.focusWhenStarting", true);
             firefoxProfile.setPreference("browser.download.folderList", 2);
             firefoxProfile.setPreference(
                     "browser.download.manager.showWhenStarting", false);
-            firefoxProfile.setPreference("browser.download.dir",
+            firefoxProfile.setPreference(
+                    "browser.download.dir",
                     System.getProperty("user.dir")
                             + System.getProperty("file.separator")
                             + this.getDownloadPath());
@@ -185,8 +191,8 @@ public class Initialization {
             firefoxProfile.setPreference(
                     "browser.helperApps.neverAsk.saveToDisk", mimeTypes);
             // forcing the downloads
-            firefoxProfile.setPreference("browser.helperApps.neverAsk.openFile",
-                    mimeTypes);
+            firefoxProfile.setPreference(
+                    "browser.helperApps.neverAsk.openFile", mimeTypes);
             firefoxProfile.setPreference("browser.helperApps.alwaysAsk.force",
                     false);
 
@@ -205,8 +211,8 @@ public class Initialization {
             if (os.equalsIgnoreCase("ubuntu")) {
                 System.setProperty("webdriver.chrome.driver", webdriverChrome);
             } else {
-                System.setProperty("webdriver.chrome.driver",
-                        webdriverChrome + ".exe");
+                System.setProperty("webdriver.chrome.driver", webdriverChrome
+                        + ".exe");
             }
 
             tmpDriver = new EmergyaChromeDriver(options);
@@ -549,8 +555,8 @@ public class Initialization {
         List<Object[]> typesToBeReturned = new ArrayList<Object[]>();
 
         // Get the Array Split up by the semicolon (;)
-        String[] arrayRemoteParams = propFile.getProperty(propertyName)
-                .split(";");
+        String[] arrayRemoteParams = propFile.getProperty(propertyName).split(
+                ";");
 
         return arrayRemoteParams;
     }
