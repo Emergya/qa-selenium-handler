@@ -1,8 +1,12 @@
 package com.emergya.selenium.pageObject;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -13,6 +17,8 @@ import org.openqa.selenium.WebElement;
 import com.emergya.selenium.drivers.EmergyaWebDriver;
 import com.emergya.selenium.utils.Initialization;
 import com.emergya.selenium.utils.PropertiesHandler;
+import com.gurock.testrail.APIClient;
+import com.gurock.testrail.APIException;
 
 /**
  * Class to group the common features of all PO's
@@ -39,6 +45,12 @@ public abstract class BasePageObject {
      * TIMEOUT for elements.
      */
     protected static final long TIMEOUT = 20; // Seconds
+
+    /**
+     * TestRail
+     */
+    protected static final int PASSED_STATUS = 1;
+    protected static final int FAILED_STATUS = 5;
 
     /**
      * This method builds the file selector path for each Page Object:
@@ -813,6 +825,38 @@ public abstract class BasePageObject {
         } catch (Exception e) {
             log.error("Cannot ScrollBottom the page, by JavaScript: "
                     + e.toString());
+        }
+    }
+
+    /**
+     * Method that interacts with the testRail API to send you the test information
+     * @param testRunId ID associated to the test run by testRail
+     * @param testCaseId ID associated to the test case by testRail
+     * @param error message
+     */
+    public void addResultForTestCase(String testRunId, String testCaseId,
+            String error) {
+
+        APIClient client = APIClient.getApiClient();
+
+        String uri = "add_result_for_case/" + testRunId + "/" + testCaseId + "";
+
+        Map data = new HashMap();
+        if (error.equals("")) {
+            data.put("status_id", PASSED_STATUS);
+        } else {
+            data.put("status_id", FAILED_STATUS);
+            data.put("comment", error);
+        }
+
+        try {
+            client.sendPost(uri, data);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (APIException e) {
+            e.printStackTrace();
         }
     }
 }
