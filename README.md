@@ -18,7 +18,7 @@ It allows your Selenium projects abstracting the WebDriver logic for ease of use
 	<dependency>
 		<groupId>com.emergya</groupId>
 		<artifactId>selenium3-handler</artifactId>
-		<version>0.0.7</version>
+		<version>0.0.8</version>
 	</dependency>
 
 	<dependency>
