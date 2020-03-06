@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.emergya</groupId>
-	<artifactId>selenium3Remote</artifactId>
+	<artifactId>selenium3Remote_v0.0.6</artifactId>
 	<version>0.0.6</version>
 	<packaging>jar</packaging>
 
