@@ -116,11 +116,11 @@ public class Initialization {
                     .equals(prop.getProperty("saveVideoForPassed", "false"));
             downloadPath = prop.getProperty("downloadPath");
             webdriverFirefox = prop.getProperty("webdriverFirefox",
-                    "files/software/geckodriver");
+                    "files/software/"+ os +"/geckodriver");
             webdriverChrome = prop.getProperty("webdriverChrome",
-                    "files/software/chromedriver");
+                    "files/software/"+ os +"/chromedriver");
             webdriverIE = prop.getProperty("webdriverIE",
-                    "files/software/IEDriverServer.exe");
+                    "files/software/"+ os +"/IEDriverServer.exe");
             finalRemoteURL = prop.getProperty("finalRemoteURL");
             remoteBuild = prop.getProperty("remoteBuild");
             version = prop.getProperty("version");
@@ -157,7 +157,7 @@ public class Initialization {
         if (browser.equalsIgnoreCase("Firefox")) {
             FirefoxProfile firefoxProfile = new FirefoxProfile();
 
-            if (os.equalsIgnoreCase("ubuntu")) {
+            if (os != "" || os != null){
                 System.setProperty("webdriver.gecko.driver", webdriverFirefox);
             } else {
                 System.setProperty("webdriver.gecko.driver",
@@ -208,7 +208,7 @@ public class Initialization {
             ChromeOptions options = new ChromeOptions();
             // options.addArguments("--start-maximized");
 
-            if (os.equalsIgnoreCase("ubuntu")) {
+            if (os != "" || os != null) {
                 System.setProperty("webdriver.chrome.driver", webdriverChrome);
             } else {
                 System.setProperty("webdriver.chrome.driver",
