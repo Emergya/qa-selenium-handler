@@ -115,7 +115,7 @@ public class Initialization {
             saveVideoForPassed = "true"
                     .equals(prop.getProperty("saveVideoForPassed", "false"));
             downloadPath = prop.getProperty("downloadPath");
-            webdriverFirefox = prop.getProperty("webdriverFirefox";
+            webdriverFirefox = prop.getProperty("webdriverFirefox");
             webdriverChrome = prop.getProperty("webdriverChrome");
             webdriverIE = prop.getProperty("webdriverIE");
             finalRemoteURL = prop.getProperty("finalRemoteURL");
