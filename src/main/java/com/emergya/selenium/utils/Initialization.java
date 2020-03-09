@@ -107,7 +107,6 @@ public class Initialization {
             environment = prop.getProperty("environment");
             loginURL = environment + context;
             os = prop.getProperty("OS");
-            driverPath = prop.getProperty("driverPath");
             screenshotPath = prop.getProperty("screenshotPath");
             videoRecordingPath = prop.getProperty("videoRecordingPath",
                     this.screenshotPath);
@@ -490,10 +489,6 @@ public class Initialization {
 
     public String getRemoteBrowserName() {
         return browserName;
-    }
-
-    public String getDriverPath(){
-        return driverPath;
     }
 
     // **** Download methods section ****//
