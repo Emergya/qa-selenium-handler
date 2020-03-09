@@ -149,7 +149,6 @@ public class Initialization {
                 + "- Start initialize test");
 
         EmergyaWebDriver tmpDriver = null;
-        File drivePath = new File(this.getDriverPath());
 
         // Driver initialization
         if (browser.equalsIgnoreCase("Firefox")) {
