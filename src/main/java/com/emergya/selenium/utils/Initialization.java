@@ -107,6 +107,7 @@ public class Initialization {
             environment = prop.getProperty("environment");
             loginURL = environment + context;
             os = prop.getProperty("OS");
+            driverPath = prop.getProperty("driverPath");
             screenshotPath = prop.getProperty("screenshotPath");
             videoRecordingPath = prop.getProperty("videoRecordingPath",
                     this.screenshotPath);
@@ -115,12 +116,9 @@ public class Initialization {
             saveVideoForPassed = "true"
                     .equals(prop.getProperty("saveVideoForPassed", "false"));
             downloadPath = prop.getProperty("downloadPath");
-            webdriverFirefox = prop.getProperty("webdriverFirefox",
-                    "files/software/"+ os +"/geckodriver");
-            webdriverChrome = prop.getProperty("webdriverChrome",
-                    "files/software/"+ os +"/chromedriver");
-            webdriverIE = prop.getProperty("webdriverIE",
-                    "files/software/"+ os +"/IEDriverServer.exe");
+            webdriverFirefox = prop.getProperty("webdriverFirefox";
+            webdriverChrome = prop.getProperty("webdriverChrome");
+            webdriverIE = prop.getProperty("webdriverIE");
             finalRemoteURL = prop.getProperty("finalRemoteURL");
             remoteBuild = prop.getProperty("remoteBuild");
             version = prop.getProperty("version");
@@ -152,17 +150,13 @@ public class Initialization {
                 + "- Start initialize test");
 
         EmergyaWebDriver tmpDriver = null;
+        File drivePath = new File(this.getDriverPath());
 
         // Driver initialization
         if (browser.equalsIgnoreCase("Firefox")) {
             FirefoxProfile firefoxProfile = new FirefoxProfile();
 
-            if (os != "" || os != null){
-                System.setProperty("webdriver.gecko.driver", webdriverFirefox);
-            } else {
-                System.setProperty("webdriver.gecko.driver",
-                        webdriverFirefox + ".exe");
-            }
+            System.setProperty("webdriver.gecko.driver", webdriverFirefox);
 
             firefoxProfile.setPreference(
                     "browser.download.manager.focusWhenStarting", true);
@@ -208,12 +202,7 @@ public class Initialization {
             ChromeOptions options = new ChromeOptions();
             // options.addArguments("--start-maximized");
 
-            if (os != "" || os != null) {
-                System.setProperty("webdriver.chrome.driver", webdriverChrome);
-            } else {
-                System.setProperty("webdriver.chrome.driver",
-                        webdriverChrome + ".exe");
-            }
+            System.setProperty("webdriver.chrome.driver", webdriverChrome);
 
             tmpDriver = new EmergyaChromeDriver(options);
         } else if (browser.equalsIgnoreCase("IE")
@@ -501,6 +490,10 @@ public class Initialization {
 
     public String getRemoteBrowserName() {
         return browserName;
+    }
+
+    public String getDriverPath(){
+        return driverPath;
     }
 
     // **** Download methods section ****//
