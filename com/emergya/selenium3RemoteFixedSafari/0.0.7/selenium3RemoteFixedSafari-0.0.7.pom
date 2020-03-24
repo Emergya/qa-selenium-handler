@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.emergya</groupId>
-	<artifactId>selenium3Remote</artifactId>
-	<version>0.0.5</version>
+	<artifactId>selenium3RemoteFixedSafari</artifactId>
+	<version>0.0.7</version>
 	<packaging>jar</packaging>
 
 	<name>Selenium 3 WebDriver Handler Remote</name>
@@ -82,7 +82,7 @@
 			<id>central</id>
 			<name>Maven Repository Switchboard</name>
 			<layout>default</layout>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo1.maven.org/maven2</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
