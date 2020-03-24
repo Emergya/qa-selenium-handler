@@ -4,7 +4,7 @@
 
 	<groupId>com.emergya</groupId>
 	<artifactId>selenium3Remote</artifactId>
-	<version>0.0.7</version>
+	<version>0.0.6</version>
 	<packaging>jar</packaging>
 
 	<name>Selenium 3 WebDriver Handler Remote</name>
