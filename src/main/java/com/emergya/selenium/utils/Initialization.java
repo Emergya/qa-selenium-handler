@@ -225,7 +225,15 @@ public class Initialization {
             caps.setCapability("browserName", browserName);
             caps.setCapability("record_video", remoteRecordNetwork);
             caps.setCapability("record_network", remoteRecordNetwork);
-            caps.setAcceptInsecureCerts(true);
+            
+            /**
+             * For some reason CrossBrowserTesting can't create a Selenium session
+             * in Edge and Safari if this capability is added
+             */
+            if(!browserName.toLowerCase().equals("safari") && !browserName.toLowerCase().equals("edge")) {
+            	caps.setAcceptInsecureCerts(true);
+            }
+            
 
             if (platform.contains("Windows") || platform.contains("Mac")
                     || platform.contains("Linux")) {
