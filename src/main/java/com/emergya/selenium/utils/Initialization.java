@@ -34,6 +34,7 @@ public class Initialization {
     private String environment;
     private String loginURL;
     private String os;
+    private String resourceFolder;
     private String screenshotPath;
     private String videoRecordingPath;
     private boolean recordVideo;
@@ -91,20 +92,15 @@ public class Initialization {
             environment = prop.getProperty("environment");
             loginURL = environment + context;
             os = prop.getProperty("OS");
+            resourceFolder = "src/main/resources/files/software/";
             screenshotPath = prop.getProperty("screenshotPath");
             videoRecordingPath = prop.getProperty("videoRecordingPath",
                     this.screenshotPath);
-            recordVideo = "true".equals(prop.getProperty(
-                    "activateVideoRecording", "false"));
-            saveVideoForPassed = "true".equals(prop.getProperty(
-                    "saveVideoForPassed", "false"));
+            recordVideo = "true".equals(
+                    prop.getProperty("activateVideoRecording", "false"));
+            saveVideoForPassed = "true"
+                    .equals(prop.getProperty("saveVideoForPassed", "false"));
             downloadPath = prop.getProperty("downloadPath");
-            webdriverFirefox = prop.getProperty("webdriverFirefox",
-                    "files/software/geckodriver");
-            webdriverChrome = prop.getProperty("webdriverChrome",
-                    "files/software/chromedriver");
-            webdriverIE = prop.getProperty("webdriverIE",
-                    "files/software/IEDriverServer.exe");
 
             // Create download path
             log.info("Download path: " + getDownloadPath());
@@ -115,7 +111,8 @@ public class Initialization {
 
             log.info("Auto detected operative System = " + os);
         } catch (IOException ex) {
-            log.error("test.properties file is not found. If this is the first time you excuted your test you can copy the settings properties file in the test folder in svn and customized it to match your environment");
+            log.error(
+                    "test.properties file is not found. If this is the first time you excuted your test you can copy the settings properties file in the test folder in svn and customized it to match your environment");
         }
 
         log.info("[log-Properties] " + this.getClass().getSimpleName()
@@ -133,11 +130,13 @@ public class Initialization {
         if (browser.equalsIgnoreCase("Firefox")) {
             FirefoxProfile firefoxProfile = new FirefoxProfile();
 
-            if (os.equalsIgnoreCase("ubuntu")) {
-                System.setProperty("webdriver.gecko.driver", webdriverFirefox);
+            if (os.equalsIgnoreCase("windows")) {
+                System.setProperty("webdriver.gecko.driver",
+                        resourceFolder + os + "/geckodriver.exe");
             } else {
-                System.setProperty("webdriver.gecko.driver", webdriverFirefox
-                        + ".exe");
+                System.setProperty("webdriver.gecko.driver",
+                        resourceFolder + os + "/geckodriver");
+
             }
 
             firefoxProfile.setPreference(
@@ -145,8 +144,7 @@ public class Initialization {
             firefoxProfile.setPreference("browser.download.folderList", 2);
             firefoxProfile.setPreference(
                     "browser.download.manager.showWhenStarting", false);
-            firefoxProfile.setPreference(
-                    "browser.download.dir",
+            firefoxProfile.setPreference("browser.download.dir",
                     System.getProperty("user.dir")
                             + System.getProperty("file.separator")
                             + this.getDownloadPath());
@@ -168,8 +166,8 @@ public class Initialization {
             firefoxProfile.setPreference(
                     "browser.helperApps.neverAsk.saveToDisk", mimeTypes);
             // forcing the downloads
-            firefoxProfile.setPreference(
-                    "browser.helperApps.neverAsk.openFile", mimeTypes);
+            firefoxProfile.setPreference("browser.helperApps.neverAsk.openFile",
+                    mimeTypes);
             firefoxProfile.setPreference("browser.helperApps.alwaysAsk.force",
                     false);
 
@@ -186,18 +184,20 @@ public class Initialization {
             ChromeOptions options = new ChromeOptions();
             // options.addArguments("--start-maximized");
 
-            if (os.equalsIgnoreCase("ubuntu")) {
-                System.setProperty("webdriver.chrome.driver", webdriverChrome);
+            if (os.equalsIgnoreCase("windows")) {
+                System.setProperty("webdriver.chrome.driver",
+                        resourceFolder + os + "/chromedriver.exe");
             } else {
-                System.setProperty("webdriver.chrome.driver", webdriverChrome
-                        + ".exe");
+                System.setProperty("webdriver.chrome.driver",
+                        resourceFolder + os + "/chromedriver");
             }
 
             tmpDriver = new EmergyaChromeDriver(options);
 
         } else if (browser.equalsIgnoreCase("IE")
                 && os.equalsIgnoreCase("windows")) {
-            System.setProperty("webdriver.ie.driver", webdriverIE);
+            System.setProperty("webdriver.ie.driver",
+                    resourceFolder + os + "/IEDriverServer.exe");
             tmpDriver = new EmergyaIEDriver();
         }
 
